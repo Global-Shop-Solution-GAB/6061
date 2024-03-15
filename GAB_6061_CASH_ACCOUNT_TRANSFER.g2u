@@ -1,0 +1,1177 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_CashMgt..create
+Gui.F_CashMgt..caption("Cash Account Management")
+Gui.F_CashMgt..size(12660,5775)
+Gui.F_CashMgt..minx(0)
+Gui.F_CashMgt..miny(0)
+Gui.F_CashMgt..position(0,0)
+Gui.F_CashMgt..event(UnLoad,f_cashtransfer_unload)
+Gui.F_CashMgt..fontsize(9)
+Gui.F_CashMgt..forecolor(0)
+Gui.F_CashMgt..fontstyle(False,False,False,False)
+Gui.F_CashMgt..BackColor(-2147483633)
+Gui.F_CashMgt..mousepointer(0)
+Gui.F_CashMgt..sizeable(False)
+Gui.F_CashMgt.frame_From.create(frame)
+Gui.F_CashMgt.frame_From.caption("Transfer From")
+Gui.F_CashMgt.frame_From.size(4965,3465)
+Gui.F_CashMgt.frame_From.position(150,855)
+Gui.F_CashMgt.frame_From.fontsize(9)
+Gui.F_CashMgt.lbl1.create(label,"Cash Account Description",True,2535,255,1,105,1695,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl1.parent("frame_From")
+Gui.F_CashMgt.lbl1.defaultvalue("")
+Gui.F_CashMgt.txt_FromAcctDesc.create(textbox,"",True,4650,315,0,135,1905,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromAcctDesc.parent("frame_From")
+Gui.F_CashMgt.txt_FromAcctDesc.defaultvalue("")
+Gui.F_CashMgt.lbl2.create(label,"Cash Account Number",True,2550,255,1,975,2370,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl2.parent("frame_From")
+Gui.F_CashMgt.lbl2.defaultvalue("")
+Gui.F_CashMgt.txt_FromAcctNo.create(textbox,"",True,2265,315,0,1020,2580,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromAcctNo.parent("frame_From")
+Gui.F_CashMgt.txt_FromAcctNo.defaultvalue("")
+Gui.F_CashMgt.cmd_BrowseFrom.create(button)
+Gui.F_CashMgt.cmd_BrowseFrom.caption("^")
+Gui.F_CashMgt.cmd_BrowseFrom.size(390,375)
+Gui.F_CashMgt.cmd_BrowseFrom.position(2910,570)
+Gui.F_CashMgt.cmd_BrowseFrom.parent("frame_From")
+Gui.F_CashMgt.cmd_BrowseFrom.fontsize(9)
+Gui.F_CashMgt.cmd_BrowseFrom.event(Click,cmd_browsefrom_click)
+Gui.F_CashMgt.cmd_BrowseFrom.defaultvalue("")
+Gui.F_CashMgt.lbl3.create(label,"Currency",True,855,255,1,105,2355,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl3.parent("frame_From")
+Gui.F_CashMgt.lbl3.defaultvalue("")
+Gui.F_CashMgt.txt_FromCurr.create(textbox,"",True,615,315,0,150,2565,False,2,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromCurr.parent("frame_From")
+Gui.F_CashMgt.txt_FromCurr.defaultvalue("")
+Gui.F_CashMgt.lbl4.create(label,"Amount:",True,810,255,1,105,3075,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl4.parent("frame_From")
+Gui.F_CashMgt.lbl4.defaultvalue("")
+Gui.F_CashMgt.txt_FromAmt.create(textbox,"",True,2745,315,0,1020,3000,True,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromAmt.parent("frame_From")
+Gui.F_CashMgt.txt_FromAmt.numericonly(1)
+Gui.F_CashMgt.txt_FromAmt.event(LostFocus,txt_fromamt_lostfocus)
+Gui.F_CashMgt.txt_FromAmt.defaultvalue("")
+Gui.F_CashMgt.txt_FromGLDesc.create(textbox,"",True,4650,315,0,150,1275,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromGLDesc.parent("frame_From")
+Gui.F_CashMgt.txt_FromGLDesc.defaultvalue("")
+Gui.F_CashMgt.lbl16.create(label,"GL Account Description",True,2355,255,1,105,1065,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl16.parent("frame_From")
+Gui.F_CashMgt.lbl16.defaultvalue("")
+Gui.F_CashMgt.txt_FromGLAcct.create(textbox,"",True,2625,315,0,150,600,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromGLAcct.parent("frame_From")
+Gui.F_CashMgt.txt_FromGLAcct.defaultvalue("")
+Gui.F_CashMgt.lbl17.create(label,"GL Account",True,1935,255,1,105,390,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl17.parent("frame_From")
+Gui.F_CashMgt.lbl17.defaultvalue("")
+Gui.F_CashMgt.frame_To.create(frame)
+Gui.F_CashMgt.frame_To.caption("Transfer To")
+Gui.F_CashMgt.frame_To.size(4965,3465)
+Gui.F_CashMgt.frame_To.position(7365,855)
+Gui.F_CashMgt.frame_To.fontsize(9)
+Gui.F_CashMgt.lbl5.create(label,"Cash Account Description",True,2520,255,1,105,1695,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl5.parent("frame_To")
+Gui.F_CashMgt.lbl5.defaultvalue("")
+Gui.F_CashMgt.lbl6.create(label,"Cash Account Number",True,2070,255,1,975,2370,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl6.parent("frame_To")
+Gui.F_CashMgt.lbl6.defaultvalue("")
+Gui.F_CashMgt.txt_ToAcctNo.create(textbox,"",True,2235,315,0,1020,2580,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToAcctNo.parent("frame_To")
+Gui.F_CashMgt.txt_ToAcctNo.defaultvalue("")
+Gui.F_CashMgt.lbl7.create(label,"Currency",True,840,255,1,105,2355,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl7.parent("frame_To")
+Gui.F_CashMgt.lbl7.defaultvalue("")
+Gui.F_CashMgt.txt_ToCurr.create(textbox,"",True,645,315,0,150,2565,False,2,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToCurr.parent("frame_To")
+Gui.F_CashMgt.txt_ToCurr.defaultvalue("")
+Gui.F_CashMgt.lbl8.create(label,"Amount:",True,810,255,1,105,3075,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl8.parent("frame_To")
+Gui.F_CashMgt.lbl8.defaultvalue("")
+Gui.F_CashMgt.txt_ToAmt.create(textbox,"",True,2670,315,0,1020,3000,True,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToAmt.parent("frame_To")
+Gui.F_CashMgt.txt_ToAmt.numericonly(1)
+Gui.F_CashMgt.txt_ToAmt.defaultvalue("")
+Gui.F_CashMgt.txt_ToAmt.Locked(True)
+Gui.F_CashMgt.txt_ToAcctDesc.create(textbox,"",True,4650,315,0,135,1905,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToAcctDesc.parent("frame_To")
+Gui.F_CashMgt.txt_ToAcctDesc.defaultvalue("")
+Gui.F_CashMgt.txt_ToGLDesc.create(textbox,"",True,4650,315,0,150,1275,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToGLDesc.parent("frame_To")
+Gui.F_CashMgt.txt_ToGLDesc.defaultvalue("")
+Gui.F_CashMgt.lbl18.create(label,"GL Account",True,1935,255,1,105,390,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl18.parent("frame_To")
+Gui.F_CashMgt.lbl18.defaultvalue("")
+Gui.F_CashMgt.lbl19.create(label,"GL Account Description",True,2205,255,1,105,1065,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl19.parent("frame_To")
+Gui.F_CashMgt.lbl19.defaultvalue("")
+Gui.F_CashMgt.txt_ToGLAcct.create(textbox,"",True,2610,315,0,150,600,False,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToGLAcct.parent("frame_To")
+Gui.F_CashMgt.txt_ToGLAcct.defaultvalue("")
+Gui.F_CashMgt.cmd_BrowseTo.create(button)
+Gui.F_CashMgt.cmd_BrowseTo.caption("^")
+Gui.F_CashMgt.cmd_BrowseTo.size(390,375)
+Gui.F_CashMgt.cmd_BrowseTo.position(2910,570)
+Gui.F_CashMgt.cmd_BrowseTo.parent("frame_To")
+Gui.F_CashMgt.cmd_BrowseTo.fontsize(9)
+Gui.F_CashMgt.cmd_BrowseTo.event(Click,cmd_browseto_click)
+Gui.F_CashMgt.cmd_BrowseTo.defaultvalue("")
+Gui.F_CashMgt.frame_ExchRate.create(frame)
+Gui.F_CashMgt.frame_ExchRate.caption("Exchange Rate")
+Gui.F_CashMgt.frame_ExchRate.size(1965,3465)
+Gui.F_CashMgt.frame_ExchRate.position(5250,855)
+Gui.F_CashMgt.frame_ExchRate.fontsize(9)
+Gui.F_CashMgt.txt_FromTo.create(textbox,"",True,1710,315,0,120,1275,True,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_FromTo.parent("frame_ExchRate")
+Gui.F_CashMgt.txt_FromTo.numericonly(1)
+Gui.F_CashMgt.txt_FromTo.event(LostFocus,txt_fromto_lostfocus)
+Gui.F_CashMgt.txt_FromTo.defaultvalue("")
+Gui.F_CashMgt.lbl_FromTo.create(label,"ISO To ISO",True,1200,255,1,105,1065,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl_FromTo.parent("frame_ExchRate")
+Gui.F_CashMgt.lbl_FromTo.defaultvalue("")
+Gui.F_CashMgt.lbl_ToFrom.create(label,"ISO To ISO",True,1200,255,1,105,1695,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl_ToFrom.parent("frame_ExchRate")
+Gui.F_CashMgt.lbl_ToFrom.defaultvalue("")
+Gui.F_CashMgt.txt_ToFrom.create(textbox,"",True,1695,315,0,120,1905,True,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToFrom.parent("frame_ExchRate")
+Gui.F_CashMgt.txt_ToFrom.numericonly(1)
+Gui.F_CashMgt.txt_ToFrom.event(LostFocus,txt_tofrom_lostfocus)
+Gui.F_CashMgt.txt_ToFrom.defaultvalue("")
+Gui.F_CashMgt.txt_ToCoCurr.create(textbox,"",True,1680,315,0,120,2565,True,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ToCoCurr.parent("frame_ExchRate")
+Gui.F_CashMgt.txt_ToCoCurr.numericonly(1)
+Gui.F_CashMgt.txt_ToCoCurr.event(LostFocus,txt_tococurr_lostfocus)
+Gui.F_CashMgt.txt_ToCoCurr.defaultvalue("")
+Gui.F_CashMgt.txt_ToCoCurr.Locked(True)
+Gui.F_CashMgt.lbl_ToCoCurr.create(label,"ISO to ISO",True,1455,255,1,105,2355,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl_ToCoCurr.parent("frame_ExchRate")
+Gui.F_CashMgt.lbl_ToCoCurr.defaultvalue("")
+Gui.F_CashMgt.lbl21.create(label,"Date",True,1290,255,1,105,390,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl21.parent("frame_ExchRate")
+Gui.F_CashMgt.lbl21.defaultvalue("")
+Gui.F_CashMgt.txt_ExchDate.create(textbox,"",True,1710,315,0,120,600,False,1,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_ExchDate.parent("frame_ExchRate")
+Gui.F_CashMgt.txt_ExchDate.defaultvalue("")
+Gui.F_CashMgt.cmd_Process.create(button)
+Gui.F_CashMgt.cmd_Process.caption("Process")
+Gui.F_CashMgt.cmd_Process.size(1935,525)
+Gui.F_CashMgt.cmd_Process.position(8740,4490)
+Gui.F_CashMgt.cmd_Process.fontsize(9)
+Gui.F_CashMgt.cmd_Process.event(Click,cmd_process_click)
+Gui.F_CashMgt.cmd_Process.defaultvalue("")
+Gui.F_CashMgt.lbl10.create(label,"Journal Description",True,1935,255,1,2415,4470,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl10.defaultvalue("")
+Gui.F_CashMgt.txt_JournalDesc.create(textbox,"",True,4920,300,0,2435,4700,True,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_JournalDesc.maxLength(30)
+Gui.F_CashMgt.txt_JournalDesc.defaultvalue("")
+Gui.F_CashMgt.txt_TransRef.create(textbox,"",True,1875,300,0,130,4700,True,0,Arial,9,-2147483643,1)
+Gui.F_CashMgt.txt_TransRef.maxLength(15)
+Gui.F_CashMgt.txt_TransRef.defaultvalue("")
+Gui.F_CashMgt.lbl14.create(label,"Reference Number",True,1935,255,1,90,4470,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl14.defaultvalue("")
+Gui.F_CashMgt.dtp_PostDate.create(datepicker)
+Gui.F_CashMgt.dtp_PostDate.size(1680,345)
+Gui.F_CashMgt.dtp_PostDate.position(150,315)
+Gui.F_CashMgt.dtp_PostDate.defaultvalue("")
+Gui.F_CashMgt.dtp_PostDate.Event(Change,dtp_exchdate_change)
+Gui.F_CashMgt.lbl20.create(label,"Post Date",True,1935,255,1,170,65,True,0,Arial,9,-2147483633,0)
+Gui.F_CashMgt.lbl20.defaultvalue("")
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.sFromGLAcct.Declare(String)
+Variable.Global.sToGLAcct.Declare(String)
+Variable.UDT.uBankTransfer.Define("CURR",String,EXCH_CURR)
+Variable.UDT.uBankTransfer.Define("DESC",String,BANK_DESC)
+Variable.UDT.uBankTransfer.Define("ACCT",String,BANK_ACCOUNT)
+Variable.UDT.uBankTransfer.Define("GL",String,GL_CASH_ACCT)
+Variable.UDT.uBankTransfer.Define("GL_DESC",String)
+Variable.uGlobal.uBankTransfer.Declare("uBankTransfer")
+Variable.Global.sCoCurr.Declare(String)
+Variable.Global.fFromTo.Declare(Float,0)
+Variable.Global.fToFrom.Declare(Float,0)
+V.Global.fExchToFrom2.Declare
+V.Global.fExchFromTo.Declare
+V.Global.fExchToCoCurr.Declare
+V.Global.fExchRate2.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Make sure that every cash account has a distinct bank account description
+
+V.Local.sIconPath.Declare(String)
+V.Local.sLabel.Declare(String)
+
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+Gui.F_CashMgt..Icon(V.Local.sIconPath)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+Gui.F_CashMgt.txt_ToAmt.Enabled(False)
+Gui.F_CashMgt.txt_FromAmt.Enabled(False)
+Gui.F_CashMgt.txt_FromTo.Enabled(False)
+Gui.F_CashMgt.txt_ToFrom.Enabled(False)
+
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+F.Intrinsic.String.Concat(V.ODBC.conx!rst.FieldValTrim!CURRENCY," to ",V.ODBC.conx!rst.FieldValTrim!CURRENCY,V.Local.sLabel)
+Gui.F_CashMgt.lbl_FromTo.Caption(V.Local.sLabel)
+Gui.F_CashMgt.lbl_ToFrom.Caption(V.Local.sLabel)
+Gui.F_CashMgt.lbl_ToCoCurr.Visible(False)
+Gui.F_CashMgt.txt_ToCoCurr.Visible(False)
+V.Global.sCoCurr.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+
+F.ODBC.conx!rst.Close
+
+'Gui.F_CashMgt.dtp_TransDate.Value(V.Ambient.Date)
+Gui.F_CashMgt.dtp_PostDate.Value(V.Ambient.Date)
+
+Gui.F_CashMgt..Show
+
+Program.Sub.Main.End
+
+Program.Sub.f_cashtransfer_unload.Start
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.f_cashtransfer_unload.End
+
+Program.Sub.cmd_browsefrom_click.Start
+V.Local.iWidths.Declare(Long)
+
+V.Local.sFromAmtS.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.sToGLAcct.Declare(String)
+V.Local.sToCurr.Declare(String)
+V.Local.sDBU.Declare
+V.Local.sBrowserList.Declare
+V.Local.sFilter.Declare
+V.Local.i1.Declare
+V.Local.sBankAccount.Declare
+
+F.Intrinsic.String.Split("GL Account*!*GL Description*!*Currency*!*Cash Account Description*!*Cash Account No.","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1600*!*4000*!*800*!*3500*!*1600","*!*",V.Local.iWidths)
+
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+V.Local.sToGLAcct.Set(V.Screen.F_CashMgt!txt_ToGLAcct.Text)
+
+F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT")
+	F.Intrinsic.String.Concat(V.Local.sQuery," WHERE C.GL_CASH_ACCT <> '",V.Local.sToGLAcct.Trim,"' OR C.EXCH_CURR <> '",V.Local.sToCurr.Trim,"' ORDER BY C.EXCH_CURR, C.BANK_DESC",V.Local.sQuery)
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+		
+		'Fill out the textboxes in Transfer From frame
+		Gui.F_CashMgt.txt_FromGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_CashMgt.txt_FromGLDesc.Text(V.Local.sRet(1).Trim)
+		Gui.F_CashMgt.txt_FromAcctDesc.Text(V.Local.sRet(3).Trim)
+		Gui.F_CashMgt.txt_FromCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_CashMgt.txt_FromAcctNo.Text(V.Local.sRet(4).Trim)
+		Gui.F_CashMgt.txt_FromAmt.Text("")
+		
+		V.Global.sFromGLAcct.Set(V.Local.sRet(0).Trim)
+		
+		'If Transfer To GL account has been selected, check for exchange rate
+		F.Intrinsic.Control.If(V.Local.sToGLAcct.Trim,<>,"")
+			F.Intrinsic.Control.CallSub(Dtp_exchdate_change)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf	
+F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT_ENC AS BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx",V.Local.sQuery,True)
+	F.Intrinsic.String.Build("GL_CASH_ACCT <> '{0}' OR EXCH_CURR <> '{1}'",V.Local.sToGLAcct.Trim,V.Local.sToCurr.Trim,V.Local.sFilter)
+'	F.Intrinsic.String.Concat("GL_CASH_ACCT <> '",V.Local.sToGLAcct.Trim,"' OR EXCH_CURR <> '",V.Local.sToCurr.Trim,V.Local.sQuery)
+	F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sRet.UBound,1)
+	F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Account!FieldVal,V.Local.sBankAccount)
+		F.Intrinsic.Control.If(V.Local.i1,=,0)
+			F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!*{4}",V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("{0}$!${1}*!*{2}*!*{3}*!*{4}*!*{5}",V.Local.sBrowserList.Trim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.EndIf	
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.Data.DataTable.Close("dtCash")
+		
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.BrowserFromString("Select a Cash Account",V.Local.sBrowserList,"*!*","$!$",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+'	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		'Fill out the textboxes in Transfer From frame	
+		Gui.F_CashMgt.txt_FromGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_CashMgt.txt_FromGLDesc.Text(V.Local.sRet(1).Trim)
+		Gui.F_CashMgt.txt_FromAcctDesc.Text(V.Local.sRet(3).Trim)
+		Gui.F_CashMgt.txt_FromCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_CashMgt.txt_FromAcctNo.Text(V.Local.sRet(4).Trim)
+		Gui.F_CashMgt.txt_FromAmt.Text("")
+	
+		V.Global.sFromGLAcct.Set(V.Local.sRet(0).Trim)
+	
+		'If Transfer To GL account has been selected, check for exchange rate
+		F.Intrinsic.Control.If(V.Local.sToGLAcct.Trim,<>,"")
+			F.Intrinsic.Control.CallSub(Dtp_exchdate_change)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf	
+Program.Sub.cmd_browsefrom_click.End
+
+Program.Sub.txt_fromamt_lostfocus.Start
+V.Local.fFromAmt.Declare(Float)
+V.Local.fExchFromTo.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+
+V.Local.sFromAmtS.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sToAmtS.Declare(String)
+V.Local.sToCurr.Declare(String)
+
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+
+F.Intrinsic.Control.If(V.Global.sToGLAcct.Trim,<>,"")
+	V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+	
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_ToCoCurr.Text)
+		F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchFromTo,V.Local.fToAmt)
+		F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+		F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+		
+		F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmtS)
+		Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmtS)	
+	F.Intrinsic.Control.Else
+		V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+		F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchFromTo,V.Local.fToAmt)
+		F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+		F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+		
+		F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmtS)
+		
+		Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmtS)	
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Format(V.Local.fFromAmt,"#,0.00",V.Local.sFromAmtS)
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Format(0,"#,0.00",V.Local.sFromAmtS)
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+F.Intrinsic.Control.EndIf
+
+Program.Sub.txt_fromamt_lostfocus.End
+
+Program.Sub.txt_toamt_lostfocus.Start
+V.Local.fFromAmt.Declare(Float)
+V.Local.fExchToFrom.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+
+V.Local.sFromAmtS.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sToAmtS.Declare(String)
+V.Local.sToCurr.Declare(String)
+
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+
+V.Local.fToAmt.Set(V.Screen.F_CashMgt!txt_ToAmt.Text)
+
+F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToCoCurr.Text)
+	F.Intrinsic.Math.Div(1,V.Local.fExchToFrom,V.Local.fExchToFrom)
+	F.Intrinsic.Math.Round(V.Local.fExchToFrom,5,V.Local.fExchToFrom)
+	
+	F.Intrinsic.Math.Mult(V.Local.fToAmt,V.Local.fExchToFrom,V.Local.fFromAmt)
+	F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+	F.Intrinsic.String.Format(V.Local.fFromAmt,"#,0.00",V.Local.sFromAmtS)
+
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+F.Intrinsic.Control.Else
+	V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.Math.Mult(V.Local.fToAmt,V.Local.fExchToFrom,V.Local.fFromAmt)
+	F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+	F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+
+	F.Intrinsic.String.Format(V.Local.fFromAmt,"#,0.00",V.Local.sFromAmtS)
+
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmtS)
+'Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmtS)
+
+Program.Sub.txt_toamt_lostfocus.End
+
+Program.Sub.txt_fromto_lostfocus.Start
+V.Local.fExchRate.Declare
+V.Local.fFromAmt.Declare(Float)
+V.Local.fExchFromTo.Declare(Float)
+V.Local.fExchToFrom.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sFromAmtS.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sToAmtS.Declare(String)
+V.Local.sToCurr.Declare(String)
+
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+
+V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+
+F.Intrinsic.Control.If(V.Global.fFromTo,<>,V.Local.fExchFromTo)
+F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.Math.Div(V.Local.fExchFromTo,V.Local.fExchToFrom,V.Local.fExchRate)
+	F.Intrinsic.Math.Round(V.Local.fExchRate,5,V.Local.fExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchFromTo,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_FromTo.Text(V.Local.sExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToCoCurr.Text(V.Local.sExchRate)
+	V.Global.fFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Global.fToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)		
+	
+	'Update To Amount
+	F.Intrinsic.Control.CallSub(txt_fromamt_lostfocus)
+F.Intrinsic.Control.Else
+	V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+	V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchFromTo,V.Local.fToAmt)
+	F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+	F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+
+	F.Intrinsic.String.Format(V.Local.fFromAmt,"#,0.00",V.Local.sFromAmtS)
+	F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmtS)
+
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+	Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmtS)
+
+	F.Intrinsic.Control.If(V.Local.fExchFromTo,=,0)
+		V.Local.fExchFromTo.Set(1)
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Math.Div(1,V.Local.fExchFromTo,V.Local.fExchToFrom)
+	F.Intrinsic.Math.Round(V.Local.fExchToFrom,5,V.Local.fExchToFrom)
+
+	'Display exchange rate on screen
+	F.Intrinsic.String.Format(V.Local.fExchFromTo,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_FromTo.Text(V.Local.sExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchToFrom,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToFrom.Text(V.Local.sExchRate)
+	V.Global.fFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Global.fToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)	
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.Local.fExchFromTo,<>,V.Global.fFromTo)
+'	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+'	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+'F.Intrinsic.Control.EndIf
+
+Program.Sub.txt_fromto_lostfocus.End
+
+Program.Sub.txt_tofrom_lostfocus.Start
+V.Local.fExchRate.Declare
+V.Local.fFromAmt.Declare(Float)
+V.Local.fExchFromTo.Declare(Float)
+V.Local.fExchToFrom.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sFromAmtS.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sToAmtS.Declare(String)
+V.Local.sToCurr.Declare(String)
+
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+
+V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+
+F.Intrinsic.Control.If(V.Global.fToFrom,<>,V.Local.fExchToFrom)
+F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	V.Local.fExchFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.Math.Div(V.Local.fExchFromTo,V.Local.fExchToFrom,V.Local.fExchRate)
+	F.Intrinsic.Math.Round(V.Local.fExchRate,5,V.Local.fExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchToFrom,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToFrom.Text(V.Local.sExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToCoCurr.Text(V.Local.sExchRate)
+	
+	'Update To Amount
+	F.Intrinsic.Control.CallSub(txt_fromamt_lostfocus)
+	V.Global.fFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Global.fToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+F.Intrinsic.Control.Else
+	V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+	V.Local.fExchToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.Math.Div(V.Local.fFromAmt,V.Local.fExchToFrom,V.Local.fToAmt)
+	F.Intrinsic.Math.Round(V.Local.fFromAmt,2,V.Local.fFromAmt)
+	F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+
+	F.Intrinsic.String.Format(V.Local.fFromAmt,"#,0.00",V.Local.sFromAmtS)
+	F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmtS)
+
+	Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmtS)
+	Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmtS)
+
+	F.Intrinsic.Control.If(V.Local.fExchToFrom,=,0)
+		V.Local.fExchToFrom.Set(1)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Math.Div(1,V.Local.fExchToFrom,V.Local.fExchFromTo)
+	F.Intrinsic.Math.Round(V.Local.fExchFromTo,5,V.Local.fExchFromTo)
+
+	'Display exchange rate on screen
+	F.Intrinsic.String.Format(V.Local.fExchFromTo,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_FromTo.Text(V.Local.sExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchToFrom,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToFrom.Text(V.Local.sExchRate)
+	V.Global.fFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Global.fToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.Local.fExchToFrom,<>,V.Global.fToFrom)
+'	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+'	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+'F.Intrinsic.Control.EndIf
+
+Program.Sub.txt_tofrom_lostfocus.End
+
+Program.Sub.cmd_process_click.Start
+f.Intrinsic.Control.BlockEvents
+V.Local.dExchDate.Declare(Date)
+V.Local.dToday.Declare(Date)
+
+V.Local.fCreditAmt.Declare(Float)
+V.Local.fDebitAmt.Declare(Float)
+V.Local.fExchGainLoss.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+V.Local.fExchAmt.Declare(Float)
+V.Local.fExchRateCo.Declare(Float)
+
+V.Local.sBatch.Declare(String)
+V.Local.sDate.Declare(String)
+V.Local.sDesc.Declare(String)
+V.Local.sExchDate.Declare(String)
+V.Local.sField.Declare(String)
+V.Local.sFile.Declare(String)
+V.Local.sFileName.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sGLGainLoss.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sMonth.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sPostDate.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRefNum.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sTransDate.Declare(String)
+V.Local.sToCurr.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.sYear.Declare(String)
+
+'Check if Transfer From and Transfer To cash accounts have been selected
+F.Intrinsic.Control.If(V.Global.sFromGLAcct.Trim,<>,"")
+F.Intrinsic.Control.AndIf(V.Global.sToGLAcct.Trim,<>,"")
+	V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+	V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+	'If Transfer From currency is the same as company currency, get the debit amount from Transfer From amount
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,=,V.Global.sCoCurr.Trim)
+		V.Local.fDebitAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+	'Or else
+	F.Intrinsic.Control.Else
+		'If Transfer To currency is the same as company currency, get the debit amount from Transfer To amount
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			V.Local.fDebitAmt.Set(V.Screen.F_CashMgt!txt_ToAmt.Text)
+		'Or else calculate the debit amount from Transfer From amount multiplied by the exchange rate to company currency
+		F.Intrinsic.Control.Else
+			V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+			V.Local.fDebitAmt.Set(V.Screen.F_CashMgt!txt_ToAmt.Text)
+			F.Intrinsic.Math.Mult(V.Local.fDebitAmt,V.Local.fExchRate,V.Local.fDebitAmt)
+			F.Intrinsic.Math.Round(V.Local.fDebitAmt,2,V.Local.fDebitAmt)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	'If amount entered is zero
+	F.Intrinsic.Control.If(V.Local.fDebitAmt,=,0)
+		F.Intrinsic.UI.Msgbox("Amount cannot be zero","NOTIFICATION")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+		
+	'Multiply debit amount by -1 to get credit amount
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+		V.Local.fCreditAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+		F.Intrinsic.Math.Mult(-1,V.Local.fCreditAmt,V.Local.fExchRate,V.Local.fCreditAmt)
+		F.Intrinsic.Math.Round(V.Local.fCreditAmt,2,V.Local.fCreditAmt)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Math.Mult(-1,V.Local.fDebitAmt,V.Local.fCreditAmt)
+	F.Intrinsic.Control.EndIf
+	
+	'Entering the debit line information
+	F.Intrinsic.String.RPad(V.Global.sToGLAcct.Trim," ",15,V.Local.sFile)
+	F.Intrinsic.String.LPad(V.Local.fDebitAmt," ",12,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+	
+	'GL journal description. If left blank, it will be automatically filled in
+	V.Local.sDesc.Set(V.Screen.F_CashMgt!txt_JournalDesc.Text)
+	F.Intrinsic.Control.If(V.Local.sDesc.Trim,=,"")
+		F.Intrinsic.String.Concat("Transfer ",V.Local.sFromCurr.Trim," ",V.Local.fDebitAmt,V.Local.sDesc)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+	
+	F.Intrinsic.String.Format(V.Ambient.Date,"MM",V.Local.sMonth)
+	F.Intrinsic.String.Format(V.Ambient.Date,"YY",V.Local.sYear)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFile)
+	
+	'Get the voucher number (Transaction Reference) and if left blank, it will be filled with the time of batch transaction
+	V.Local.sRefNum.Set(V.Screen.F_CashMgt!txt_TransRef.Text)
+	F.Intrinsic.Control.If(V.Local.sRefNum.Trim,=,"")
+		V.Local.sRefNum.Set("BANK TRANSFER")
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.RPad(V.Local.sRefNum.Trim," ",15,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",CASHTRF,",V.Local.sField,V.Ambient.NewLine,V.Local.sFile)
+	
+	'Entering the credit line information
+	F.Intrinsic.String.RPad(V.Global.sFromGLAcct.Trim," ",15,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,V.Local.sField,V.Local.sFile)
+	F.Intrinsic.String.LPad(V.Local.fCreditAmt," ",12,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+	F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+	F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFile)
+	F.Intrinsic.String.RPad(V.Local.sRefNum.Trim," ",15,V.Local.sField)
+	F.Intrinsic.String.Concat(V.Local.sFile,",CASHTRF,",V.Local.sField,V.Local.sFile)
+	
+	'Entering exchange gain/loss if neither cash account currency is the same as company currency
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFile)
+		F.Intrinsic.Math.Add(V.Local.fCreditAmt,V.Local.fDebitAmt,V.Local.fExchGainLoss)
+		F.Intrinsic.Math.Round(V.Local.fExchGainLoss,2,V.Local.fExchGainLoss)
+		F.Intrinsic.Math.Mult(-1,V.Local.fExchGainLoss,V.Local.fExchGainLoss)
+		
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select GL_ACCOUNT from AR_EXCL_ACCOUNT where sys = 'AR' and sub_sys = 'XVR'")
+		V.Local.sGLGainLoss.Set(V.ODBC.conx!rst.FieldValTrim!GL_ACCOUNT)
+		F.ODBC.conx!rst.Close
+		
+		F.Intrinsic.String.RPad(V.Local.sGLGainLoss.Trim," ",15,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFile,V.Local.sField,V.Local.sFile)
+		F.Intrinsic.String.LPad(V.Local.fExchGainLoss," ",12,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+		F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sField,V.Local.sFile)
+		F.Intrinsic.String.Concat(V.Local.sFile,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFile)
+		F.Intrinsic.String.RPad(V.Local.sRefNum.Trim," ",15,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFile,",CASHTRF,",V.Local.sField,V.Local.sFile)
+	F.Intrinsic.Control.EndIf
+	
+	'Save the file to GLtttccc located in FILES folder
+	F.Intrinsic.String.Concat(V.Caller.FilesDir,"\GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sFileName)
+	F.Intrinsic.File.String2File(V.Local.sFileName,V.Local.sFile)
+	
+	'Preparing the program parameter and run XGL004
+	F.Intrinsic.String.RPad(V.Caller.User," ",8,V.Local.sUser)
+	F.Intrinsic.String.Concat("GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sParam)
+	F.Intrinsic.String.RPad(V.Local.sParam," ",12,V.Local.sParam)
+	F.Intrinsic.String.Concat(V.Ambient.QuadQuote,V.Caller.CompanyCode,V.Local.sParam,V.Local.sUser.UCase,V.Ambient.QuadQuote,V.Local.sParam)
+	F.Intrinsic.Task.LaunchGSSSync("XGL004","-C",V.Local.sParam)
+
+	V.Local.dToday.Set(V.Ambient.Date)
+	F.Intrinsic.String.Build("select batch from v_gl_jrnl_entry where userid = '{0}' and last_chg_pgm = 'XGL004' and last_chg_date = '{1}' order by last_chg_time desc",V.Local.sUser.Trim,V.Local.dToday.PervasiveDate,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	V.Local.sBatch.Set(V.ODBC.conx!rst.FieldVal!batch)
+	F.ODBC.conx!rst.Close
+'	F.Intrinsic.String.Format(V.Ambient.Date,"YYYYMMDD",V.Local.sTransDate)
+'	F.Intrinsic.String.Build("SELECT BATCH FROM GL_JRNL_ENTRY WHERE ACCOUNT = '{0}' AND DESCR = '{1}' AND T_DATE = '{2}' AND DR_AMOUNT = {3} AND RTRIM(VOUCHER) = 'BTRANS' AND LAST_CHG_PGM = 'XGL004'",V.Global.sToGLAcct.Trim,V.Local.sDesc.PSQLFriendly,V.Local.sTransDate.Trim,V.Local.fDebitAmt,V.Local.sQuery)
+''	F.Intrinsic.String.Concat("SELECT BATCH FROM GL_JRNL_ENTRY WHERE USERID = '",V.Local.sUser.Trim,"' AND ACCOUNT = '",V.Global.sToGLAcct.Trim,"' AND DESCR = '",V.Local.sDesc.PSQLFriendly,"'",V.Local.sQuery)
+''	F.Intrinsic.String.Concat(V.Local.sQuery," AND LAST_CHG_PGM = 'XGL004'",V.Local.sQuery)
+'	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+'	V.Local.sBatch.Set(V.ODBC.conx!rst.FieldValTrim!BATCH)
+'	F.ODBC.conx!rst.Close
+		
+'	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_TransDate.Value,"YYYYMMDD",V.Local.sTransDate)
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYYMMDD",V.Local.sPostDate)
+
+	V.Local.sExchDate.Set(V.Screen.F_CashMgt!txt_ExchDate.Text)
+'	F.Intrinsic.String.Split(V.Local.sExchDate,"/",V.Local.sRet)
+'	F.Intrinsic.String.Concat(V.Local.sRet(2).Trim,"-",V.Local.sRet(1).Trim,"-",V.Local.sRet(0).Trim,V.Local.sExchDate)
+	
+	'Changing transaction date and exchange currency information in GL_JRNL_ENTRY for Transfer To
+	F.Intrinsic.String.Concat("UPDATE GL_JRNL_ENTRY SET P_DATE = '",V.Local.sPostDate.Trim,"' WHERE BATCH = '",V.Local.sBatch.Trim,"'",V.Local.sQuery)
+	F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	
+	F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sPostDate)
+	
+	F.Intrinsic.Control.If(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,=,V.Global.sCoCurr.Trim)
+			V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+		F.Intrinsic.Control.Else
+			V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+'			V.Local.fExchRateCo.Set(V.Screen.F_CashMgt!txt_ToCoCurr.Text)
+'			F.Intrinsic.Math.Mult(V.Local.fExchRate,V.Local.fExchRateCo,V.Local.fExchRate)
+		F.Intrinsic.Control.EndIf
+		
+		V.Local.fExchAmt.Set(V.Screen.F_CashMgt!txt_ToAmt.Text)
+				
+		F.Intrinsic.Math.Round(V.Local.fExchRate,5,V.Local.fExchRate)
+		F.Intrinsic.Math.Round(V.Local.fExchAmt,2,V.Local.fExchAmt)
+		
+		F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,1,V.Local.sPostDate.Trim,V.Local.fExchAmt,V.Local.sToCurr.Trim,V.Local.sExchDate.Trim,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+		F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+		'If FROM currency is base currency, create a record in GAB_5060_BATCH_DTL
+		F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,=,V.Global.sCoCurr.Trim)
+			F.Intrinsic.Math.Mult(-1,V.Local.fExchAmt,V.Local.fExchAmt)
+			F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,2,V.Local.sPostDate.Trim,V.Local.fExchAmt,V.Local.sToCurr.Trim,V.Local.sExchDate.Trim,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.String.Concat("UPDATE GL_JRNL_ENTRY SET EXCH_CURR = '",V.Local.sToCurr.Trim,"', EXCH_DATE = '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+'		F.Intrinsic.String.Concat(V.Local.sQuery,", EXCH_RATE = ",V.Local.fExchRate,", EXCH_AMT = ",V.Local.fExchAmt," WHERE BATCH = '",V.Local.sBatch.Trim,"' AND LINE = '00001'",V.Local.sQuery)
+'		F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	F.Intrinsic.Control.EndIf
+	
+	'Changing exchange currency information in GL_JRNL_ENTRY for Transfer From
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+		F.Intrinsic.Control.Else
+			V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+		F.Intrinsic.Control.EndIf
+		
+		V.Local.fExchAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+		
+		F.Intrinsic.Math.Round(V.Local.fExchRate,5,V.Local.fExchRate)
+		F.Intrinsic.Math.Round(V.Local.fExchAmt,2,V.Local.fExchAmt)
+		F.Intrinsic.Math.Mult(-1,V.Local.fExchAmt,V.Local.fExchAmt)
+		
+		F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,2,V.Local.sPostDate.Trim,V.Local.fExchAmt,V.Local.sFromCurr.Trim,V.Local.sExchDate.Trim,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+		F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+		'If TO currency is base currency, create a record in GAB_5060_BATCH_DTL
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			F.Intrinsic.Math.Mult(-1,V.Local.fExchAmt,V.Local.fExchAmt)
+			F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,1,V.Local.sPostDate.Trim,V.Local.fExchAmt,V.Local.sFromCurr.Trim,V.Local.sExchDate.Trim,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.String.Concat("UPDATE GL_JRNL_ENTRY SET EXCH_CURR = '",V.Local.sFromCurr.Trim,"', EXCH_DATE = '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+'		F.Intrinsic.String.Concat(V.Local.sQuery,", EXCH_RATE = ",V.Local.fExchRate,", EXCH_AMT = ",V.Local.fExchAmt," WHERE BATCH = '",V.Local.sBatch.Trim,"' AND LINE = '00002'",V.Local.sQuery)
+'		F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	F.Intrinsic.Control.EndIf
+	
+	'Reset the screen
+	Gui.F_CashMgt.txt_FromAmt.Text(0)
+	Gui.F_CashMgt.txt_ToAmt.Text(0)
+	Gui.F_CashMgt.txt_JournalDesc.Text("")
+	Gui.F_CashMgt.txt_TransRef.Text("")
+	
+	F.Intrinsic.String.Concat("Batch No. ",V.Local.sBatch.Trim," has been created and is ready for posting",V.Local.sMessage)
+	F.Intrinsic.UI.Msgbox(V.Local.sMessage,"NOTIFICATION")
+f.Intrinsic.Control.UnBlockEvents	
+F.Intrinsic.Control.EndIf
+
+Program.Sub.cmd_process_click.End
+
+Program.Sub.cmd_browseto_click.Start
+V.Local.iWidths.Declare(Long)
+
+V.Local.sFromGLAcct.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.sBrowserList.Declare
+V.Local.sFilter.Declare
+V.Local.i1.Declare
+V.Local.sBankAccount.Declare
+
+F.Intrinsic.String.Split("GL Account*!*GL Description*!*Currency*!*Cash Account Description*!*Cash Account No.","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1600*!*4000*!*800*!*3500*!*1600","*!*",V.Local.iWidths)
+
+V.Local.sFromGLAcct.Set(V.Screen.F_CashMgt!txt_FromGLAcct.Text)
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+
+'V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT")
+'F.Intrinsic.String.Concat(V.Local.sQuery," WHERE C.GL_CASH_ACCT <> '",V.Local.sFromGLAcct.Trim,"' OR C.EXCH_CURR <> '",V.Local.sFromCurr.Trim,"' ORDER BY C.EXCH_CURR, C.BANK_DESC",V.Local.sQuery)
+
+'F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+'F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+'F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+'	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+'	
+'	'Fill out the textboxes in Transfer From frame
+'	Gui.F_CashMgt.txt_ToGLAcct.Text(V.Local.sRet(0).Trim)
+'	Gui.F_CashMgt.txt_ToAcctNo.Text(V.Local.sRet(4).Trim)
+'	Gui.F_CashMgt.txt_ToCurr.Text(V.Local.sRet(2).Trim)
+'	Gui.F_CashMgt.txt_ToAcctDesc.Text(V.Local.sRet(3).Trim)
+'	Gui.F_CashMgt.txt_ToGLDesc.Text(V.Local.sRet(1).Trim)
+'	
+'	V.Global.sToGLAcct.Set(V.Local.sRet(0).Trim)
+'	
+'	'If Transfer From GL account has been selected, check for exchange rate
+'	F.Intrinsic.Control.If(V.Local.sFromGLAcct.Trim,<>,"")
+'		F.Intrinsic.Control.CallSub(Dtp_exchdate_change)
+'	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT")
+	F.Intrinsic.String.Concat(V.Local.sQuery," WHERE C.GL_CASH_ACCT <> '",V.Local.sFromGLAcct.Trim,"' OR C.EXCH_CURR <> '",V.Local.sFromCurr.Trim,"' ORDER BY C.EXCH_CURR, C.BANK_DESC",V.Local.sQuery)
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+		
+		'Fill out the textboxes in Transfer From frame
+		Gui.F_CashMgt.txt_ToGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_CashMgt.txt_ToGLDesc.Text(V.Local.sRet(1).Trim)
+		Gui.F_CashMgt.txt_ToAcctDesc.Text(V.Local.sRet(3).Trim)
+		Gui.F_CashMgt.txt_ToCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_CashMgt.txt_ToAcctNo.Text(V.Local.sRet(4).Trim)
+		Gui.F_CashMgt.txt_ToAmt.Text("")
+		
+		V.Global.sToGLAcct.Set(V.Local.sRet(0).Trim)
+		
+		'If Transfer To GL account has been selected, check for exchange rate
+		F.Intrinsic.Control.If(V.Global.sToGLAcct.Trim,<>,"")
+			F.Intrinsic.Control.CallSub(Dtp_exchdate_change)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf	
+F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT_ENC AS BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx",V.Local.sQuery,True)
+	F.Intrinsic.String.Build("GL_CASH_ACCT <> '{0}' OR EXCH_CURR <> '{1}'",V.Local.sFromGLAcct.Trim,V.Local.sFromCurr.Trim,V.Local.sFilter)
+'	F.Intrinsic.String.Concat("GL_CASH_ACCT <> '",V.Local.sToGLAcct.Trim,"' OR EXCH_CURR <> '",V.Local.sToCurr.Trim,V.Local.sQuery)
+	F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sRet.UBound,1)
+	F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Account!FieldVal,V.Local.sBankAccount)
+'	F.Intrinsic.Debug.ShowCallerInfo
+		F.Intrinsic.Control.If(V.Local.i1,=,0)
+			F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!*{4}",V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("{0}$!${1}*!*{2}*!*{3}*!*{4}*!*{5}",V.Local.sBrowserList.Trim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCash(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.EndIf	
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.Data.DataTable.Close("dtCash")
+		
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.BrowserFromString("Select a Cash Account",V.Local.sBrowserList,"*!*","$!$",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+'	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		'Fill out the textboxes in Transfer From frame	
+		Gui.F_CashMgt.txt_ToGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_CashMgt.txt_ToGLDesc.Text(V.Local.sRet(1).Trim)
+		Gui.F_CashMgt.txt_ToAcctDesc.Text(V.Local.sRet(3).Trim)
+		Gui.F_CashMgt.txt_ToCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_CashMgt.txt_ToAcctNo.Text(V.Local.sRet(4).Trim)
+		Gui.F_CashMgt.txt_ToAmt.Text("")
+	
+		V.Global.sToGLAcct.Set(V.Local.sRet(0).Trim)
+	
+	'If Transfer From GL account has been selected, check for exchange rate
+		F.Intrinsic.Control.If(V.Local.sFromGLAcct.Trim,<>,"")
+			F.Intrinsic.Control.CallSub(Dtp_exchdate_change)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf		
+F.Intrinsic.Control.EndIf
+
+Program.Sub.cmd_browseto_click.End
+
+Program.Sub.dtp_exchdate_change.Start
+V.Local.dExchDate.Declare(Date)
+
+V.Local.fExchFromTo.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+V.Local.fExchToCoCurr.Declare(Float)
+V.Local.fExchToFrom.Declare(Float)
+V.Local.fFromAmt.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+V.Local.fExchToFrom2.Declare
+
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sFromCurr.Declare(String)
+V.Local.sFromAmt.Declare(String)
+V.Local.sLabel.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sToAmt.Declare(String)
+V.Local.sToCurr.Declare(String)
+V.Local.sMsg.Declare
+
+V.Local.sFromCurr.Set(V.Screen.F_CashMgt!txt_FromCurr.Text)
+V.Local.sToCurr.Set(V.Screen.F_CashMgt!txt_ToCurr.Text)
+F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sExchDate)
+
+F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,"")
+F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,"")
+	Gui.F_CashMgt.txt_FromTo.Enabled(True)
+	Gui.F_CashMgt.txt_ToFrom.Enabled(True)
+	
+	'From currency is the same as base currency
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,=,V.Global.sCoCurr.Trim)
+		'To currency is the same as base currency also
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			V.Local.fExchFromTo.Set(1)
+			V.Local.fExchToFrom.Set(1)
+			V.Local.fExchToCoCurr.Set(1)
+			V.Local.sExchDate.Set("1900-01-01")
+		'To currency is not the same as base currency
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Concat("SELECT MAX(DATE_EXCH_RATE) as ExchDate FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND DATE_EXCH_RATE <= '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				F.Intrinsic.UI.Msgbox("No exchange rate data has been inputted","NOTIFICATION")
+				V.Local.fExchFromTo.Set(1)
+				V.Local.fExchToFrom.Set(1)
+				V.Global.fExchRate2.Set(1)				
+				V.Local.sExchDate.Set("1900-01-01")
+			F.Intrinsic.Control.Else
+				V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+				F.Intrinsic.String.Format(V.Local.dExchDate,"YYYY-MM-DD",V.Local.sExchDate)
+				F.ODBC.conx!rst.Close
+'				F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+				F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+				F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+				V.Local.fExchFromTo.Set(V.ODBC.conx!rst.FieldValFloat!EXCHANGE_RATE)
+				F.Intrinsic.Control.If(V.Local.fExchFromTo,<>,0)
+					F.Intrinsic.Math.Div(1,V.Local.fExchFromTo,V.Local.fExchToFrom)
+					F.Intrinsic.Math.Round(V.Local.fExchToFrom,5,V.Local.fExchToFrom)
+					
+					F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+					F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sQuery)
+					V.Global.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!EXCHANGE_RATE)
+					F.Intrinsic.Control.If(V.ODBC.conx!rst2.EOF,=,True)
+						F.Intrinsic.String.Build("No 2nd exchange rate data has been inputted for {0} ! Please input the rate first before create new JE batch.",V.Local.dExchDate,V.Local.sMsg)
+						F.Intrinsic.UI.Msgbox(V.Local.sMsg,"NOTIFICATION")
+						F.Intrinsic.Control.CallSub(f_cashtransfer_unload)
+					F.Intrinsic.Control.EndIf
+					F.ODBC.conx!rst2.Close
+				F.Intrinsic.Control.Else
+					V.Local.fExchToFrom.Set(0)
+					V.Global.fExchRate2.Set(0)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	'From currency is not the same as base currency
+	F.Intrinsic.Control.Else
+		'To currency is the same as base currency
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			F.Intrinsic.String.Concat("SELECT MAX(DATE_EXCH_RATE) as ExchDate FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND DATE_EXCH_RATE <= '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				F.Intrinsic.UI.Msgbox("No exchange rate data has been inputted","NOTIFICATION")
+				V.Local.fExchFromTo.Set(1)
+				V.Local.fExchToFrom.Set(1)
+				V.Global.fExchRate2.Set(1)
+				V.Local.sExchDate.Set("1900-01-01")
+			F.Intrinsic.Control.Else
+				V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+				F.Intrinsic.String.Format(V.Local.dExchDate,"YYYY-MM-DD",V.Local.sExchDate)
+				F.ODBC.conx!rst.Close
+				F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+				F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+				V.Local.fExchFromTo.Set(V.ODBC.conx!rst.FieldValFloat!EXCHANGE_RATE)
+				F.Intrinsic.Control.If(V.Local.fExchFromTo,<>,0)
+					F.Intrinsic.Math.Div(1,V.Local.fExchFromTo,V.Local.fExchToFrom)
+					F.Intrinsic.Math.Round(V.Local.fExchToFrom,5,V.Local.fExchToFrom)
+					
+					F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+					F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sQuery)
+					V.Global.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!EXCHANGE_RATE)
+					F.Intrinsic.Control.If(V.ODBC.conx!rst2.EOF,=,True)
+						F.Intrinsic.String.Build("No 2nd exchange rate data has been inputted for {0} ! Please input the rate first before create new JE batch.",V.Local.dExchDate,V.Local.sMsg)
+						F.Intrinsic.UI.Msgbox(V.Local.sMsg,"NOTIFICATION")
+						F.Intrinsic.Control.CallSub(f_cashtransfer_unload)
+					F.Intrinsic.Control.EndIf
+					F.ODBC.conx!rst2.Close					
+				F.Intrinsic.Control.Else
+					V.Local.fExchToFrom.Set(0)
+					V.Global.fExchRate2.Set(0)					
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		'To currency is not the same as base currency
+		F.Intrinsic.Control.Else
+			'Get the exchange rate between Transfer From Currency and Base Currency
+'			F.Intrinsic.String.Concat("SELECT MAX(DATE_EXCH_RATE) as ExchDate FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE <= '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+			F.Intrinsic.String.Concat("SELECT MAX(DATE_EXCH_RATE) as ExchDate FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND DATE_EXCH_RATE <= '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				F.Intrinsic.UI.Msgbox("No exchange rate data has been inputted","NOTIFICATION")
+				V.Local.fExchFromTo.Set(1)
+				V.Local.fExchToFrom.Set(1)
+				V.Local.fExchToCoCurr.Set(1)
+				V.Global.fExchRate2.Set(1)
+				V.Local.sExchDate.Set("1900-01-01")
+			F.Intrinsic.Control.Else
+				V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+				F.Intrinsic.String.Format(V.Local.dExchDate,"YYYY-MM-DD",V.Local.sExchDate)
+				F.ODBC.conx!rst.Close
+'				F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+				F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sFromCurr.Trim,"' AND TO_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+				F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+				V.Local.fExchFromTo.Set(V.ODBC.conx!rst.FieldValFloat!EXCHANGE_RATE)
+				V.Local.fExchToCoCurr.Set(V.Local.fExchFromTo)
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rst.Close
+			
+			'Get the exchange rate between Base Currency and Transfer To Currency
+			F.Intrinsic.Control.If(V.Local.fExchFromTo,<>,1)
+				F.Intrinsic.Control.If(V.Local.fExchToFrom,<>,1)
+					F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM V_EXCHANGE_RATES WHERE FROM_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.sExchDate.Trim,"'",V.Local.sQuery)
+					F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)					
+					F.Intrinsic.String.Format(V.Local.dExchDate,"YYYY-MM-DD",V.Local.sExchDate)
+					F.Intrinsic.Control.If(V.Local.fExchToFrom,=,0)
+						F.Intrinsic.String.Concat("Exchange rate on ",V.Local.sExchDate," from ",V.Global.sCoCurr.Trim," to ",V.Local.sToCurr.Trim," is zero",V.Local.sLabel)
+						F.Intrinsic.UI.Msgbox(V.Local.sLabel,"NOTIFICATION")
+					F.Intrinsic.Control.EndIf
+					F.ODBC.conx!rst.Close
+
+					'Get 2nd Exch Rate
+					F.Intrinsic.String.Concat("SELECT EXCHANGE_RATE FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '",V.Local.sToCurr.Trim,"' AND TO_ISO_CODE = '",V.Global.sCoCurr.Trim,"' AND DATE_EXCH_RATE = '",V.Local.dExchDate.PervasiveDate,"'",V.Local.sQuery)
+					F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sQuery)
+					V.Global.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!EXCHANGE_RATE)
+					F.Intrinsic.Control.If(V.ODBC.conx!rst2.EOF,=,True)
+						F.Intrinsic.String.Build("No 2nd exchange rate data has been inputted for {0} ! Please input the rate first before create new JE batch.",V.Local.dExchDate,V.Local.sMsg)
+						F.Intrinsic.UI.Msgbox(V.Local.sMsg,"NOTIFICATION")
+						F.Intrinsic.Control.CallSub(f_cashtransfer_unload)
+					F.Intrinsic.Control.EndIf
+					F.ODBC.conx!rst2.Close
+					
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Concat(V.Local.sFromCurr.Trim," to ",V.Local.sToCurr.Trim,V.Local.sLabel)
+			Gui.F_CashMgt.lbl_ToCoCurr.Caption(V.Local.sLabel)
+			F.Intrinsic.Math.Div(1,V.Local.fExchToFrom,V.Local.fExchToCoCurr)
+			F.Intrinsic.Math.Mult(V.Local.fExchToCoCurr,V.Local.fExchFromTo,V.Local.fExchToCoCurr)
+			F.Intrinsic.Math.Round(V.Local.fExchToCoCurr,5,V.Local.fExchToCoCurr)
+			F.Intrinsic.String.Format(V.Local.fExchToCoCurr,"#,0.00000",V.Local.sExchRate)
+			Gui.F_CashMgt.txt_ToCoCurr.Text(V.Local.sExchRate)
+			Gui.F_CashMgt.txt_ToCoCurr.Visible(True)
+			Gui.F_CashMgt.lbl_ToCoCurr.Visible(True)
+			
+			F.Intrinsic.Math.Div(1,V.Global.fExchToFrom,V.Global.fExchToCoCurr)
+			F.Intrinsic.Math.Mult(V.Global.fExchToCoCurr,V.Global.fExchFromTo,V.Global.fExchToCoCurr)
+			F.Intrinsic.Math.Round(V.Global.fExchToCoCurr,5,V.Global.fExchToCoCurr)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	'Transfer From Currency and Transfer To Currency are the same
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,=,V.Local.sToCurr.Trim)
+		Gui.F_CashMgt.txt_ToCoCurr.Text(1)
+		Gui.F_CashMgt.txt_FromTo.Enabled(False)
+		Gui.F_CashMgt.txt_ToFrom.Enabled(False)
+		Gui.F_CashMgt.txt_ToCoCurr.Visible(False)
+		Gui.F_CashMgt.lbl_ToCoCurr.Visible(False)
+	F.Intrinsic.Control.EndIf
+
+	'Display exchange rate on screen
+	F.Intrinsic.String.Format(V.Local.fExchFromTo,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_FromTo.Text(V.Local.sExchRate)
+	F.Intrinsic.String.Format(V.Local.fExchToFrom,"#,0.00000",V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ToFrom.Text(V.Local.sExchRate)
+	Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+
+	'Change the label in exchange rate frame
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.String.Concat(V.Local.sFromCurr.Trim," to ",V.Global.sCoCurr.Trim,V.Local.sLabel)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Concat(V.Local.sFromCurr.Trim," to ",V.Local.sToCurr.Trim,V.Local.sLabel)
+	F.Intrinsic.Control.EndIf
+	Gui.F_CashMgt.lbl_FromTo.Caption(V.Local.sLabel)
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	F.Intrinsic.Control.AndIf(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.String.Concat(V.Local.sToCurr.Trim," to ",V.Global.sCoCurr.Trim,V.Local.sLabel)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Concat(V.Local.sToCurr.Trim," to ",V.Local.sFromCurr.Trim,V.Local.sLabel)
+	F.Intrinsic.Control.EndIf
+	Gui.F_CashMgt.lbl_ToFrom.Caption(V.Local.sLabel)
+
+	'Display To Amount based on exchange rate on screen
+	F.Intrinsic.Control.If(V.Local.sFromCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,=,V.Global.sCoCurr.Trim)
+			V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+			F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchFromTo,V.Local.fToAmt)
+			F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+			F.Intrinsic.String.Format(V.Local.fFromAmt,"0.00",V.Local.sFromAmt)
+			F.Intrinsic.String.Format(V.Local.fToAmt,"0.00",V.Local.sToAmt)
+			Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmt)
+			Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmt)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.Local.sToCurr.Trim,<>,V.Global.sCoCurr.Trim)
+			V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+			F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchFromTo,V.Local.fToAmt)
+			F.Intrinsic.Math.Round(V.Local.fToAmt,2,V.Local.fToAmt)
+			F.Intrinsic.String.Format(V.Local.fFromAmt,"0.00",V.Local.sFromAmt)
+			F.Intrinsic.String.Format(V.Local.fToAmt,"0.00",V.Local.sToAmt)
+			Gui.F_CashMgt.txt_FromAmt.Text(V.Local.sFromAmt)
+			Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmt)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	Gui.F_CashMgt.txt_FromAmt.Enabled(True)
+	Gui.F_CashMgt.txt_ToAmt.Enabled(True)
+	
+	V.Global.fFromTo.Set(V.Screen.F_CashMgt!txt_FromTo.Text)
+	V.Global.fToFrom.Set(V.Screen.F_CashMgt!txt_ToFrom.Text)
+F.Intrinsic.Control.EndIf
+
+
+Program.Sub.dtp_exchdate_change.End
+
+Program.Sub.txt_tococurr_lostfocus.Start
+V.Local.fExchRate.Declare(Float)
+V.Local.fFromAmt.Declare(Float)
+V.Local.fToAmt.Declare(Float)
+
+V.Local.sExchRate.Declare(String)
+V.Local.sToAmt.Declare(String)
+
+V.Local.fExchRate.Set(V.Screen.F_CashMgt!txt_ToCoCurr.Text)
+F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+Gui.F_CashMgt.txt_ToCoCurr.Text(V.Local.sExchRate)
+
+V.Local.fFromAmt.Set(V.Screen.F_CashMgt!txt_FromAmt.Text)
+F.Intrinsic.Math.Mult(V.Local.fFromAmt,V.Local.fExchRate,V.Local.fToAmt)
+F.Intrinsic.String.Format(V.Local.fToAmt,"#,0.00",V.Local.sToAmt)
+Gui.F_CashMgt.txt_ToAmt.Text(V.Local.sToAmt)
+
+'F.Intrinsic.String.Format(V.Screen.F_CashMgt!dtp_TransDate.Value,"DD/MM/YYYY",V.Local.sExchDate)
+'Gui.F_CashMgt.txt_ExchDate.Text(V.Local.sExchDate)
+
+Program.Sub.txt_tococurr_lostfocus.End
+
+Program.Sub.Comments.Start
+${$0$}$INA_CASH_ACCT_TRANSFER$}$MHERTANTO$}$4/2/2016$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$Sales Orders and Work Order Revisions
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200825185726854$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T6MS07nHOah9CTRbaglFbX0R1UorxZot5hKUocXPt+NM=
+Program.Sub.Comments.End
+
