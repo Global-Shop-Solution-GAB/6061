@@ -1,0 +1,238 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_ExchRate..Create(BaseForm)
+Gui.F_ExchRate..Caption("Maintain 2nd Exchange Rate")
+Gui.F_ExchRate..Size(10200,9480)
+Gui.F_ExchRate..MinX(0)
+Gui.F_ExchRate..MinY(0)
+Gui.F_ExchRate..Position(0,0)
+Gui.F_ExchRate..FontSize(9)
+Gui.F_ExchRate..BackColor(-2147483633)
+Gui.F_ExchRate..MousePointer(0)
+Gui.F_ExchRate..Event(UnLoad,Unload)
+Gui.F_ExchRate..AlwaysOnTop(False)
+Gui.F_ExchRate..FontName("Tahoma")
+Gui.F_ExchRate..ControlBox(True)
+Gui.F_ExchRate..MaxButton(True)
+Gui.F_ExchRate..MinButton(True)
+Gui.F_ExchRate..Moveable(True)
+Gui.F_ExchRate..Sizeable(True)
+Gui.F_ExchRate..ShowInTaskBar(True)
+Gui.F_ExchRate..TitleBar(True)
+Gui.F_ExchRate.GsGCRate.Create(GsGridControl)
+Gui.F_ExchRate.GsGCRate.Enabled(True)
+Gui.F_ExchRate.GsGCRate.Visible(True)
+Gui.F_ExchRate.GsGCRate.Zorder(0)
+Gui.F_ExchRate.GsGCRate.Size(9840,8130)
+Gui.F_ExchRate.GsGCRate.Position(180,735)
+Gui.F_ExchRate.GsGCRate.Event(CellValueChanged,GsGCRate_CellValueChanged)
+Gui.F_ExchRate.cmdSave.Create(Button)
+Gui.F_ExchRate.cmdSave.Enabled(True)
+Gui.F_ExchRate.cmdSave.Visible(True)
+Gui.F_ExchRate.cmdSave.Zorder(0)
+Gui.F_ExchRate.cmdSave.Size(1125,345)
+Gui.F_ExchRate.cmdSave.Position(210,225)
+Gui.F_ExchRate.cmdSave.Caption("SAVE")
+Gui.F_ExchRate.cmdSave.FontName("Tahoma")
+Gui.F_ExchRate.cmdSave.FontSize(8.25)
+Gui.F_ExchRate.cmdSave.Event(Click,cmdSave_Click)
+Gui.F_ExchRate.ddlDateRate.Create(DropDownList)
+Gui.F_ExchRate.ddlDateRate.Enabled(True)
+Gui.F_ExchRate.ddlDateRate.Visible(True)
+Gui.F_ExchRate.ddlDateRate.Zorder(0)
+Gui.F_ExchRate.ddlDateRate.Size(2325,300)
+Gui.F_ExchRate.ddlDateRate.Position(1740,240)
+Gui.F_ExchRate.ddlDateRate.FontName("Tahoma")
+Gui.F_ExchRate.ddlDateRate.FontSize(8.25)
+Gui.F_ExchRate.ddlDateRate.Event(SelectedIndexChanged,ddlDate_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sCustomer.Declare
+V.Global.sCurrTo.Declare
+V.Global.dDate.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.UnLoad.Start
+	F.ODBC.Connection!conx.Close
+	F.Intrinsic.Control.End
+Program.Sub.UnLoad.End
+
+Program.Sub.Main.Start
+V.Local.sCustomer.Declare
+V.Local.sShipID.Declare
+v.Local.sData.Declare
+v.Local.sSQL.Declare
+v.Local.i1.Declare
+V.Local.sCurrTo.Declare
+V.Local.bExist.Declare
+V.Local.dDate.Declare
+
+F.ODBC.Connection!conx.OpenCompanyConnection
+	
+	F.ODBC.Connection!conX.TableExists("GAB_6061_EXCH_RATES",V.Local.bExist)
+	F.Intrinsic.Control.If(V.Local.bExist,=,False)
+		F.ODBC.Connection!conX.Execute("CREATE TABLE GAB_6061_EXCH_RATES (DATE_EXCH_RATE DATE,FROM_ISO_CODE CHAR(3),TO_ISO_CODE CHAR(3),EXCHANGE_RATE NUMERIC(10,5),FILLER CHAR(100) );")
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!conX.TableExists("GAB_6061_BATCH_DTL",V.Local.bExist)
+	F.Intrinsic.Control.If(V.Local.bExist,=,False)
+		F.ODBC.Connection!conX.Execute("CREATE TABLE GAB_6061_BATCH_DTL(BATCH CHAR(5) NOT NULL,LINE NUMERIC(5,0) NOT NULL,POST_DATE_SQL DATE NOT NULL,AMOUNT_FOREX DOUBLE,EXCHANGE_CURR CHAR(3),DATE_EXCHANGE DATE,EXCHANGE_RATE DOUBLE,EXCHANGE_RATE_2 DOUBLE,PRIMARY KEY (BATCH, LINE, POST_DATE_SQL));")
+	F.Intrinsic.Control.EndIf	
+	
+	F.ODBC.Connection!conX.TableExists("GAB_6061_GST_DATA",V.Local.bExist)
+	F.Intrinsic.Control.If(V.Local.bExist,=,False)
+		F.ODBC.Connection!conX.Execute("CREATE TABLE GAB_6061_GST_DATA(BATCH CHAR(5),LINE NUMERIC(5,0),POST_DATE_SQL DATE,TAX_ZONE CHAR(2) NOT NULL,TAX_AUTHORITY CHAR(3) NOT NULL,REFERENCE VARCHAR(30),BASE_AMOUNT NUMERIC(16,2) NOT NULL,TAX_AMOUNT NUMERIC(16,2) NOT NULL,BASE_AMOUNT_2 NUMERIC(16,2) NOT NULL,TAX_AMOUNT_2 NUMERIC(16,2) NOT NULL,PRIMARY KEY (BATCH,LINE,POST_DATE_SQL));")
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!conX.TableExists("GAB_6061_GST_LOG",V.Local.bExist)
+	F.Intrinsic.Control.If(V.Local.bExist,=,False)
+		F.ODBC.Connection!conX.Execute("CREATE TABLE GAB_6061_GST_LOG(ID IDENTITY,PERIOD TINYINT NOT NULL,FISCAL_YR SMALLINT NOT NULL,REV SMALLINT NOT NULL,USERID VARCHAR(8) NOT NULL,DATE_TIME_CHANGED DATETIME NOT NULL,PRIMARY KEY (ID));")
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!conX.TableExists("GAB_6061_GST_RETURN",V.Local.bExist)
+	F.Intrinsic.Control.If(V.Local.bExist,=,False)
+		F.ODBC.Connection!conX.Execute("CREATE TABLE GAB_6061_GST_RETURN(PERIOD TINYINT NOT NULL,FISCAL_YR SMALLINT NOT NULL,SALES NUMERIC(16,2),GST_AR NUMERIC(16,2),PURCHASE NUMERIC(16,2),GST_AP NUMERIC(16,2),PRIMARY KEY (PERIOD,FISCAL_YR));")
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.Dictionary.CreateFromSQL("dicDate","conx","select date_exch_rate, date_exch_rate from V_EXCHANGE_RATES order by date_exch_rate desc")
+	Gui.F_ExchRate.ddlDateRate.AddItems("Dictionary","dicDate")
+	F.Data.Dictionary.Close("dicDate")
+	
+	F.ODBC.Connection!Conx.ExecuteAndReturn("select top 1 date_exch_rate as DateRate from V_EXCHANGE_RATES order by date_exch_rate desc",V.Global.dDate)
+	Gui.F_ExchRate.ddlDateRate.Text(V.Global.dDate)
+	
+	F.Intrinsic.Control.CallSub(LoadRecords)
+	
+	Gui.F_ExchRate..Show
+Program.Sub.Main.End
+
+Program.Sub.LoadRecords.Start
+V.Local.sCustomer.Declare
+V.Local.sShipID.Declare
+v.Local.sData.Declare
+v.Local.sSQL.Declare
+v.Local.i1.Declare
+V.Local.sCurrTo.Declare
+V.Local.bExist.Declare
+V.Local.dDate.Declare
+
+	F.Intrinsic.Control.If(V.DataTable.dtRate.Exists,=,True)
+		F.Data.DataTable.Close("dtRate")
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.String.Build("select * from GAB_6061_EXCH_RATES where DATE_EXCH_RATE = '{0}'",V.Global.dDate.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+
+		F.Intrinsic.String.Build("select FROM_ISO_CODE, TO_ISO_CODE, 0.00 AS EXCHANGE_RATE from V_EXCHANGE_RATES WHERE date_exch_rate = '{0}'",V.Global.dDate.PervasiveDate,v.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtRate","conx",v.Local.sSQL,True)
+
+	F.Intrinsic.Control.Else
+
+		F.Intrinsic.String.Build("select FROM_ISO_CODE, TO_ISO_CODE, EXCHANGE_RATE from GAB_6061_EXCH_RATES WHERE date_exch_rate = '{0}'",V.Global.dDate.PervasiveDate,v.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtRate","conx",v.Local.sSQL,True)
+
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+
+	Gui.F_ExchRate.GsGCRate.AddGridviewFromDataTable("gvRate","dtRate")
+	Gui.F_ExchRate.GsGCRate.SetGridViewProperty("gvRate","AllowSort",True)
+	Gui.F_ExchRate.GsGCRate.SetGridViewProperty("gvRate","AllowFilter",True)
+	
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","Caption","Currency From")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","Caption","Currency To")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","Caption","Exchange Rate")
+
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","AllowEdit",False)
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","AllowEdit",False)
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","AllowEdit",True)
+	
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","ReadOnly",TRUE)
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","ReadOnly",TRUE)
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","ReadOnly",False)
+	
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","MinWidth","50")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","MinWidth","50")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","MinWidth","100")
+	
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","HeaderHAlignment","Center")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","HeaderHAlignment","Center")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","HeaderHAlignment","Center")
+
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","FROM_ISO_CODE","CellHAlignment","Center")
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","TO_ISO_CODE","CellHAlignment","Center")
+	
+	Gui.F_ExchRate.GsGCRate.SetColumnProperty("gvRate","EXCHANGE_RATE","DisplayCustomNumeric","##,###,##0.00000")
+	
+	Gui.F_ExchRate.GsGCRate.MainView("gvRate")
+	Gui.F_ExchRate..Show
+'F.Intrinsic.Control.EndIf
+Program.Sub.LoadRecords.End
+
+Program.Sub.ddlDate_Click.Start
+V.Global.dDate.Set(V.Screen.F_ExchRate!ddlDateRate.Value)
+F.Intrinsic.Control.CallSub(LoadRecords)
+Program.Sub.ddlDate_Click.End
+
+Program.Sub.GsGCRate_CellValueChanged.Start
+V.Local.bNumeric.Declare
+V.Local.fRate.Declare
+V.Local.i1.Declare
+V.Local.sFrom.Declare
+V.Local.sTo.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"EXCHANGE_RATE")
+	Gui.F_ExchRate.GsGCRate.GetCellValueByColumnName("gvRate","FROM_ISO_CODE",V.Args.RowIndex,V.Local.sFrom)
+	Gui.F_ExchRate.GsGCRate.GetCellValueByColumnName("gvRate","TO_ISO_CODE",V.Args.RowIndex,V.Local.sTo)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtRate.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtRate(V.Local.i1).FROM_ISO_CODE!FieldValTrim,=,V.Local.sTo.Trim)
+		F.Intrinsic.Control.AndIf(V.DataTable.dtRate(V.Local.i1).TO_ISO_CODE!FieldValTrim,=,V.Local.sFrom.Trim)
+			F.Intrinsic.Math.Div(1,V.Args.Value,V.Local.fRate)
+			F.Intrinsic.Math.Round(V.Local.fRate,5,V.Local.fRate)
+			F.Data.DataTable.SetValue("dtRate",V.Local.i1,"EXCHANGE_RATE",V.Local.fRate)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCRate_CellValueChanged.End
+
+Program.Sub.cmdSave_Click.Start
+F.Intrinsic.Control.BlockEvents
+V.Local.iID.Declare
+V.Local.sID.Declare
+V.Local.sSql.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.sCustomer.Declare
+V.Local.sShipID.Declare
+V.Local.iFlag.Declare
+
+F.Intrinsic.Control.If(V.DataTable.dtRate.RowCount,>,0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtRate.RowCount--,1)
+			F.Intrinsic.String.Build("SELECT * FROM GAB_6061_EXCH_RATES WHERE date_exch_rate = '{0}' and FROM_ISO_CODE = '{1}' AND TO_ISO_CODE = '{2}'",V.Global.dDate.PervasiveDate, V.DataTable.dtRate(V.Local.i1).FROM_ISO_CODE!FieldValTrim,V.DataTable.dtRate(V.Local.i1).TO_ISO_CODE!FieldValTrim,v.Local.sSQL)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+				
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				
+				F.Intrinsic.String.Build("insert into GAB_6061_EXCH_RATES(date_exch_rate, FROM_ISO_CODE, TO_ISO_CODE, EXCHANGE_RATE) values('{0}','{1}','{2}',{3});",V.Global.dDate.PervasiveDate, V.DataTable.dtRate(V.Local.i1).FROM_ISO_CODE!FieldValTrim,V.DataTable.dtRate(V.Local.i1).TO_ISO_CODE!FieldValTrim, V.DataTable.dtRate(V.Local.i1).EXCHANGE_RATE!FieldValFloat, v.Local.sSQL)	
+				F.ODBC.Connection!conx.Execute(v.Local.sSQL)
+				
+			F.Intrinsic.Control.Else
+				
+				F.Intrinsic.String.Build("Update GAB_6061_EXCH_RATES Set EXCHANGE_RATE = '{3}' Where date_exch_rate = '{0}' and FROM_ISO_CODE = '{1}' AND TO_ISO_CODE = '{2}';",V.Global.dDate.PervasiveDate, V.DataTable.dtRate(V.Local.i1).FROM_ISO_CODE!FieldValTrim,V.DataTable.dtRate(V.Local.i1).TO_ISO_CODE!FieldValTrim, V.DataTable.dtRate(V.Local.i1).EXCHANGE_RATE!FieldValFloat, v.Local.sSQL)	
+				F.ODBC.Connection!conx.Execute(v.Local.sSQL)
+				
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rst.Close
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.UnBlockEvents
+
+F.Intrinsic.UI.Msgbox("Done!","Maintain 2nd Exchange Rates (6061)")
+
+'F.Intrinsic.Control.CallSub(Unload)
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$3.0.0.0$}$1
+${$6$}$dyunus$}$20200818161748759$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fc3oNQ7EudoXTw5EbGR7O9c/toVv6H+zxE=
+Program.Sub.Comments.End
