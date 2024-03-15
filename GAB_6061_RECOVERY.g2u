@@ -1,0 +1,209 @@
+﻿Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sCoCurr.Declare
+V.Local.sQuery.Declare
+V.Local.sSQL.Declare
+V.Local.Foreign_Amt.Declare
+v.Local.dPost.Declare
+v.Local.dRate.Declare
+V.Local.bExist.Declare
+V.Local.sDescription.Declare
+V.Local.Foreign_Amt2.Declare
+V.Local.sMsg.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'Read the records from core table
+F.Intrinsic.UI.InvokeWaitDialog("Recovery records in process, Please wait...")
+
+F.ODBC.Connection!conX.TableExists("GAB_6061_EXCH_RATES",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.Intrinsic.UI.Msgbox("2nd Exchange Rate record is not found. Please setup ALL rates under System Support > File > Maintain Exchange Rates (6061)")
+	F.ODBC.Connection!conx.Close
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.Else
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstRate","select Date_Exch_Rate from V_EXCHANGE_RATES")
+	F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstRate.EOF,=,True)
+		F.Intrinsic.String.Build("select * from GAB_6061_EXCH_RATES where Date_Exch_Rate ='{0}'",V.ODBC.conx!rstRate.FieldValPervasiveDate!Date_Exch_Rate,V.Local.sQuery)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstRate2",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstRate2.EOF,=,True)
+			F.Intrinsic.String.Build("2nd Exchange Rate record for {0} is not found. Please setup ALL rates under System Support > File > Maintain Exchange Rates (6061)",V.ODBC.conx!rstRate.FieldValPervasiveDate!Date_Exch_Rate,V.Local.sMsg)
+			F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+			F.ODBC.Connection!conx.Close
+			F.Intrinsic.Control.End
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conx!rstRate2.Close
+	F.ODBC.conx!rstRate.MoveNext
+	F.Intrinsic.Control.Loop
+	F.ODBC.conx!rstRate.Close
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_BANK_REC",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_BANK_REC(ID IDENTITY NOT NULL,GL_ACCOUNT CHAR(15),DATE_CLEARED DATE,END_BAL DOUBLE,PRIMARY KEY (ID));")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_BATCH_DTL",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_BATCH_DTL(BATCH CHAR(5) NOT NULL,LINE NUMERIC(5,0) NOT NULL,POST_DATE_SQL DATE NOT NULL,AMOUNT_FOREX DOUBLE,EXCHANGE_CURR CHAR(3),DATE_EXCHANGE DATE,EXCHANGE_RATE DOUBLE,PRIMARY KEY (BATCH, LINE, POST_DATE_SQL));")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_CASH_CLEAR",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_CASH_CLEAR(BATCH CHAR(5) NOT NULL,LINE NUMERIC(5,0) NOT NULL,POST_DATE_SQL DATE NOT NULL,GL_ACCOUNT CHAR(15),REFERENCE CHAR(30) NOT NULL DEFAULT '0',CLEAR_FLAG BIT DEFAULT '0',BANK_REC_ID INTEGER DEFAULT '0',PRIMARY KEY (BATCH, LINE, POST_DATE_SQL, REFERENCE));")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_GL_BEG_BAL",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_GL_BEG_BAL(GL_ACCOUNT CHAR(15),FISCAL_YR INTEGER,BEG_BAL DOUBLE,PRIMARY KEY (GL_ACCOUNT, FISCAL_YR));")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_PRT_BANKREC",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_PRT_BANKREC (TERMINAL CHAR(3) NOT NULL, COMPANY CHAR(3), LINE_TYPE VARCHAR(2), GL_ACCOUNT CHAR(15), STATEMENT_DATE DATE, BATCH CHAR(5), LINE NUMERIC(5,0), POST_DATE DATE, BATCH_TYPE VARCHAR(5), DESCRIPTION CHAR(30), CURRENCY CHAR(3), AMOUNT NUMERIC(16,2),BASE_CURRENCY CHAR(3), BASE_AMOUNT NUMERIC(16,2) );")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.TableExists("GAB_6061_PRT_VOUCHER",V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist,=,False)
+	F.ODBC.Connection!conx.Execute("CREATE TABLE GAB_6061_PRT_VOUCHER(USERID CHAR(8) NOT NULL,BATCH CHAR(5) NOT NULL,LINE NUMERIC(5,0) NOT NULL,DATE_TRANSACTION DATE,FORM_TITLE CHAR(20),GL_NUMBER CHAR(15),REFERENCE CHAR(30),DESCRIPTION CHAR(30),AMOUNT NUMERIC(16,2),PRIMARY KEY (USERID, BATCH, LINE));")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+V.Local.sCoCurr.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.String.Build("select GL_CASH_ACCT, EXCH_CURR from V_CASH_ACCOUNT where EXCH_CURR <>'{0}'",V.Local.sCoCurr,V.Local.sQuery)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstCash",V.Local.sQuery)
+
+F.Intrinsic.Control.DoUntil(V.ODBC.conx!rstCash.EOF,=,True)
+	'JE
+	F.Intrinsic.String.Build("select A.BATCH, A.LINE, A.POST_DATE_SQL, A.AMOUNT_CMPNY, A.GL_NUMBER, B.Cleared_Flag, DESCRIPTION from V_GL_DETAIL A Left Join Deposit_IDS B On A.Batch = B.Batch where A.GL_NUMBER = '{0}' AND A.BATCH LIKE 'J%'",V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.DoUntil(V.ODBC.conx!rst.EOF,=,True)
+	v.Local.dPost.Set(V.ODBC.conx!rst.FieldValTrim!POST_DATE_SQL)
+	F.Intrinsic.String.Replace(V.ODBC.conx!rst.FieldValTrim!DESCRIPTION,"'"," ",V.Local.sDescription)
+	F.Intrinsic.String.Build("select * from GAB_6061_BATCH_DTL where BATCH = '{0}'",V.ODBC.conx!rst.FieldValTrim!BATCH,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstGAB",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.EOF,=,TRUE)
+			F.Intrinsic.String.Build("Select A.* From V_EXCHANGE_RATES A Inner Join (select TOP 1 DATE_EXCH_RATE, From_ISO_CODE, To_ISO_CODE from V_EXCHANGE_RATES where FROM_ISO_CODE = '{0}' AND TO_ISO_CODE = '{1}' AND DATE_EXCH_RATE <= '{2}' order by DATE_EXCH_RATE desc)B on Cast(A.DATE_EXCH_RATE as Date) = Cast(B.DATE_EXCH_RATE as Date) and A.From_ISO_CODE = B.From_ISO_CODE and A.To_ISO_CODE = B.To_ISO_CODE",V.ODBC.conx!rstCash.FieldValTrim!EXCH_CURR,V.Local.sCoCurr,v.Local.dPost.PervasiveDate,v.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstRate",V.Local.sQuery)
+			F.Intrinsic.String.Build("Select A.* From GAB_6061_EXCH_RATES A Inner Join (select TOP 1 DATE_EXCH_RATE, From_ISO_CODE, To_ISO_CODE from V_EXCHANGE_RATES where FROM_ISO_CODE = '{0}' AND TO_ISO_CODE = '{1}' AND DATE_EXCH_RATE <= '{2}' order by DATE_EXCH_RATE desc)B on Cast(A.DATE_EXCH_RATE as Date) = Cast(B.DATE_EXCH_RATE as Date) and A.From_ISO_CODE = B.From_ISO_CODE and A.To_ISO_CODE = B.To_ISO_CODE",V.ODBC.conx!rstCash.FieldValTrim!EXCH_CURR,V.Local.sCoCurr,v.Local.dPost.PervasiveDate,v.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstRate2",V.Local.sQuery)			
+			v.Local.dRate.Set(V.ODBC.conx!rstRate.FieldValTrim!DATE_EXCH_RATE)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValFloat!AMOUNT_CMPNY,=,0)
+				V.Local.Foreign_Amt.Set(0)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.ODBC.conx!rstRate.FieldVal!EXCHANGE_RATE,=,0)
+					V.Local.Foreign_Amt.Set(0)
+				F.Intrinsic.Control.Else	
+					F.Intrinsic.Math.Div(V.ODBC.conx!rst.FieldValFloat!AMOUNT_CMPNY,V.ODBC.conx!rstRate.FieldVal!EXCHANGE_RATE,V.Local.Foreign_Amt)
+				F.Intrinsic.Control.EndIf
+'			F.Intrinsic.Math.Div(V.ODBC.conx!rst.FieldValFloat!AMOUNT_CMPNY,V.ODBC.conx!rstRate.FieldVal!EXCHANGE_RATE,V.Local.Foreign_Amt)
+			F.Intrinsic.Math.Round(V.Local.Foreign_Amt,2,V.Local.Foreign_Amt)
+			F.Intrinsic.Math.Round(V.Local.Foreign_Amt2,2,V.Local.Foreign_Amt2)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(BATCH,LINE,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}',{1},'{2}',{3},'{4}','{5}',{6},{7})",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.Local.Foreign_Amt,V.ODBC.conx!rstCash.FieldValTrim!EXCH_CURR,v.Local.dRate.PervasiveDate,V.ODBC.conx!rstRate.FieldVal!EXCHANGE_RATE,V.ODBC.conx!rstRate2.FieldVal!EXCHANGE_RATE,V.Local.sSQL)
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.ODBC.conx!rstRate.Close
+			F.ODBC.conx!rstRate2.Close			
+		F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstGAB.Close
+	
+	F.Intrinsic.String.Build("select * from GAB_6061_CASH_CLEAR where BATCH = '{0}'",V.ODBC.conx!rst.FieldValTrim!BATCH,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstGAB",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.EOF,=,TRUE)
+			F.Intrinsic.Control.If(V.Local.sCoCurr,<>,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER)
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!Cleared_Flag,=,"Y")
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,CLEAR_FLAG,BANK_REC_ID,REFERENCE) values('{0}',{1},'{2}','{3}','1',0,'{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.Local.sDescription,V.Local.sSQL)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,CLEAR_FLAG,BANK_REC_ID,REFERENCE) values('{0}',{1},'{2}','{3}','0',0,'{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.ODBC.conx!rst.FieldValTrim!DESCRIPTION,V.Local.sSQL)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.EndIf	
+		F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstGAB.Close
+	F.ODBC.conx!rst.MoveNext
+	F.Intrinsic.Control.Loop
+	F.ODBC.conx!rst.Close
+	
+	'AP Check
+'	F.Intrinsic.String.Build("select BATCH, LINE, POST_DATE_SQL, AMOUNT_CMPNY, GL_NUMBER from V_GL_AP_CHECK_DTL where BATCH LIKE 'A%'",V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT,V.Local.sQuery)
+	F.Intrinsic.String.Build("select BATCH_NUM AS BATCH, BATCH_LINE AS LINE, DATE_BATCH AS POST_DATE_SQL, AMT_TRANSACTION AS AMOUNT_CMPNY, GL_ACCOUNT AS GL_NUMBER, FLAG_CK_Cleared as FlagClear, CHECK_NUM from V_AP_OPEN_ITEMS where BATCH_NUM LIKE 'A%'",V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.DoUntil(V.ODBC.conx!rst.EOF,=,True)
+	v.Local.dPost.Set(V.ODBC.conx!rst.FieldValTrim!POST_DATE_SQL)
+	F.Intrinsic.String.Build("select * from GAB_6061_CASH_CLEAR where BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}' and REFERENCE = '{3}'",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!Check_Num,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstGAB",V.Local.sQuery)
+'	F.Intrinsic.Debug.ShowCallerInfo
+		F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.EOF,=,TRUE)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,=,V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT)
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!FlagClear,=,"Y")
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,CLEAR_FLAG, REFERENCE) values('{0}',{1},'{2}','{3}',1,'{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.ODBC.conx!rst.FieldValTrim!CHECK_NUM,V.Local.sSQL)
+				F.Intrinsic.Control.ELSE
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,REFERENCE) values('{0}',{1},'{2}','{3}','{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.ODBC.conx!rst.FieldValTrim!CHECK_NUM,V.Local.sSQL)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.EndIf	
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.FieldVal!Bank_Rec_ID,=,0)
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!FlagClear,=,"Y")
+					F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set GL_ACCOUNT = '{3}', CLEAR_FLAG = 1 WHERE BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}' AND BANK_REC_ID = 0",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.ODBC.conx!rst.FieldValTrim!Check_Num,V.Local.sSQL)
+				F.Intrinsic.Control.ELSE
+					F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set GL_ACCOUNT = '{3}' WHERE BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}' AND BANK_REC_ID = 0",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.ODBC.conx!rst.FieldValTrim!Check_Num,V.Local.sSQL)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)	
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstGAB.Close			
+	F.ODBC.conx!rst.MoveNext
+	F.Intrinsic.Control.Loop
+	F.ODBC.conx!rst.Close
+	
+	'AR Cash
+	F.Intrinsic.String.Build("select A.BATCH, A.LINE, A.POST_DATE_SQL, A.AMOUNT_CMPNY, A.GL_NUMBER, B.Cleared_Flag, REFN from V_GL_AR_Detail A Left Join Deposit_IDS B On A.Batch = B.Batch where A.BATCH LIKE 'R%'",V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	F.Intrinsic.Control.DoUntil(V.ODBC.conx!rst.EOF,=,True)
+	v.Local.dPost.Set(V.ODBC.conx!rst.FieldValTrim!POST_DATE_SQL)
+	F.Intrinsic.String.Replace(V.ODBC.conx!rst.FieldValTrim!Refn,"'"," ",V.Local.sDescription)
+	F.Intrinsic.String.Build("select * from GAB_6061_CASH_CLEAR where BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}'",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstGAB",V.Local.sQuery)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.EOF,=,TRUE)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,=,V.ODBC.conx!rstCash.FieldValTrim!GL_CASH_ACCT)
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!Cleared_Flag,=,"Y")
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,Clear_Flag,REFERENCE) values('{0}',{1},'{2}','{3}',1,'{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.Local.sDescription,V.Local.sSQL)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(BATCH,LINE,POST_DATE_SQL,GL_ACCOUNT,REFERENCE) values('{0}',{1},'{2}','{3}','{4}')",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.Local.sDescription,V.Local.sSQL)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.EndIf	
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.If(V.ODBC.conx!rstGAB.FieldVal!Bank_Rec_ID,=,0)	
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.FieldValTrim!Cleared_Flag,=,"Y")
+					F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set GL_ACCOUNT = '{3}', CLEAR_FLAG = 1 WHERE BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}' AND BANK_REC_ID = 0",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.Local.sSQL)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set GL_ACCOUNT = '{3}' WHERE BATCH = '{0}' AND LINE = {1} AND POST_DATE_SQL = '{2}' AND BANK_REC_ID = 0",V.ODBC.conx!rst.FieldValTrim!BATCH,V.ODBC.conx!rst.FieldValLong!LINE,v.Local.dPost.PervasiveDate,V.ODBC.conx!rst.FieldValTrim!GL_NUMBER,V.Local.sSQL)
+				F.Intrinsic.Control.EndIf
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)	
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstGAB.Close			
+	F.ODBC.conx!rst.MoveNext
+	F.Intrinsic.Control.Loop
+	F.ODBC.conx!rst.Close	
+	
+F.ODBC.conx!rstCash.MoveNext	
+F.Intrinsic.Control.Loop
+F.ODBC.conx!rstCash.Close
+F.Intrinsic.UI.CloseWaitDialog
+F.Intrinsic.UI.Msgbox("Recovery Records Has Completed","GAB 6061 Multi CurrencY")
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$Recovery Records on Custom Table$}$DYUNUS$}$11/1/2019 4:18:34 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This GAB is going to create records that mismatch with GL_Detail table.
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200818160330066$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fd4HAgfUMhN9avyde2enmYLpqKX7hexLfk=
+Program.Sub.Comments.End
