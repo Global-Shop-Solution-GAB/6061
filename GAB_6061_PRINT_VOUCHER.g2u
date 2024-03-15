@@ -1,0 +1,216 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.dateCheck.Declare
+V.Local.datePost.Declare
+V.Local.fAmount.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iLine.Declare
+V.Local.iReportID.Declare
+V.Local.sBatch.Declare
+V.Local.sBatchID.Declare
+V.Local.sBIParam.Declare
+V.Local.sBIParamVal.Declare
+V.Local.sCashAccount.Declare
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+V.Local.sTarget.Declare
+V.Local.sTitle.Declare
+V.Local.sUser.Declare
+V.Local.sVendor.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+V.Local.sBatch.Set(V.Passed.Batch)
+V.Local.datePost.Set(V.Passed.PostDate)
+'V.Local.sCashAccount.Set(V.Passed.CashAccount)
+
+'Datatable for cash account
+F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account",True)
+F.Data.Dictionary.CreateFromSQL("dicCash","conx","select rtrim(gl_cash_acct) as Account, 1 as Reference from v_cash_account")
+F.Data.Dictionary.SetDefaultReturn("dicCash",0)
+
+'Delete the current records for the user
+V.Local.sUser.Set(V.Caller.User)
+F.Intrinsic.String.Build("delete from GAB_6061_PRT_VOUCHER where userid = '{0}'",V.Local.sUser.Trim,V.Local.sSQL)
+F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+
+F.Intrinsic.String.Left(V.Local.sBatch,1,V.Local.sBatchID)
+
+F.Intrinsic.Control.If(V.Passed.Mode,=,"PRINT")
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"R")
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, rtrim(gl_number) as Account, cust_name as Reference, 'Invoice: '+invoice_no as Description, amount_cmpny as Amount1, amount_oe as Amount2 from v_gl_ar_detail where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"A")
+		F.Intrinsic.String.Build("select check_NAME as Reference from v_GL_AP_CHECK_DTL where batch = '{0}' and POST_DATE_SQL = '{1}' and check_name <> ''",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteAndReturn(V.Local.sSQL,V.Local.sVendor)
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, rtrim(gl_number) as Account, check_name as Reference, 'Invoice: '+invoice_no as Description, amount_cmpny as Amount1, amount_vend as Amount2 from v_gl_ap_check_dtl where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, rtrim(gl_number) as Account, reference as Reference, description as Description, amount_cmpny as Amount1, 0 as Amount2 from v_gl_journal_dtl where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	'Cash receipt -> GL_AR_DETAIL
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"R")
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, rtrim(gl_number) as Account, cust_name as Reference, 'Invoice: '+invoice_no as Description, amount_cmpny as Amount1, amount_oe as Amount2 from v_gl_ar_detail where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	'Payment -> GL_AP_DETAIL
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"A")
+		F.Intrinsic.String.Build("select check_NAME as Reference from v_GL_AP_CHECK_DTL where batch = '{0}' and POST_DATE_SQL = '{1}' and check_name <> ''",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteAndReturn(V.Local.sSQL,V.Local.sVendor)
+		F.Intrinsic.String.Build("select batch as Batch, LINE as Line, rtrim(gl_number) as Account, check_NAME as Reference, 'Invoice: '+invoice_NO as Description, AMOUNT_CMPNY as Amount1, AMOUNT_VEND as Amount2 from v_GL_AP_CHECK_DTL where batch = '{0}' and POST_DATE_SQL = '{1}'",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	'Manual Journal -> GL_JOURNAL_DTL
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"J")
+		F.Intrinsic.String.Build("select batch as Batch, convert(line,sql_integer) as Line, rtrim(account) as Account, reference as Reference, descr as Description, dr_amount+cr_amount as Amount1, 0 as Amount2 from v_gl_jrnl_entry where batch = '{0}' and p_date = '{1}'",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("dtBatch","conx",V.Local.sSQL)
+F.Data.DataTable.AddExpressionColumn("dtBatch","BatchLine","String","Batch+Line")
+F.Data.DataTable.AddColumn("dtBatch","CashFlag","Long")
+F.Data.DataTable.FillFromDictionary("dtBatch","dicCash","Account","CashFlag")
+
+F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"A")
+	F.Intrinsic.String.Build("select check_date_sql from v_gl_ap_check_dtl where batch = '{0}' and post_date_sql = '{1}' and cust_vendor <> ''",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		F.ODBC.conx!rst.Close
+		F.ODBC.Connection!conx.Close
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.Else
+		V.Local.dateCheck.Set(V.ODBC.conx!rst.FieldVal!check_date_sql)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+F.Intrinsic.Control.Else
+	V.Local.dateCheck.Set(V.Local.datePost)
+	F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine,amount_forex as Amount from GAB_6061_BATCH_DTL where batch = '{0}' and post_date_sql = '{1}'",V.Local.sBatch.Trim,V.Local.datePost.PervasiveDate,V.Local.sSQL)
+	F.Data.Dictionary.CreateFromSQL("dicGL","conx",V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dicGL",0)
+	F.Data.DataTable.FillFromDictionary("dtBatch","dicGL","BatchLine","Amount2")
+	F.Data.Dictionary.Close("dicGL")
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.String.Build("Account = '{0}'",V.Local.sCashAccount.Trim,V.Local.sFilter)
+F.Data.DataView.Create("dtBatch","dvCash",22,"CashFlag = 1","Line ASC")
+
+'Only 1 cash account line in the batch
+F.Intrinsic.Control.If(V.DataView.dtBatch!dvCash.RowCount,=,1)
+	F.Intrinsic.Control.If(V.DataView.dtBatch!dvCash(0).Amount2!FieldVal,=,0)
+		V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(0).Amount1!FieldVal)
+	F.Intrinsic.Control.ElseIf(V.DataView.dtBatch!dvCash(0).Amount2!FieldVal,=,V.DataView.dtBatch!dvCash(0).Amount1!FieldVal)
+		V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(0).Amount1!FieldVal)
+	F.Intrinsic.Control.Else
+		V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(0).Amount2!FieldVal)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Local.fAmount,>,0)
+		V.Local.sTitle.Set("RECEIPT VOUCHER")
+	F.Intrinsic.Control.Else
+		V.Local.sTitle.Set("PAYMENT VOUCHER")
+	F.Intrinsic.Control.EndIf
+	
+	V.Local.iLine.Set(0)
+	F.Intrinsic.Math.Abs(V.Local.fAmount,V.Local.fAmount)
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"A")
+		V.Local.sTarget.Set(V.Local.sVendor)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"R")
+		V.Local.sTarget.Set(V.DataView.dtBatch!dvCash(0).Reference!FieldValTrim)
+	F.Intrinsic.Control.Else
+		V.Local.sTarget.Set(V.DataView.dtBatch!dvCash(0).Description!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+	
+'	F.Intrinsic.String.Build("Account <> '{0}'",V.Local.sCashAccount.Trim,V.Local.sFilter)
+	F.Data.DataView.Create("dtBatch","dvLine",22,"CashFlag = 0","Line ASC")
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataView.dtBatch!dvLine.RowCount--,1)
+		F.Intrinsic.Math.Add(V.Local.iLine,1,V.Local.iLine)
+		F.Intrinsic.Control.If(V.DataView.dtBatch!dvLine(V.Local.i1).Amount2!FieldVal,=,0)
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i1).Amount1!FieldVal)
+		F.Intrinsic.Control.ElseIf(V.DataView.dtBatch!dvLine(V.Local.i1).Amount2!FieldVal,=,V.DataView.dtBatch!dvLine(V.Local.i1).Amount1!FieldVal)
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i1).Amount1!FieldVal)
+		F.Intrinsic.Control.Else
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i1).Amount2!FieldVal)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Math.Abs(V.Local.fAmount,V.Local.fAmount)
+		F.Intrinsic.String.Build("insert into GAB_6061_PRT_VOUCHER(userid,batch,line,date_transaction,form_title,reference,description,amount,gl_number) values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7},'{8}');",V.Local.sUser.Trim,V.Local.sBatch.Trim,V.Local.iLine,V.Local.dateCheck.PervasiveDate,V.Local.sTitle,V.Local.sTarget.Trim,V.DataView.dtBatch!dvLine(V.Local.i1).Description!FieldValTrim,V.Local.fAmount,V.DataView.dtBatch!dvLine(V.Local.i1).Account!FieldValTrim,V.Local.sSQL)
+		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	F.Data.DataView.Close("dtBatch","dvLine")
+'More than 1 cash account in the batch
+F.Intrinsic.Control.Else
+	V.Local.iLine.Set(0)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataView.dtBatch!dvCash.RowCount--,1)
+'		F.Intrinsic.Math.Add(V.Local.iLine,1,V.Local.iLine)
+		F.Intrinsic.Control.If(V.DataView.dtBatch!dvCash(V.Local.i1).Amount2!FieldVal,=,0)
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(V.Local.i1).Amount1!FieldVal)
+		F.Intrinsic.Control.ElseIf(V.DataView.dtBatch!dvCash(V.Local.i1).Amount2!FieldVal,=,V.DataView.dtBatch!dvCash(0).Amount1!FieldVal)
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(V.Local.i1).Amount1!FieldVal)
+		F.Intrinsic.Control.Else
+			V.Local.fAmount.Set(V.DataView.dtBatch!dvCash(V.Local.i1).Amount2!FieldVal)
+		F.Intrinsic.Control.EndIf
+		
+		F.Intrinsic.Control.If(V.Local.fAmount,>,0)
+			V.Local.sTitle.Set("RECEIPT VOUCHER")
+		F.Intrinsic.Control.Else
+			V.Local.sTitle.Set("PAYMENT VOUCHER")
+		F.Intrinsic.Control.EndIf
+		
+		F.Intrinsic.Math.Abs(V.Local.fAmount,V.Local.fAmount)
+		F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"A")
+			V.Local.sTarget.Set(V.Local.sVendor.Trim)
+'			F.Intrinsic.String.Build("insert into GAB_5060_PRT_VOUCHER(userid,batch,line,date_transaction,form_title,reference,description,amount) values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7});",V.Local.sUser.Trim,V.Local.sBatch.Trim,V.Local.iLine,V.Local.dateCheck.PervasiveDate,V.Local.sTitle,V.Local.sVendor.Trim,"",V.Local.fAmount,V.Local.sSQL)
+		F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"R")
+			V.Local.sTarget.Set(V.DataView.dtBatch!dvCash(V.Local.i1).Reference!FieldValTrim)
+		F.Intrinsic.Control.Else
+			V.Local.sTarget.Set(V.DataView.dtBatch!dvCash(V.Local.i1).Description!FieldValTrim)
+'			F.Intrinsic.String.Build("insert into GAB_5060_PRT_VOUCHER(userid,batch,line,date_transaction,form_title,reference,description,amount) values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7});",V.Local.sUser.Trim,V.Local.sBatch.Trim,V.Local.iLine,V.Local.dateCheck.PervasiveDate,V.Local.sTitle,V.DataView.dtBatch!dvCash(V.Local.i1).Reference!FieldValTrim,"",V.Local.fAmount,V.Local.sSQL)
+		F.Intrinsic.Control.EndIf
+'		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.Local.i1,=,V.DataView.dtBatch!dvCash.RowCount--)
+			F.Intrinsic.String.Build("CashFlag = 0 and Line > {0}",V.DataView.dtBatch!dvCash(V.Local.i1).Line!FieldVal,V.Local.sFilter)
+'		F.Intrinsic.Control.Else
+'			F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'			F.Intrinsic.String.Build("CashFlag = 0 and Line > {0} and Line < {1}",V.DataView.dtBatch!dvCash(V.Local.i1).Line!FieldVal,V.DataView.dtBatch!dvCash(V.Local.i2).Line!FieldVal,V.Local.sFilter)
+'		F.Intrinsic.Control.EndIf
+		F.Data.DataView.Create("dtBatch","dvLine",22,V.Local.sFilter,"Line ASC")
+		
+		F.Intrinsic.Control.For(V.Local.i2,0,V.DataView.dtBatch!dvLine.RowCount--,1)
+			F.Intrinsic.Math.Add(V.Local.iLine,1,V.Local.iLine)
+			F.Intrinsic.Control.If(V.DataView.dtBatch!dvLine(V.Local.i2).Amount2!FieldVal,=,0)
+				V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i2).Amount1!FieldVal)
+			F.Intrinsic.Control.ElseIf(V.DataView.dtBatch!dvLine(V.Local.i2).Amount2!FieldVal,=,V.DataView.dtBatch!dvLine(V.Local.i2).Amount1!FieldVal)
+				V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i2).Amount1!FieldVal)
+			F.Intrinsic.Control.Else
+				V.Local.fAmount.Set(V.DataView.dtBatch!dvLine(V.Local.i2).Amount2!FieldVal)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Math.Abs(V.Local.fAmount,V.Local.fAmount)
+			F.Intrinsic.String.Build("insert into GAB_6061_PRT_VOUCHER(userid,batch,line,date_transaction,form_title,reference,description,amount,gl_number) values('{0}','{1}',{2},'{3}','{4}','{5}','{6}',{7},'{8}');",V.Local.sUser.Trim,V.Local.sBatch.Trim,V.Local.iLine,V.Local.dateCheck.PervasiveDate,V.Local.sTitle,V.Local.sTarget.Trim,V.DataView.dtBatch!dvLine(V.Local.i2).Description!FieldValTrim,V.Local.fAmount,V.DataView.dtBatch!dvLine(V.Local.i1).Account!FieldValTrim,V.Local.sSQL)
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+		F.Intrinsic.Control.Next(V.Local.i2)
+		F.Data.DataView.Close("dtBatch","dvLine")
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataView.Close("dtBatch","dvCash")
+
+F.Data.DataTable.Close("dtBatch")
+F.Data.Dictionary.Close("dicCash")
+
+F.ODBC.Connection!conx.Close
+
+F.Global.BI.GetIDFromName("GAB_6061_CASH_VOUCHER.rpt",V.Local.iReportID)
+
+F.Intrinsic.Control.If(V.Local.iReportID,=,-1)
+		F.Intrinsic.UI.Msgbox("Cash flow statement report has not been setup. Please tell your administrator to setup the report.")
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Split("UserID*!*","*!*",V.Local.sBIParam)
+		F.Intrinsic.String.Concat(V.Local.sUser.Trim,"*!*",V.Local.sBIParamVal)
+		F.Intrinsic.String.Split(V.Local.sBIParamVal,"*!*",V.Local.sBIParamVal)
+		F.Global.BI.PrintReport(V.Local.iReportID,16,V.Local.sBIParam,V.Local.sBIParamVal,"GSView",True)
+	F.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$12:00:00 AM$}$False
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200828144447024$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T6MS07nHOah9h47nA+CRunSQ9+tl6e5LqrcT6/NAUl68=
+Program.Sub.Comments.End
