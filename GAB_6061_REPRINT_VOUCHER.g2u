@@ -1,0 +1,155 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_Voucher..Create
+Gui.F_Voucher..Caption("Cash Voucher Reprint [6061]")
+Gui.F_Voucher..Size(16950,7980)
+Gui.F_Voucher..MinX(0)
+Gui.F_Voucher..MinY(0)
+Gui.F_Voucher..Position(0,0)
+Gui.F_Voucher..BackColor(-2147483633)
+Gui.F_Voucher..MousePointer(0)
+Gui.F_Voucher..Event(UnLoad,Unload)
+Gui.F_Voucher.cmdOpen.Create(Button)
+Gui.F_Voucher.cmdOpen.Size(2445,630)
+Gui.F_Voucher.cmdOpen.Position(105,120)
+Gui.F_Voucher.cmdOpen.Caption("Open")
+Gui.F_Voucher.cmdOpen.FontSize(9)
+Gui.F_Voucher.cmdOpen.Event(Click,cmdOpen_Click)
+Gui.F_Voucher.GsGCBatch.Create(GsGridControl)
+Gui.F_Voucher.GsGCBatch.Size(16515,6435)
+Gui.F_Voucher.GsGCBatch.Position(120,840)
+Gui.F_Voucher.cmdPrint.Create(Button)
+Gui.F_Voucher.cmdPrint.Size(2445,630)
+Gui.F_Voucher.cmdPrint.Position(2610,120)
+Gui.F_Voucher.cmdPrint.Caption("Print")
+Gui.F_Voucher.cmdPrint.FontSize(9)
+Gui.F_Voucher.cmdPrint.Event(Click,cmdPrint_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.dateBatch.Declare
+V.Global.sBatch.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sIcon.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+F.Intrinsic.String.Build("{0}\ART\gss2.ico",V.Caller.GlobalDir,V.Local.sIcon)
+Gui.F_Voucher..Icon(V.Local.sIcon)
+
+Gui.F_Voucher.GsGCBatch.Anchor(15)
+Gui.F_Voucher.cmdPrint.Visible(False)
+
+Gui.F_Voucher..Show
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Intrinsic.Control.If(V.DataTable.dtBatch.Exists)
+	F.Data.DataTable.Close("dtBatch")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+Program.Sub.Unload.End
+
+Program.Sub.cmdOpen_Click.Start
+V.Local.iWidths.Declare
+V.Local.sBatchID.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.sTitles.Declare
+
+F.Intrinsic.String.Split("Batch*!*Post Date","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1000*!*1000","*!*",V.Local.iWidths)
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+F.Intrinsic.UI.Browser("Select a Batch","conx","select distinct(batch), post_date_sql from GAB_6061_CASH_CLEAR order by batch",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	Gui.F_Voucher.GsGCBatch.Visible(False)
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+	V.Global.dateBatch.Set(V.Local.sRet(1))
+	V.Global.sBatch.Set(V.Local.sRet(0))
+	
+	F.Intrinsic.String.Left(V.Local.sRet(0),1,V.Local.sBatchID)
+	
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"R")
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, gl_number as Account, cust_name as Reference, invoice_no as Description, amount_cmpny as Amount1, amount_oe as Amount2 from v_gl_ar_detail where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sRet(0).Trim,V.Global.dateBatch.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"A")
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, gl_number as Account, check_name as Reference, invoice_no as Description, amount_cmpny as Amount1, amount_vend as Amount2 from v_gl_ap_check_dtl where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sRet(0).Trim,V.Global.dateBatch.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("select batch as Batch, line as Line, gl_number as Account, reference as Reference, description as Description, amount_cmpny as Amount1, 0 as Amount2 from v_gl_journal_dtl where batch = '{0}' and post_date_sql = '{1}' order by line",V.Local.sRet(0).Trim,V.Global.dateBatch.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtBatch.Exists)
+		F.Data.DataTable.Close("dtBatch")
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataTable.CreateFromSQL("dtBatch","conx",V.Local.sSQL,True)
+	F.Data.DataTable.AddExpressionColumn("dtBatch","BatchLine","String","Batch+Line")
+	
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"J")
+		F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine,amount_forex as Amount from GAB_6061_BATCH_DTL where batch = '{0}' and post_date_sql = '{1}'",V.Global.sBatch.Trim,V.Global.dateBatch.PervasiveDate,V.Local.sSQL)
+		F.Data.Dictionary.CreateFromSQL("dicGL","conx",V.Local.sSQL)
+		F.Data.Dictionary.SetDefaultReturn("dicGL",0)
+		F.Data.DataTable.FillFromDictionary("dtBatch","dicGL","BatchLine","Amount2")
+		F.Data.Dictionary.Close("dicGL")
+	F.Intrinsic.Control.EndIf
+	
+	Gui.F_Voucher.GsGCBatch.AddGridviewFromDatatable("gvBatch","dtBatch")
+	Gui.F_Voucher.GsGCBatch.MainView("gvBatch")
+	
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Batch","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Line","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Account","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Reference","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Description","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount1","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount2","HeaderHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Batch","CellHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Line","CellHAlignment","Center")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Batch","MinWidth","70")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Line","MinWidth","50")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Account","MinWidth","120")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Reference","MinWidth","200")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Description","MinWidth","240")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount1","MinWidth","140")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount2","MinWidth","140")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Batch","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Line","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Account","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Reference","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Description","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount1","HeaderFontBold",True)
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount2","HeaderFontBold",True)
+	
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","BatchLine","Visible",False)
+	
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount1","DisplayCustomNumeric","#,###,##0.00")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount2","DisplayCustomNumeric","#,###,##0.00")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount1","Caption","Amount Base")
+	Gui.F_Voucher.GsGCBatch.SetColumnProperty("gvBatch","Amount2","Caption","Amount Forex")
+	
+	Gui.F_Voucher.cmdPrint.Visible(True)
+	Gui.F_Voucher.GsGCBatch.Visible(True)
+F.Intrinsic.Control.EndIf
+Program.Sub.cmdOpen_Click.End
+
+Program.Sub.cmdPrint_Click.Start
+V.Local.sGABScript.Declare
+
+F.Global.General.SetPassedDataElement("Batch",V.Global.sBatch.Trim)
+F.Global.General.SetPassedDataElement("PostDate",V.Global.dateBatch)
+
+F.Global.General.SetPassedDataElement("Mode","PRINT")
+
+F.Intrinsic.String.Concat(V.Caller.GasDir,"\GAB_6061_PRINT_VOUCHER.g2u",V.Local.sGABScript)
+F.Global.General.CallSyncGAS(V.Local.sGABScript)
+Program.Sub.cmdPrint_Click.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200818160425841$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fd4HAgfUMhN9e8qXNfX2jtsN+4N4kayMIE=
+Program.Sub.Comments.End
