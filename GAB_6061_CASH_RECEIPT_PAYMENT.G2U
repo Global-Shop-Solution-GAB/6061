@@ -1,0 +1,1684 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_MiscCash..create
+Gui.F_MiscCash..caption("Miscellaneous Receipt and Payment [5946]")
+Gui.F_MiscCash..size(18375,9795)
+Gui.F_MiscCash..minx(0)
+Gui.F_MiscCash..miny(0)
+Gui.F_MiscCash..position(0,0)
+Gui.F_MiscCash..event(UnLoad,f_misccash_unload)
+Gui.F_MiscCash..fontsize(9)
+Gui.F_MiscCash..forecolor(0)
+Gui.F_MiscCash..fontstyle(False,False,False,False)
+Gui.F_MiscCash..BackColor(-2147483633)
+Gui.F_MiscCash..mousepointer(0)
+Gui.F_MiscCash..sizeable(False)
+Gui.F_MiscCash.dlst_Mode.create(dropdownlist)
+Gui.F_MiscCash.dlst_Mode.size(2130,345)
+Gui.F_MiscCash.dlst_Mode.position(180,345)
+Gui.F_MiscCash.dlst_Mode.fontsize(9)
+Gui.F_MiscCash.dlst_Mode.event(Click,dlst_mode_click)
+Gui.F_MiscCash.dlst_Mode.defaultvalue("")
+Gui.F_MiscCash.lbl1.create(label,"Select to receive or to pay",True,2295,255,1,185,85,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl1.defaultvalue("")
+Gui.F_MiscCash.lbl2.create(label,"GL Cash Account",True,1935,255,1,215,800,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl2.defaultvalue("")
+Gui.F_MiscCash.txt_GLAcct.create(textbox,"",True,2115,315,0,195,1050,True,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_GLAcct.maxLength(15)
+Gui.F_MiscCash.txt_GLAcct.defaultvalue("")
+Gui.F_MiscCash.txt_GLAcct.Event(LostFocus,txtGLAcct_LostFocus)
+Gui.F_MiscCash.lbl3.create(label,"GL Description",True,1935,255,1,2505,800,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl3.defaultvalue("")
+Gui.F_MiscCash.txt_GLDesc.create(textbox,"",True,3750,300,0,2505,1045,False,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_GLDesc.maxLength(30)
+Gui.F_MiscCash.txt_GLDesc.defaultvalue("")
+Gui.F_MiscCash.lbl4.create(label,"Cash Account Number",True,1935,255,1,205,1440,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl4.defaultvalue("")
+Gui.F_MiscCash.txt_AcctNo.create(textbox,"",True,2130,300,0,185,1700,False,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_AcctNo.defaultvalue("")
+Gui.F_MiscCash.lbl5.create(label,"Cash Account Description",True,3225,255,1,2515,1425,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl5.defaultvalue("")
+Gui.F_MiscCash.txt_AcctDesc.create(textbox,"",True,3720,300,0,2505,1700,False,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_AcctDesc.maxLength(30)
+Gui.F_MiscCash.txt_AcctDesc.defaultvalue("")
+Gui.F_MiscCash.cmdBrowse.create(button)
+Gui.F_MiscCash.cmdBrowse.caption("^")
+Gui.F_MiscCash.cmdBrowse.size(450,375)
+Gui.F_MiscCash.cmdBrowse.position(6350,975)
+Gui.F_MiscCash.cmdBrowse.fontsize(9)
+Gui.F_MiscCash.cmdBrowse.event(Click,cmdbrowse_click)
+Gui.F_MiscCash.cmdBrowse.defaultvalue("")
+Gui.F_MiscCash.lbl6.create(label,"Currency",True,795,255,1,200,2095,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl6.defaultvalue("")
+Gui.F_MiscCash.txt_Curr.create(textbox,"",True,720,315,0,195,2370,False,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_Curr.maxLength(3)
+Gui.F_MiscCash.txt_Curr.defaultvalue("")
+Gui.F_MiscCash.lbl_ExchRate.create(label,"ISO to ISO",True,1980,255,1,1095,2680,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl_ExchRate.defaultvalue("")
+Gui.F_MiscCash.txt_ExchRate.create(textbox,"",True,1980,315,0,1095,2940,True,1,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_ExchRate.numericonly(1)
+Gui.F_MiscCash.txt_ExchRate.event(LostFocus,txt_exchrate_lostfocus)
+Gui.F_MiscCash.txt_ExchRate.defaultvalue("")
+Gui.F_MiscCash.txt_Amt.create(textbox,"",True,2820,315,0,3390,2355,True,1,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_Amt.numericonly(1)
+Gui.F_MiscCash.txt_Amt.event(LostFocus,txt_amt_lostfocus)
+Gui.F_MiscCash.txt_Amt.defaultvalue("")
+Gui.F_MiscCash.lbl_Amount.create(label,"Amount",True,2790,255,1,3400,2100,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl_Amount.defaultvalue("")
+Gui.F_MiscCash.lbl9.create(label,"Reference Number",True,1935,255,1,7005,795,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl9.defaultvalue("")
+Gui.F_MiscCash.txt_RefNum.create(textbox,"",True,1800,315,0,6990,1035,True,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_RefNum.maxLength(15)
+Gui.F_MiscCash.txt_RefNum.defaultvalue("")
+Gui.F_MiscCash.lbl10.create(label,"Journal Description",True,3795,255,1,7000,1430,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl10.defaultvalue("")
+Gui.F_MiscCash.txt_JournalDesc.create(textbox,"",True,3465,315,0,6990,1695,True,0,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_JournalDesc.maxLength(30)
+Gui.F_MiscCash.txt_JournalDesc.defaultvalue("")
+Gui.F_MiscCash.lbl_TotalGLBase.create(label,"Balance in Base",True,2790,255,1,6990,2700,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl_TotalGLBase.defaultvalue("")
+Gui.F_MiscCash.txt_GLAmtBase.create(textbox,"",True,2820,300,0,6975,2935,False,1,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_GLAmtBase.defaultvalue("")
+Gui.F_MiscCash.cmdProcess.create(button)
+Gui.F_MiscCash.cmdProcess.caption("Process")
+Gui.F_MiscCash.cmdProcess.size(1980,615)
+Gui.F_MiscCash.cmdProcess.position(10665,1245)
+Gui.F_MiscCash.cmdProcess.fontsize(9)
+Gui.F_MiscCash.cmdProcess.event(Click,cmdprocess_click)
+Gui.F_MiscCash.cmdProcess.defaultvalue("")
+Gui.F_MiscCash.lbl13.create(label,"List of Journal Entries",True,1935,315,1,190,3300,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl13.defaultvalue("")
+Gui.F_MiscCash.dtp_PostDate.create(datepicker)
+Gui.F_MiscCash.dtp_PostDate.size(1485,285)
+Gui.F_MiscCash.dtp_PostDate.position(6990,345)
+Gui.F_MiscCash.dtp_PostDate.defaultvalue("")
+Gui.F_MiscCash.dtp_PostDate.Event(Change,dtp_transdate_change)
+Gui.F_MiscCash.lbl14.create(label,"Post Date",True,1935,255,1,7005,90,True,0,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl14.defaultvalue("")
+'Gui.F_MiscCash.cmdRefresh.create(button)
+'Gui.F_MiscCash.cmdRefresh.caption("Refresh Grid")
+'Gui.F_MiscCash.cmdRefresh.size(1980,555)
+'Gui.F_MiscCash.cmdRefresh.position(10665,2655)
+'Gui.F_MiscCash.cmdRefresh.fontsize(9)
+'Gui.F_MiscCash.cmdRefresh.event(Click,cmdrefresh_click)
+'Gui.F_MiscCash.cmdRefresh.defaultvalue("")
+Gui.F_MiscCash.txt_BaseAmt.create(textbox,"",True,2805,315,0,6990,2355,True,1,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_BaseAmt.defaultvalue("")
+Gui.F_MiscCash.txt_BaseAmt.Locked(True)
+Gui.F_MiscCash.lbl_BaseAmount.create(label,"Amount in Base Currency",True,2775,255,1,7005,2100,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl_BaseAmount.defaultvalue("")
+Gui.F_MiscCash.txt_GLAmt.create(textbox,"",True,2805,315,0,3390,2940,False,1,Arial,9,-2147483643,1)
+Gui.F_MiscCash.txt_GLAmt.defaultvalue("")
+Gui.F_MiscCash.lbl16.create(label,"Balance",True,2775,255,1,3405,2700,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl16.defaultvalue("")
+Gui.F_MiscCash.lbl17.create(label,"Exchange Date",True,1935,255,1,1130,2100,True,1,Arial,9,-2147483633,0)
+Gui.F_MiscCash.lbl17.defaultvalue("")
+Gui.F_MiscCash.cmd_Clear.create(button)
+Gui.F_MiscCash.cmd_Clear.caption("Clear")
+Gui.F_MiscCash.cmd_Clear.size(1980,555)
+Gui.F_MiscCash.cmd_Clear.position(10665,1965)
+Gui.F_MiscCash.cmd_Clear.fontsize(9)
+Gui.F_MiscCash.cmd_Clear.event(Click,cmd_clear_click)
+Gui.F_MiscCash.cmd_Clear.defaultvalue("")
+Gui.F_MiscCash.dtpExchDate.Create(DatePicker)
+Gui.F_MiscCash.dtpExchDate.Size(1980,285)
+Gui.F_MiscCash.dtpExchDate.Position(1110,2370)
+Gui.F_MiscCash.GsGCDetail.Create(GsGridControl)
+Gui.F_MiscCash.GsGCDetail.Size(17895,5550)
+Gui.F_MiscCash.GsGCDetail.Position(180,3585)
+Gui.F_MiscCash.GsGCDetail.Event(CellValueChanged,GsGCDetail_CellValueChanged)
+Gui.F_MiscCash.GsGCDetail.Event(RowCellClick,GsGCDetail_RowCellClick)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sCashCurr.Declare
+Variable.Global.sCoCurr.Declare(String)
+Variable.Global.fGLAmt.Declare(Float,0)
+V.Global.sVATIn.Declare
+V.Global.sVATOut.Declare
+Variable.Global.iLastRow.Declare(Long,0)
+Variable.UDT.uJournal.Define("GL",String)
+Variable.UDT.uJournal.Define("AMOUNT",Float)
+Variable.UDT.uJournal.Define("DESC",String)
+Variable.UDT.uJournal.Define("GL_DESC",String)
+Variable.UDT.uJournal.Define("AMOUNT_BASE",Float)
+Variable.uGlobal.uJournal.Declare("uJournal")
+Variable.UDT.uCashAcct.Define("GL",String,GL_CASH_ACCT)
+Variable.uGlobal.uCashAcct.Declare("uCashAcct")
+Variable.Global.fExchRate.Declare(Float,0)
+Variable.Global.fGLAmtBase.Declare(Float,0)
+Variable.UDT.uVAT.Define("CODE",String)
+Variable.UDT.uVAT.Define("AMOUNT_BASE",Float)
+Variable.UDT.uVAT.Define("AMOUNT",Float)
+Variable.UDT.uVAT.Define("GL",String)
+Variable.uGlobal.uVAT.Declare("uVAT")
+Variable.Global.iVATLastRow.Declare(Float,0)
+V.Global.sGSSVersion.Declare
+V.Global.fExchRate2.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sExchDate.Declare(String)
+V.Local.sIconPath.Declare(String)
+V.Local.sLabel.Declare(String)
+
+'Set up GSS logo
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+Gui.F_MiscCash..Icon(V.Local.sIconPath)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'GSS version
+V.Global.sGSSVersion.Set(V.Caller.GSSVersion)
+F.Intrinsic.String.Left(V.Global.sGSSVersion,4,V.Global.sGSSVersion)
+
+'Get base currency from V_COMPANY_OPT
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+F.Intrinsic.String.Concat(V.ODBC.conx!rst.FieldValTrim!CURRENCY," to ",V.ODBC.conx!rst.FieldValTrim!CURRENCY,V.Local.sLabel)
+Gui.F_MiscCash.lbl_ExchRate.Caption(V.Local.sLabel)
+V.Global.sCoCurr.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+F.Intrinsic.String.Concat("Balance in ",V.Global.sCoCurr.Trim,V.Local.sLabel)
+Gui.F_MiscCash.lbl_TotalGLBase.Caption(V.Local.sLabel)
+F.ODBC.conx!rst.Close
+
+'Get all the cash accounts
+F.Data.Dictionary.CreateFromSQL("dicCash","conx","SELECT DISTINCT GL_CASH_ACCT, gl_cash_acct FROM CASH_ACCOUNT ORDER BY GL_CASH_ACCT")
+Gui.F_MiscCash.txt_GLAcct.AddAutoCompleteItem("dicCash","Dictionary")
+F.Data.Dictionary.Close("dicCash")
+
+'Set the dropdown list
+Gui.F_MiscCash.dlst_Mode.AddItem("Receive",0)
+Gui.F_MiscCash.dlst_Mode.AddItem("Pay",1)
+Gui.F_MiscCash.dlst_Mode.Text("Pay")
+
+'Set the date
+Gui.F_MiscCash.dtp_TransDate.Value(V.Ambient.Date)
+Gui.F_MiscCash.dtp_PostDate.Value(V.Ambient.Date)
+Gui.F_MiscCash.dtpExchDate.Enabled(False)
+Gui.F_MiscCash.dtpExchDate.Value(V.Ambient.Date)
+F.Intrinsic.String.Format(V.Ambient.Date,"DD/MM/YYYY",V.Local.sExchDate)
+Gui.F_MiscCash.txt_ExchDate.Text(V.Local.sExchDate)
+
+Gui.F_MiscCash.txt_ExchRate.Enabled(False)
+Gui.F_MiscCash.txt_BaseAmt.Enabled(False)
+
+F.Intrinsic.Control.CallSub(Gsflexgrid1_style)
+
+'Retrieve VAT in and out GL accounts setup
+'F.ODBC.Connection!conx.ExecuteAndReturn("select text1 from op_header where id = '400079' and sequence = '0000'",V.Global.sVATIn)
+'F.Intrinsic.Control.If(V.Global.sVATIn.Trim,=,"")
+'	F.Intrinsic.UI.Msgbox("Please setup VAT Input Liability GL account in VAT Option Information","Miscellaneous Payment & Receipt")
+'	F.Intrinsic.Control.CallSub(f_misccash_unload)
+'F.Intrinsic.Control.EndIf
+'F.ODBC.Connection!conx.ExecuteAndReturn("select text1 from op_header where id = '400080' and sequence = '0000'",V.Global.sVATOut)
+'F.Intrinsic.Control.If(V.Global.sVATOut.Trim,=,"")
+'	F.Intrinsic.UI.Msgbox("Please setup VAT Output Liability GL account in VAT Option Information","Miscellaneous Payment & Receipt")
+'	F.Intrinsic.Control.CallSub(f_misccash_unload)
+'F.Intrinsic.Control.EndIf
+
+Gui.F_MiscCash.GsGCDetail.Anchor(15)
+
+Gui.F_MiscCash..Show
+
+Program.Sub.Main.End
+
+Program.Sub.f_misccash_unload.Start
+F.Data.DataTable.Close("dtCash")
+F.Data.DataTable.Close("dtGLDesc")
+F.Data.DataTable.Close("dtGL")
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.f_misccash_unload.End
+
+Program.Sub.gsflexgrid1_style.Start
+V.Local.i1.Declare
+V.Local.sCaption.Declare
+V.Local.sValues.Declare
+V.Local.sBankAccount.Declare
+v.Local.ByteArray.Declare
+
+F.Intrinsic.Control.If(V.Global.sGSSVersion,<,2019)
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+	F.Data.DataTable.AddColumn("dtCash","Description","String")
+	F.Data.Dictionary.CreateFromSQL("dicDesc","conx","select gl_account as Account, descr as Description from v_gl_master")
+	F.Data.Dictionary.SetDefaultReturn("dicDesc","")
+	F.Data.DataTable.FillFromDictionary("dtCash","dicDesc","Account","Description")
+	F.Data.Dictionary.Close("dicDesc")
+F.Intrinsic.Control.Else
+'	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account_enc as BankAccountEnc from v_cash_account",True)
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account",True)
+	F.Data.DataTable.AddColumn("dtCash","Description","String")
+'	F.Data.DataTable.AddColumn("dtCash","BankAccount","String")	
+	F.Data.Dictionary.CreateFromSQL("dicDesc","conx","select gl_account as Account, descr as Description from v_gl_master")
+	F.Data.Dictionary.SetDefaultReturn("dicDesc","")
+	F.Data.DataTable.FillFromDictionary("dtCash","dicDesc","Account","Description")
+	F.Data.Dictionary.Close("dicDesc")
+	
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCash.RowCount--,1)
+'		F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.i1).BankAccountEnc!FieldVal,V.Local.sBankAccount)
+'		F.Data.DataTable.SetValue("dtCash",V.Local.i1,"BankAccount",V.Local.sBankAccount.Trim)
+'	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.Endif
+
+
+'F.Data.DataTable.CreateFromSQL("dtGLCurr","conx","select gl_account as Account, EXCHANGE_CURR as Currency from GAB_5060_GL_CURR",True)
+F.Data.DataTable.CreateFromSQL("dtGLDesc","conx","select gl_account as Account, descr as Description from v_gl_master",True)
+
+'Setup grid and datatables
+F.Data.DataTable.Create("dtGL",True)
+F.Data.DataTable.AddColumn("dtGL","Line","Long")
+F.Data.DataTable.AddColumn("dtGL","Account","String")
+F.Data.DataTable.AddColumn("dtGL","AccountDesc","String")
+F.Data.DataTable.AddColumn("dtGL","Description","String")
+F.Data.DataTable.AddColumn("dtGL","Reference","String")
+F.Data.DataTable.AddColumn("dtGL","Amount1","Float")
+F.Data.DataTable.AddColumn("dtGL","Amount2","Float")
+F.Data.DataTable.AddColumn("dtGL","Amount3","Float")
+F.Data.DataTable.AddColumn("dtGL","ZONE","String","")
+F.Data.DataTable.AddColumn("dtGL","GST","String","")
+F.Data.DataTable.AddColumn("dtGL","GSTAmt","Float",0)
+F.Data.DataTable.AddColumn("dtGL","GSTAmt2","Float",0)
+F.Data.DataTable.AddColumn("dtGL","Delete","Long")
+F.Data.DataTable.AddColumn("dtGL","LineRef","Long")
+
+Gui.F_MiscCash.GsGCDetail.AddGridviewFromDatatable("gvGL","dtGL")
+Gui.F_MiscCash.GsGCDetail.MainView("gvGL")
+
+Gui.F_MiscCash.GsGCDetail.SetGridviewProperty("gvGL","Enableappearanceevenrow",True)
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","LineRef","Visible",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount3","Visible",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt2","Visible",False)
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Line","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Account","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","AccountDesc","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Description","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Reference","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount2","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","ZONE","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GST","HeaderHAlignment","Center")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","HeaderHAlignment","Center")
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Line","CellHAlignment","Center")
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Account","Caption","GL Account")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","AccountDesc","Caption","GL Account Description")
+F.Intrinsic.String.Build("Amount in {0}",V.Global.sCoCurr,V.Local.sCaption)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","Caption",V.Local.sCaption)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount2","Caption",V.Local.sCaption)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","Caption","GST Amt")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","ZONE","Caption","Zone")
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Description","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Reference","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","ZONE","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GST","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","AllowEdit",True)
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Description","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Reference","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","ZONE","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GST","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","ReadOnly",False)
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount2","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount3","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt2","DisplayCustomNumeric","##,###,##0.00")
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Line","MinWidth","40")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Account","MinWidth","90")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","AccountDesc","MinWidth","150")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Description","MinWidth","220")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Reference","MinWidth","100")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","MinWidth","120")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount2","MinWidth","120")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","ZONE","MinWidth","80")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GST","MinWidth","80")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","GSTAmt","MinWidth","100")
+
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Account","AllowEdit",True)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Account","ReadOnly",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Delete","ShowCaption",False)
+Gui.F_MiscCash.GsGCDetail.ColumnEdit("gvGL","Delete","EditorButton","Delete")
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Delete","AllowEdit",False)
+Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Delete","MinWidth","80")
+
+V.Local.sValues.Set(" ")
+'F.Data.DataTable.CreateFromSQL("dtTax","conx","Select auth from v_ar_tax_tables where zone = 'NZ'")
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTax.RowCount--,1)
+'	F.Intrinsic.String.Build("{0}*!*{1}",V.Local.sValues,V.DataTable.dtTax(V.Local.i1).auth!FieldValTrim,V.Local.sValues)
+'F.Intrinsic.Control.Next(V.Local.i1)
+'F.Data.DataTable.Close("dtTax")
+
+'Gui.F_MiscCash.GsGCDetail.ColumnEdit("gvGL","GST","Dropdownlist",V.Local.sValues)
+F.Data.DataTable.CreateFromSQL("dtTax","conx","Select zone from v_ar_tax_tables group by zone")
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTax.RowCount--,1)
+	F.Intrinsic.String.Build("{0}*!*{1}",V.Local.sValues,V.DataTable.dtTax(V.Local.i1).zone!FieldValTrim,V.Local.sValues)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtTax")
+
+Gui.F_MiscCash.GsGCDetail.ColumnEdit("gvGL","ZONE","Dropdownlist",V.Local.sValues)
+
+Gui.F_MiscCash.GsGCDetail.AddSummaryItem("gvGL","Amount1","Amount1SUM","SUM","","","##,###,##0.00")
+Gui.F_MiscCash.GsGCDetail.AddSummaryItem("gvGL","Amount2","Amount2SUM","SUM","","","##,###,##0.00")
+Program.Sub.gsflexgrid1_style.End
+
+Program.Sub.dlst_mode_click.Start
+V.Local.iMode.Declare(Long)
+V.Local.sLabel.Declare(String)
+
+V.Local.iMode.Set(V.Screen.F_MiscCash!dlst_Mode.ListIndex)
+
+F.Intrinsic.Control.If(V.Local.iMode,=,0)
+	Gui.F_MiscCash.lbl_Amount.Caption("Receipt Amount")
+	F.Intrinsic.String.Concat("Receipt Amount in ",V.Global.sCoCurr,V.Local.sLabel)
+	Gui.F_MiscCash.lbl_BaseAmount.Caption(V.Local.sLabel)
+F.Intrinsic.Control.Else
+	Gui.F_MiscCash.lbl_Amount.Caption("Payment Amount")
+	F.Intrinsic.String.Concat("Payment Amount in ",V.Global.sCoCurr,V.Local.sLabel)
+	Gui.F_MiscCash.lbl_BaseAmount.Caption(V.Local.sLabel)
+F.Intrinsic.Control.EndIf
+
+Program.Sub.dlst_mode_click.End
+
+Program.Sub.txt_amt_lostfocus.Start
+V.Local.fAmt.Declare(Float)
+V.Local.fBaseAmt.Declare(Float)
+V.Local.fDiff.Declare(Float)
+V.Local.fDiffBase.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+V.Local.fGridAmt.Declare
+V.Local.fGridAmtBase.Declare
+V.Local.fBaseAmt2.Declare
+
+V.Local.iLastRow.Declare(Long)
+
+V.Local.sAmt.Declare(String)
+V.Local.sBaseAmt.Declare(String)
+V.Local.sCurr.Declare(String)
+V.Local.sGLAcct.Declare(String)
+V.Local.sGLAmt.Declare(String)
+V.Local.fGridGSTAmt.Declare
+
+Gui.F_MiscCash..Enabled(False)
+
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+F.Intrinsic.String.Format(V.Local.fAmt,"#,0.00",V.Local.sAmt)
+
+Gui.F_MiscCash.txt_Amt.Text(V.Local.sAmt)
+
+F.Intrinsic.Math.Mult(V.Local.fAmt,V.Global.fExchRate,V.Local.fBaseAmt)
+F.Intrinsic.Math.Round(V.Local.fBaseAmt,2,V.Local.fBaseAmt)
+F.Intrinsic.Math.Mult(V.Local.fAmt,V.Global.fExchRate2,V.Local.fBaseAmt2)
+F.Intrinsic.Math.Round(V.Local.fBaseAmt2,2,V.Local.fBaseAmt2)
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Intrinsic.String.Format(V.Local.fBaseAmt,"#,0.00",V.Local.sBaseAmt)
+Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sBaseAmt)
+
+V.Local.sGLAcct.Set(V.Screen.F_MiscCash!txt_GLAcct.Text)
+
+'If GL account has been selected, show flexgrid
+F.Intrinsic.Control.If(V.Local.sGLAcct.Trim,<>,"")
+F.Intrinsic.Control.AndIf(V.Local.fAmt,<>,0)
+
+	V.Local.sCurr.Set(V.Screen.F_MiscCash!txt_Curr.Text)
+
+	'If cash accout currency is the same as base currency
+	F.Intrinsic.Control.If(V.Local.sCurr.Trim,=,V.Global.sCoCurr.Trim)
+		F.Intrinsic.Control.If(V.DataTable.dtGL.RowCount,=,0)
+			F.Data.DataTable.AddRow("dtGL","Line",1,"Amount1",V.Local.fAmt,"Amount2",V.Local.fAmt,"Amount3",V.Local.fAmt)
+		F.Intrinsic.Control.EndIf
+
+		'Get the difference between entered amount and the flexgrid amounts
+		F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+		F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+		F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+		F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Local.fDiffBase)
+		F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,=,"")
+			F.Intrinsic.Math.Add(V.Local.fDiffBase,V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Amount1!FieldVal,V.Local.fDiffBase)
+		F.Intrinsic.Control.EndIf
+
+		F.Intrinsic.Control.If(V.Local.fDiffBase,>,0)
+			F.Intrinsic.Control.If(V.DataTable.dtGL.RowCount--,<>,0)
+				F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,<>,"")
+					F.Intrinsic.Math.Add(V.DataTable.dtGL.RowCount,1,V.Local.iLastRow)
+					F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLastRow,"Amount1",V.Local.fDiffBase,"Amount2",V.Local.fDiffBase)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.ElseIf(V.Local.fDiffBase,<,0)
+			F.Intrinsic.String.Format(V.Local.fGridAmt,"#,0.00",V.Local.sBaseAmt)
+			Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sBaseAmt)
+			Gui.F_MiscCash.txt_Amt.Text(V.Local.sBaseAmt)
+		F.Intrinsic.Control.EndIf
+
+		V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+		F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+		F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+		F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)		
+		F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Global.fGLAmt)
+		F.Intrinsic.String.Format(V.Global.fGLAmt,"#,0.00",V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmt.Text(V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+	'If cash account currency is different from base currency
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.DataTable.dtGL.RowCount,=,0)
+			F.Data.DataTable.AddRow("dtGL","Line",1,"Amount1",V.Local.fAmt,"Amount2",V.Local.fBaseAmt,"Amount3",V.Local.fBaseAmt2)
+		F.Intrinsic.Control.EndIf
+
+		'Get the difference between entered amount and the flexgrid amounts
+		F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+		F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Local.fDiff)
+		F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,=,"")
+			F.Intrinsic.Math.Add(V.Local.fDiff,V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Amount1!FieldVal,V.Local.fDiff)
+		F.Intrinsic.Control.EndIf
+
+		F.Intrinsic.Control.If(V.Local.fDiff,>,0)
+			F.Intrinsic.Control.If(V.DataTable.dtGL.RowCount--,<>,0)
+				F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,<>,"")
+					F.Intrinsic.Math.Mult(V.Local.fDiff,V.Global.fExchRate,V.Local.fDiffBase)
+					F.Intrinsic.Math.Round(V.Local.fDiffBase,2,V.Local.fDiffBase)
+					F.Intrinsic.Math.Add(V.DataTable.dtGL.RowCount,1,V.Local.iLastRow)
+					F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLastRow,"Amount1",V.Local.fDiff,"Amount2",V.Local.fDiffBase)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.ElseIf(V.Local.fDiff,<,0)
+			F.Intrinsic.String.Format(V.Local.fGridAmt,"#,0.00",V.Local.sAmt)
+			Gui.F_MiscCash.txt_Amt.Text(V.Local.sAmt)
+			F.Intrinsic.Math.Mult(V.Local.fGridAmt,V.Global.fExchRate,V.Local.fGridAmtBase)
+			F.Intrinsic.Math.Round(V.Local.fGridAmtBase,2,V.Local.fGridAmtBase)
+			F.Intrinsic.String.Format(V.Local.fGridAmtBase,"#,0.00",V.Local.sBaseAmt)
+			Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sBaseAmt)
+		F.Intrinsic.Control.EndIf
+
+		V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+		F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+		F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Global.fGLAmt)
+		F.Intrinsic.String.Format(V.Global.fGLAmt,"#,0.00",V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmt.Text(V.Local.sGLAmt)
+		V.Local.fBaseAmt.Set(V.Screen.F_MiscCash!txt_BaseAmt.Text)
+		F.Data.DataTable.Compute("dtGL","SUM(Amount2)","",V.Local.fGridAmtBase)
+		F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+		F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+		F.Intrinsic.Math.Sub(V.Local.fBaseAmt,V.Local.fGridAmtBase,V.Global.fGLAmtBase)
+		F.Intrinsic.String.Format(V.Global.fGLAmtBase,"#,0.00",V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Gui.F_MiscCash.GsGCDetail.Enabled(True)
+Gui.F_MiscCash..Enabled(True)
+
+Program.Sub.txt_amt_lostfocus.End
+
+Program.Sub.cmdrefresh_click.Start
+V.Local.iLastRow.Declare(Long)
+
+V.Local.fAmt.Declare(Float)
+V.Local.fDiff.Declare(Float)
+
+V.Local.sCurr.Declare(String)
+V.Local.sGLAcct.Declare(String)
+V.Local.sGLAmt.Declare(String)
+
+V.Local.sGLAcct.Set(V.Screen.F_MiscCash!txt_GLAcct.Text)
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+
+F.Intrinsic.Control.If(V.Local.sGLAcct.Trim,<>,"")
+F.Intrinsic.Control.AndIf(V.Local.fAmt,<>,0)
+	V.Local.sCurr.Set(V.Screen.F_MiscCash!txt_Curr.Text)
+	Gui.F_MiscCash.gsflexgrid1.LoadFromUDT("V.uGlobal.uJournal","GL::0*!*GL_DESC::1*!*AMOUNT::3*!*AMOUNT_BASE::4*!*DESC::5",2)
+
+'	F.Intrinsic.Control.CallSub(Sumflexgridamt)
+
+	F.Intrinsic.String.Format(V.Args.fGLAmtBase,"#,0.00",V.Local.sGLAmt)
+	Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+	V.Global.fGLAmtBase.Set(V.Args.fGLAmtBase)
+
+	F.Intrinsic.Control.If(V.Local.sCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		F.Intrinsic.String.Format(V.Args.fGLAmt,"#,0.00",V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmt.Text(V.Local.sGLAmt)
+		V.Global.fGLAmt.Set(V.Args.fGLAmt)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Program.Sub.cmdrefresh_click.End
+
+Program.Sub.cmdprocess_click.Start
+V.Local.dExchDate.Declare(Date)
+V.Local.dToday.Declare(Date)
+
+V.Local.fAmt.Declare(Float)
+V.Local.fAmtBase.Declare(Float)
+V.Local.fExchGainLoss.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+V.Local.fGLAmt.Declare(Float)
+V.Local.fGLAmtBase.Declare(Float)
+V.Local.fGSTAmt.Declare
+V.Local.fGSTBase.Declare
+V.Local.fJournalAmt.Declare(Float)
+V.Local.sSQL.Declare
+
+V.Local.i1.Declare(Long)
+V.Local.iCheck.Declare
+V.Local.iLen.Declare
+V.Local.iLine.Declare
+V.Local.iMode.Declare(Long)
+V.Local.iRet.Declare(Long)
+
+V.Local.sBatch.Declare(String)
+V.Local.sBatchLine.Declare
+V.Local.sDate.Declare(String)
+V.Local.sDesc.Declare(String)
+V.Local.sDesc1.Declare
+V.Local.sDesc2.Declare
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sField.Declare(String)
+V.Local.sFile.Declare(String)
+V.Local.sFileName.Declare(String)
+V.Local.sFileRow.Declare(String)
+V.Local.sFilter.Declare
+V.Local.sFilterResult.Declare
+V.Local.sGLAcct.Declare(String)
+V.Local.sGLAmt.Declare(String)
+V.Local.sGLGainLoss.Declare(String)
+V.Local.sJournalDesc.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sMonth.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sPostDate.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sTemp.Declare
+V.Local.sTransDate.Declare(String)
+V.Local.sRefNum.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.sYear.Declare(String)
+V.Local.iRow.Declare(Long)
+V.Local.iRowCount.Declare(Long)
+V.Local.fJournalAmt2.Declare
+
+V.Local.fExchGainLoss.Set(0)
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+V.Local.fAmtBase.Set(V.Screen.F_MiscCash!txt_BaseAmt.Text)
+V.Local.fGLAmtBase.Set(V.Screen.F_MiscCash!txt_GLAmtBase.Text)
+V.Local.sGLAcct.Set(V.Screen.F_MiscCash!txt_GLAcct.Text)
+V.Local.iMode.Set(V.Screen.F_MiscCash!dlst_Mode.ListIndex)
+
+'Check if entered amount is not zero and GL cash account has been selected
+F.Intrinsic.Control.If(V.Local.fAmt,<>,0)
+F.Intrinsic.Control.AndIf(V.Local.sGLAcct.Trim,<>,"")
+	Gui.F_MiscCash.GsGCDetail.Enabled(False)
+	'Verify that there is no empty GL account
+	F.Data.DataTable.Select("dtGL","Account = ''",V.Local.sFilterResult)
+	F.Intrinsic.Control.If(V.Local.sFilterResult,<>,"***NORETURN***")
+		F.Intrinsic.UI.Msgbox("Payment/Receipt cannot be processed. There are lines without GL account.")
+		Gui.F_MiscCash.GsGCDetail.Enabled(True)
+	F.Intrinsic.Control.Else
+		'Verify that balance is zero
+		V.Local.fGLAmt.Set(V.Screen.F_MiscCash!txt_GLAmt.Text)
+		F.Intrinsic.Control.If(V.Local.fGLAmt,<>,0)
+			F.Intrinsic.UI.Msgbox("Payment/Receipt cannot be processed. Balance is not zero.")
+			Gui.F_MiscCash.GsGCDetail.Enabled(True)
+		F.Intrinsic.Control.Else
+			'Proceed with creating the journal
+			F.Intrinsic.UI.InvokeWaitDialog("Processing Journal Entry")
+			F.Data.DataTable.Create("dtNotes",True)
+			F.Data.DataTable.AddColumn("dtNotes","Row","Long")
+			F.Data.DataTable.AddColumn("dtNotes","Text","String")
+			V.Local.sJournalDesc.Set(V.Screen.F_MiscCash!txt_JournalDesc.Text)
+			V.Local.sRefNum.Set(V.Screen.F_MiscCash!txt_RefNum.Text)
+
+			'Check if journal description is blank
+			F.Intrinsic.Control.If(V.Local.sJournalDesc.Trim,=,"")
+				F.Intrinsic.Control.If(V.Local.iMode,=,0)
+					F.Intrinsic.String.Concat("RECEIPT - ",V.Global.sCashCurr.Trim," ",V.Screen.F_MiscCash!txt_Amt.Text,V.Local.sJournalDesc)
+				F.Intrinsic.Control.ElseIf(V.Local.iMode,=,1)
+					F.Intrinsic.String.Concat("PAYMENT - ",V.Global.sCashCurr.Trim," ",V.Screen.F_MiscCash!txt_Amt.Text,V.Local.sJournalDesc)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+
+			'Check if reference number is blank
+			F.Intrinsic.Control.If(V.Local.sRefNum.Trim,=,"")
+				F.Intrinsic.Control.If(V.Local.iMode,=,0)
+					V.Local.sRefNum.Set("MISC. RECEIPT")
+				F.Intrinsic.Control.ElseIf(V.Local.iMode,=,1)
+					V.Local.sRefNum.Set("MISC. PAYMENT")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+
+			V.Local.sUser.Set(V.Caller.User)
+			F.Intrinsic.String.Format(V.Ambient.Date,"MM",V.Local.sMonth)
+			F.Intrinsic.String.Format(V.Ambient.Date,"YY",V.Local.sYear)
+
+			'Prepare cash account row entry
+			F.Intrinsic.String.RPad(V.Local.sGLAcct.Trim," ",15,V.Local.sFileRow)
+			F.Intrinsic.Control.If(V.Local.iMode,=,1)
+				F.Intrinsic.Math.Mult(-1,V.Local.fAmtBase,V.Local.fAmtBase)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.LPad(V.Local.fAmtBase," ",12,V.Local.sField)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+			F.Intrinsic.String.RPad(V.Local.sJournalDesc," ",30,V.Local.sField)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+
+			F.Intrinsic.Control.If(V.Local.iMode,=,0)
+				F.Intrinsic.String.Concat(V.Local.sFileRow,",RECEIPT",V.Local.sFileRow)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Concat(V.Local.sFileRow,",PAYMENT",V.Local.sFileRow)
+			F.Intrinsic.Control.EndIf
+
+			F.Intrinsic.String.RPad(V.Local.sRefNum," ",15,V.Local.sField)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+			V.Local.sFile.Set(V.Local.sFileRow)
+
+			'Prepare the journal entries rows
+			F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtGL.RowCount--,1)
+				F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).Account!FieldValTrim,<>,"")
+					F.Intrinsic.String.RPad(V.DataTable.dtGL(V.Local.i1).Account!FieldVal," ",15,V.Local.sFileRow)
+
+					'If receipt, multiply the entry by -1. If payment, accept as it is.
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.Math.Mult(-1,V.DataTable.dtGL(V.Local.i1).Amount2!FieldVal,V.Local.fJournalAmt)
+					F.Intrinsic.Control.Else
+						V.Local.fJournalAmt.Set(V.DataTable.dtGL(V.Local.i1).Amount2!FieldVal)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.LPad(V.Local.fJournalAmt," ",12,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					'Check if specific journal description was entered. It will overwrite the main journal description for this specific line
+					F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).Description!FieldValTrim,=,"")
+						V.Local.sDesc.Set(V.Local.sJournalDesc)
+					F.Intrinsic.Control.Else
+						V.Local.sDesc.Set(V.DataTable.dtGL(V.Local.i1).Description!FieldValTrim)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Len(V.Local.sDesc,V.Local.iLen)
+					'If length is greater than 30, look for the last space within 30 chars and separate the first 30 chars
+					F.Intrinsic.Control.If(V.Local.iLen,>,30)
+						F.Intrinsic.String.Mid(V.Local.sDesc,29,1,V.Local.sTemp)
+						V.Local.iCheck.Set(29)
+						F.Intrinsic.Control.If(V.Local.sTemp,<>," ")
+							F.Intrinsic.Control.DoUntil(V.Local.sTemp,=," ")
+								F.Intrinsic.Control.If(V.Local.iCheck,=,1)
+									V.Local.iCheck.Set(30)
+									F.Intrinsic.Control.ExitDo
+								F.Intrinsic.Control.EndIf
+								F.Intrinsic.Math.Sub(V.Local.iCheck,1,V.Local.iCheck)
+								F.Intrinsic.String.Mid(V.Local.sDesc,V.Local.iCheck,1,V.Local.sTemp)
+							F.Intrinsic.Control.Loop
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.String.Left(V.Local.sDesc,V.Local.iCheck,V.Local.sDesc1)
+						F.Intrinsic.Math.Add(V.Local.iCheck,1,V.Local.iCheck)
+						F.Intrinsic.String.Mid(V.Local.sDesc,V.Local.iCheck,V.Local.sDesc2)
+						F.Data.DataTable.AddRow("dtNotes","Row",V.DataTable.dtGL(V.Local.i1).Line!FieldValLong,"Text",V.Local.sDesc2)
+						F.Intrinsic.String.RPad(V.Local.sDesc1," ",30,V.Local.sTemp)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sTemp)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,V.Local.sFileRow)
+
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+
+					F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).Reference!FieldValTrim,=,"")
+						F.Intrinsic.Control.If(V.Local.iMode,=,0)
+							V.Local.sField.Set("RECEIPT")
+						F.Intrinsic.Control.Else
+							V.Local.sField.Set("PAYMENT")
+							F.Intrinsic.String.Concat(V.Local.sFileRow,",PAYMENT",V.Local.sFileRow)
+						F.Intrinsic.Control.EndIf
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.RPad(V.DataTable.dtGL(V.Local.i1).Reference!FieldVal," ",7,V.Local.sField)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					F.Intrinsic.String.RPad(V.Local.sRefNum," ",15,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i1)
+
+			'Prepare the journal entries rows
+			F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtGL.RowCount--,1)
+				F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).GST!FieldValTrim,<>,"")
+					F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).GSTAmt!FieldValTrim,<>,"0")
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.String.Build("select Tax_Liab_Acct as Account from v_ar_tax_tables where zone = '{1}' and auth = '{0}'",V.DataTable.dtGL(V.Local.i1).GST!FieldValTrim,V.DataTable.dtGL(V.Local.i1).ZONE!FieldValTrim,V.Local.sSQL)
+						F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("select If(Vat_Input_Acct<>'',Vat_Input_Acct,Vat_Accr_Acct) as Account from v_ar_tax_tables where zone = '{1}' and auth = '{0}'",V.DataTable.dtGL(V.Local.i1).GST!FieldValTrim,V.DataTable.dtGL(V.Local.i1).ZONE!FieldValTrim,V.Local.sSQL)
+						F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+					F.Intrinsic.Control.EndIf
+
+'					F.Intrinsic.String.RPad(V.DataTable.dtGL(V.Local.i1).Account!FieldVal," ",15,V.Local.sFileRow)
+					F.Intrinsic.String.RPad(V.ODBC.conx!rst.FieldValTrim!Account," ",15,V.Local.sFileRow)
+
+					F.ODBC.conx!rst.Close
+
+					'If receipt, multiply the entry by -1. If payment, accept as it is.
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.Math.Mult(-1,V.DataTable.dtGL(V.Local.i1).GSTAmt!FieldVal,V.Local.fJournalAmt)
+						F.Intrinsic.Math.Mult(-1,V.DataTable.dtGL(V.Local.i1).GSTAmt2!FieldVal,V.Local.fJournalAmt2)
+					F.Intrinsic.Control.Else
+						V.Local.fJournalAmt.Set(V.DataTable.dtGL(V.Local.i1).GSTAmt!FieldVal)
+						V.Local.fJournalAmt2.Set(V.DataTable.dtGL(V.Local.i1).GSTAmt2!FieldVal)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.LPad(V.Local.fJournalAmt," ",12,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					'Check if specific journal description was entered. It will overwrite the main journal description for this specific line
+					F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).Description!FieldValTrim,=,"")
+						V.Local.sDesc.Set(V.Local.sJournalDesc)
+					F.Intrinsic.Control.Else
+						V.Local.sDesc.Set(V.DataTable.dtGL(V.Local.i1).Description!FieldValTrim)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Len(V.Local.sDesc,V.Local.iLen)
+					'If length is greater than 30, look for the last space within 30 chars and separate the first 30 chars
+					F.Intrinsic.Control.If(V.Local.iLen,>,30)
+						F.Intrinsic.String.Mid(V.Local.sDesc,29,1,V.Local.sTemp)
+						V.Local.iCheck.Set(29)
+						F.Intrinsic.Control.If(V.Local.sTemp,<>," ")
+							F.Intrinsic.Control.DoUntil(V.Local.sTemp,=," ")
+								F.Intrinsic.Control.If(V.Local.iCheck,=,1)
+									V.Local.iCheck.Set(30)
+									F.Intrinsic.Control.ExitDo
+								F.Intrinsic.Control.EndIf
+								F.Intrinsic.Math.Sub(V.Local.iCheck,1,V.Local.iCheck)
+								F.Intrinsic.String.Mid(V.Local.sDesc,V.Local.iCheck,1,V.Local.sTemp)
+							F.Intrinsic.Control.Loop
+						F.Intrinsic.Control.EndIf
+						F.Intrinsic.String.Left(V.Local.sDesc,V.Local.iCheck,V.Local.sDesc1)
+						F.Intrinsic.Math.Add(V.Local.iCheck,1,V.Local.iCheck)
+						F.Intrinsic.String.Mid(V.Local.sDesc,V.Local.iCheck,V.Local.sDesc2)
+						F.Data.DataTable.AddRow("dtNotes","Row",V.DataTable.dtGL(V.Local.i1).Line!FieldValLong,"Text",V.Local.sDesc2)
+						F.Intrinsic.String.RPad(V.Local.sDesc1," ",30,V.Local.sTemp)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sTemp)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,V.Local.sFileRow)
+
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+
+					F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.i1).Reference!FieldValTrim,=,"")
+						F.Intrinsic.Control.If(V.Local.iMode,=,0)
+							V.Local.sField.Set("RECEIPT")
+						F.Intrinsic.Control.Else
+							V.Local.sField.Set("PAYMENT")
+							F.Intrinsic.String.Concat(V.Local.sFileRow,",PAYMENT",V.Local.sFileRow)
+						F.Intrinsic.Control.EndIf
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.RPad(V.DataTable.dtGL(V.Local.i1).Reference!FieldVal," ",7,V.Local.sField)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					F.Intrinsic.String.RPad(V.Local.sRefNum," ",15,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+				F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i1)
+
+			'If cash currency is not base currency, check if there is a balance in base currency
+			F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,<>,V.Global.sCoCurr.Trim)
+				F.Intrinsic.Control.If(V.Local.fGLAmtBase,<>,0)
+					F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select GL_ACCOUNT from AR_EXCL_ACCOUNT where sys = 'AR' and sub_sys = 'XVR'")
+					V.Local.sGLGainLoss.Set(V.ODBC.conx!rst.FieldValTrim!GL_ACCOUNT)
+					F.ODBC.conx!rst.Close
+					F.Intrinsic.String.RPad(V.Local.sGLGainLoss," ",15,V.Local.sFileRow)
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.Math.Mult(-1,V.Local.fGLAmtBase,V.Local.fJournalAmt)
+					F.Intrinsic.Control.Else
+						V.Local.fJournalAmt.Set(V.Local.fGLAmtBase)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.LPad(V.Local.fJournalAmt," ",12,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+					F.Intrinsic.String.RPad(V.Local.sJournalDesc," ",30,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.String.Concat(V.Local.sFileRow,",RECEIPT",V.Local.sFileRow)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Concat(V.Local.sFileRow,",PAYMENT",V.Local.sFileRow)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.RPad(V.Local.sRefNum," ",15,V.Local.sField)
+					F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+
+					F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+
+			'Save the file to GLtttccc located in FILES folder
+			F.Intrinsic.String.Concat(V.Caller.FilesDir,"\GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sFileName)
+			F.Intrinsic.File.String2File(V.Local.sFileName,V.Local.sFile)
+
+			'Preparing the program parameter and run XGL004
+			F.Intrinsic.String.RPad(V.Caller.User," ",8,V.Local.sUser)
+			F.Intrinsic.String.Concat("GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sParam)
+			F.Intrinsic.String.RPad(V.Local.sParam," ",12,V.Local.sParam)
+			F.Intrinsic.String.Concat(V.Ambient.QuadQuote,V.Caller.CompanyCode,V.Local.sParam,V.Local.sUser.UCase,V.Ambient.QuadQuote,V.Local.sParam)
+			F.Intrinsic.Task.LaunchGSSSync("XGL004","-C",V.Local.sParam)
+
+			'Get the latest batch number processed
+			V.Local.dToday.Set(V.Ambient.Date)
+			F.Intrinsic.String.Build("select batch from v_gl_jrnl_entry where userid = '{0}' and last_chg_pgm = 'XGL004' and last_chg_date = '{1}' order by last_chg_time desc",V.Local.sUser.Trim,V.Local.dToday.PervasiveDate,V.Local.sQuery)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+			V.Local.sBatch.Set(V.ODBC.conx!rst.FieldVal!batch)
+			F.ODBC.conx!rst.Close
+
+			'Update post date
+			F.Intrinsic.String.Format(V.Screen.F_MiscCash!dtp_PostDate.Value,"YYYYMMDD",V.Local.sTemp)
+			F.Intrinsic.String.Build("update gl_jrnl_entry set p_date = '{0}' where batch = '{1}' and userid = '{2}'",V.Local.sTemp,V.Local.sBatch,V.Local.sUser,V.Local.sQuery)
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+
+			'if there are longer GL description
+			F.Intrinsic.Control.If(V.DataTable.dtNotes.RowCount,>,0)
+				F.Intrinsic.String.Format(V.Local.dToday,"YYYYMMDD",V.Local.sTemp)
+				F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtNotes.RowCount--,1)
+					F.Intrinsic.String.LPad(V.DataTable.dtNotes(V.Local.i1).Row!FieldValLong,"0",5,V.Local.sBatchLine)
+					F.Intrinsic.String.Build("insert into gl_batch_comments(branch,post_date,batch,line,text) values('','{0}','{1}','{2}','{3}');",V.Local.sTemp,V.Local.sBatch,V.Local.sBatchLine,V.DataTable.dtNotes(V.Local.i1).Text!FieldVal,V.Local.sQuery)
+					F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+				F.Intrinsic.Control.Next(V.Local.i1)
+			F.Intrinsic.Control.EndIf
+
+			'Store exchange rate and amount info if selected currency is different from company currency
+			F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,<>,V.Global.sCoCurr.Trim)
+				F.Intrinsic.String.Format(V.Screen.F_MiscCash!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sTemp)
+				V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+				V.Local.dExchDate.Set(V.Screen.F_MiscCash!dtpExchDate.Value)
+
+				F.Intrinsic.Control.If(V.Local.iMode,=,1)
+					F.Intrinsic.Math.Mult(-1,V.Local.fAmt,V.Local.fAmt)
+				F.Intrinsic.Control.EndIf
+
+				F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,1,V.Local.sTemp.Trim,V.Local.fAmt,V.Global.sCashCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+				F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+
+				F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtGL.RowCount--,1)
+					F.Intrinsic.Math.Add(V.DataTable.dtGL(V.Local.i1).Line!FieldValLong,1,V.Local.iLine)
+					F.Intrinsic.Control.If(V.Local.iMode,=,0)
+						F.Intrinsic.Math.Mult(-1,V.DataTable.dtGL(V.Local.i1).Amount1!FieldVal,V.Local.fAmt)
+					F.Intrinsic.Control.Else
+						V.Local.fAmt.Set(V.DataTable.dtGL(V.Local.i1).Amount1!FieldVal)
+					F.Intrinsic.Control.EndIf
+					F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}','{1}','{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,V.Local.iLine,V.Local.sTemp.Trim,V.Local.fAmt,V.Global.sCashCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sQuery)
+					F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+				F.Intrinsic.Control.Next(V.Local.i1)
+			F.Intrinsic.Control.EndIf
+
+'			F.Data.DataTable.Close("dtJE")
+
+			F.Data.DataTable.Close("dtNotes")
+
+			'Check for GST
+			F.Data.DataTable.Select("dtGL","GST <> ''",V.Local.sRet)
+			F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+				F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+				F.Intrinsic.String.Format(V.Screen.F_MiscCash!dtp_PostDate.Value,"YYYY-MM-DD",V.Local.sTemp)
+				V.Local.iRow.Set(0)
+				F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sRet.UBound,1)
+				F.Intrinsic.Control.If(V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GST!FieldValTrim,=,"SR")
+'				F.Intrinsic.UI.Msgbox(V.Local.i1,"Miscellaneous Payment & Receipt")
+				F.Intrinsic.Math.Add(V.Local.iRow,1,V.Local.iRow)
+'				F.Intrinsic.Math.Add(V.DataTable.dtGL.RowCount--,2,V.Local.iRowCount)
+				F.Intrinsic.Math.Add(V.Local.sRet.UBound,2,V.Local.iRowCount)
+				F.Intrinsic.Math.Add(V.Local.iRowCount,V.Local.iRow,V.Local.iRowCount)
+					F.Intrinsic.String.Build("insert into GAB_6061_GST_DATA(batch,line,post_date_sql,tax_zone,tax_authority,reference,tax_amount,base_amount,tax_amount_2,base_amount_2) values('{0}',{1},'{2}','{9}','{3}','{4}',{5},{6},{7},{8});",V.Local.sBatch.Trim, V.Local.iRowCount, V.Local.sTemp.Trim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GST!FieldValTrim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Description!FieldValTrim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GSTAmt!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Amount2!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GSTAmt2!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Amount3!FieldVal,  V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).ZONE!FieldValTrim, V.Local.sQuery)
+					F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+'					F.ODBC.conx!rst.Close				
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Math.Add(V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Line!FieldValLong,1,V.Local.iLine)
+					F.Intrinsic.String.Build("insert into GAB_6061_GST_DATA(batch,line,post_date_sql,tax_zone,tax_authority,reference,tax_amount,base_amount,tax_amount_2,base_amount_2) values('{0}',{1},'{2}','{9}','{3}','{4}',{5},{6},{7},{8});",V.Local.sBatch.Trim, V.Local.iLine, V.Local.sTemp.Trim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GST!FieldValTrim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Description!FieldValTrim, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GSTAmt!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Amount2!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).GSTAmt2!FieldVal, V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).Amount3!FieldVal,  V.DataTable.dtGL(V.Local.sRet(V.Local.i1)).ZONE!FieldValTrim, V.Local.sQuery)
+					F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+'					F.ODBC.conx!rst.Close
+				F.Intrinsic.Control.EndIf		
+'				F.Intrinsic.Control.Next(V.Local.i2)
+				F.Intrinsic.Control.Next(V.Local.i1)
+'				F.Data.DataTable.Close("dtJE")
+			F.Intrinsic.Control.EndIf
+
+			F.Intrinsic.String.Concat("Batch No. ",V.Local.sBatch.Trim," has been created and is ready for posting",V.Local.sMessage)
+			F.Intrinsic.UI.Msgbox(V.Local.sMessage)
+
+			F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtGL.RowCount--,-1)
+				F.Data.DataTable.DeleteRow("dtGL",V.Local.i1)
+			F.Intrinsic.Control.Next(V.Local.i1)
+			F.Data.DataTable.AcceptChanges("dtGL")
+			Gui.F_MiscCash.GsGCDetail.Enabled(False)
+
+			V.Global.fGLAmt.Set(0)
+			V.Global.fGLAmtBase.Set(0)
+			Gui.F_MiscCash.txt_Amt.Text("")
+			Gui.F_MiscCash.txt_BaseAmt.Text("")
+			Gui.F_MiscCash.txt_GLAmt.Text("")
+			Gui.F_MiscCash.txt_GLAmtBase.Text("")
+			Gui.F_MiscCash.txt_JournalDesc.Text("")
+			Gui.F_MiscCash.txt_RefNum.Text("")
+			F.Intrinsic.UI.CloseWaitDialog
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Program.Sub.cmdprocess_click.End
+
+Program.Sub.txt_exchrate_lostfocus.Start
+V.Local.bCheck.Declare(Boolean)
+
+V.Local.fAmount2.Declare
+V.Local.fAmt.Declare(Float)
+V.Local.fAmtBase.Declare(Float)
+V.Local.fDiff.Declare(Float)
+V.Local.fDiffBase.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+
+V.Local.i1.Declare(Long)
+V.Local.iLastRow.Declare(Long)
+
+V.Local.sAmt.Declare(String)
+V.Local.sBaseAmt.Declare(String)
+V.Local.sCurr.Declare(String)
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sGLAcct.Declare(String)
+V.Local.sGLAmt.Declare(String)
+
+Gui.F_MiscCash..Enabled(False)
+
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+
+V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+F.Intrinsic.Math.Mult(V.Local.fAmt,V.Local.fExchRate,V.Local.fAmtBase)
+F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+F.Intrinsic.String.Format(V.Local.fAmtBase,"#,0.00",V.Local.sBaseAmt)
+F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+
+F.Intrinsic.Variable.ArgExists("ExchDate",V.Local.bCheck)
+F.Intrinsic.Control.If(V.Local.bCheck,=,False)
+	Gui.F_MiscCash.dtpExchDate.Value(V.Ambient.Date)
+F.Intrinsic.Control.Else
+	Gui.F_MiscCash.dtpExchDate.Value(V.Args.ExchDate)
+F.Intrinsic.Control.EndIf
+
+Gui.F_MiscCash.txt_ExchRate.Text(V.Local.sExchRate)
+Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sBaseAmt)
+
+V.Global.fExchRate.Set(V.Local.fExchRate)
+V.Local.sGLAcct.Set(V.Screen.F_MiscCash!txt_GLAcct.Text)
+
+'If GL account has been selected, show flexgrid
+F.Intrinsic.Control.If(V.Local.sGLAcct.Trim,<>,"")
+F.Intrinsic.Control.AndIf(V.Local.fAmt,<>,0)
+	F.Intrinsic.Control.If(V.Local.sCurr.Trim,<>,V.Global.sCoCurr.Trim)
+		'Revaluate the journal entries
+		F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtGL.RowCount--,1)
+			F.Intrinsic.Math.Mult(V.DataTable.dtGL(V.Local.i1).Amount1!FieldVal,V.Local.fExchRate,V.Local.fAmount2)
+			F.Intrinsic.Math.Round(V.Local.fAmount2,2,V.Local.fAmount2)
+			F.Data.DataTable.SetValue("dtGL",V.Local.i1,"Amount2",V.Local.fAmount2)
+		F.Intrinsic.Control.Next(V.Local.i1)
+
+		'Update the sum in base currency
+		F.Data.DataTable.Compute("dtGL","SUM(Amount2)","",V.Global.fGLAmtBase)
+		F.Intrinsic.Math.Sub(V.Local.fAmtBase,V.Global.fGLAmtBase,V.Global.fGLAmtBase)
+		F.Intrinsic.String.Format(V.Global.fGLAmtBase,"#,0.00",V.Local.sGLAmt)
+		Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+Gui.F_MiscCash..Enabled(True)
+
+Program.Sub.txt_exchrate_lostfocus.End
+
+Program.Sub.cmd_clear_click.Start
+'Reset flexgrid, uGlobal.uJournal, and global variable values related to flexgrid sum
+V.Local.i1.Declare
+F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtGL.RowCount--,-1)
+	F.Data.DataTable.DeleteRow("dtGL",V.Local.i1)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.AcceptChanges("dtGL")
+Gui.F_MiscCash.GsGCDetail.Enabled(False)
+V.Global.fGLAmt.Set(0)
+V.Global.fGLAmtBase.Set(0)
+
+'Clear all textboxes
+Gui.F_MiscCash.txt_AcctDesc.Text("")
+Gui.F_MiscCash.txt_AcctNo.Text("")
+Gui.F_MiscCash.txt_Amt.Text("")
+Gui.F_MiscCash.txt_BaseAmt.Text("")
+Gui.F_MiscCash.txt_Curr.Text("")
+Gui.F_MiscCash.txt_ExchDate.Text("")
+Gui.F_MiscCash.txt_ExchRate.Text("")
+Gui.F_MiscCash.txt_GLAcct.Text("")
+Gui.F_MiscCash.txt_GLAmt.Text("")
+Gui.F_MiscCash.txt_GLAmtBase.Text("")
+Gui.F_MiscCash.txt_GLDesc.Text("")
+Gui.F_MiscCash.txt_JournalDesc.Text("")
+Gui.F_MiscCash.txt_RefNum.Text("")
+
+Gui.F_MiscCash.txt_ExchRate.Enabled(False)
+Gui.F_MiscCash.txt_BaseAmt.Enabled(False)
+
+Program.Sub.cmd_clear_click.End
+
+Program.Sub.dtp_transdate_change.Start
+V.Local.dExchDate.Declare(Date)
+V.Local.dPostDate.Declare(Date)
+
+V.Local.fExchRate.Declare(Float)
+V.Local.fExchRate2.Declare
+
+V.Local.sCurr.Declare(String)
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sSQL.Declare
+V.Local.sTransDate.Declare(String)
+
+V.Local.sCurr.Set(V.Screen.F_MiscCash!txt_Curr.Text)
+
+F.Intrinsic.Control.If(V.Local.sCurr.Trim,<>,V.Global.sCoCurr.Trim)
+	V.Local.dPostDate.Set(V.Screen.F_MiscCash!dtp_PostDate.Value)
+
+	'Get the latest exchange rate from the selected post date
+	F.Intrinsic.String.Build("select max(date_exch_rate) as ExchDate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate <= '{2}'",V.Local.sCurr.Trim,V.Global.sCoCurr.Trim,V.Local.dPostDate.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		Gui.F_MiscCash.dtpExchDate.Value(V.Ambient.Date)
+		V.Local.fExchRate.Set(0)
+		V.Local.fExchRate2.Set(0)		
+	F.Intrinsic.Control.Else
+		V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+		Gui.F_MiscCash.dtpExchDate.Value(V.Local.dExchDate)
+		F.ODBC.conx!rst.Close
+		F.Intrinsic.String.Build("select exchange_rate as Rate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.Local.sCurr.Trim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		V.Local.fExchRate.Set(V.ODBC.conx!rst.FieldValFloat!Rate)
+		F.Intrinsic.String.Build("select exchange_rate as Rate from GAB_6061_EXCH_RATES where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.Local.sCurr.Trim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sSQL)
+		V.Local.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!Rate)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+	F.ODBC.conx!rst2.Close
+
+	V.Global.fExchRate.Set(V.Local.fExchRate)
+	V.Global.fExchRate2.Set(V.Local.fExchRate2)
+	F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+	Gui.F_MiscCash.txt_ExchRate.Text(V.Local.sExchRate)
+	F.Intrinsic.Control.CallSub(Txt_exchrate_lostfocus,"ExchDate",V.Local.dExchDate)
+F.Intrinsic.Control.EndIf
+
+Program.Sub.dtp_transdate_change.End
+
+Program.Sub.cmdBrowse_Click.Start
+V.Local.dExchDate.Declare(Date)
+V.Local.dPostDate.Declare(Date)
+
+V.Local.fAmt.Declare(Float)
+V.Local.fBaseAmt.Declare(Float)
+V.Local.fExchRate.Declare(Float)
+
+V.Local.i1.Declare
+V.Local.iLastRow.Declare(Long)
+V.Local.iWidths.Declare(Long)
+
+V.Local.sAmt.Declare(String)
+V.Local.sCurr.Declare(String)
+V.Local.sExchDate.Declare(String)
+V.Local.sExchRate.Declare(String)
+V.Local.sGLAmt.Declare(String)
+V.Local.sLabel.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.sTransDate.Declare(String)
+
+F.Intrinsic.String.Split("GL Account*!*GL Description*!*Currency*!*Cash Account Description*!*Cash Account No.","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1600*!*4000*!*800*!*3500*!*1600","*!*",V.Local.iWidths)
+
+F.Intrinsic.Control.If(V.Global.sGSSVersion,<,2019)
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		V.Global.sCashCurr.Set(V.Local.sRet(2).Trim)
+		F.Intrinsic.Control.CallSub(loadscreen,"Account",V.Local.sRet(0).Trim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+'	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, '' As Bank_Account FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+'	F.Data.DataTable.CreateFromSQL("dtCashTemp","conx",V.Local.sQuery,True)
+'	F.Data.DataTable.Select("dtCashTemp","",V.Local.sRet)
+'	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sRet.UBound,1)
+'	F.Global.Encryption.Decrypt(V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Account!FieldVal,V.Local.sBankAccount)
+'		F.Intrinsic.Control.If(V.Local.i1,=,0)
+'			F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!*{4}",V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+'		F.Intrinsic.Control.Else
+'			F.Intrinsic.String.Build("{0}$!${1}*!*{2}*!*{3}*!*{4}*!*{5}",V.Local.sBrowserList.Trim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+'		F.Intrinsic.Control.EndIf	
+'	F.Intrinsic.Control.Next(V.Local.i1)
+'	F.Data.DataTable.Close("dtCashTemp")
+		
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+'	F.Intrinsic.UI.BrowserFromString("Select a Cash Account",V.Local.sBrowserList,"*!*","$!$",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		V.Global.sCashCurr.Set(V.Local.sRet(2).Trim)
+		F.Intrinsic.Control.CallSub(loadscreen,"Account",V.Local.sRet(0))
+	F.Intrinsic.Control.EndIf		
+F.Intrinsic.Control.EndIf
+Program.Sub.cmdBrowse_Click.End
+
+Program.Sub.txtGLAcct_LostFocus.Start
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+
+F.Intrinsic.String.Build("Account = '{0}'",V.Screen.F_MiscCash!txt_GLAcct.Text,V.Local.sFilter)
+F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+	Gui.F_MiscCash.txt_GLAcct.Text("")
+	F.Intrinsic.UI.Msgbox("Invalid cash account")
+	F.Intrinsic.Control.CallSub(cmdbrowse_click)
+F.Intrinsic.Control.Else
+	V.Global.sCashCurr.Set(V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim)
+	F.Intrinsic.Control.CallSub(loadscreen,"Account",V.Screen.F_MiscCash!txt_GLAcct.Text)
+F.Intrinsic.Control.EndIf
+Program.Sub.txtGLAcct_LostFocus.End
+
+Program.Sub.LoadScreen.Start
+V.Local.dExchDate.Declare(Date)
+V.Local.dPostDate.Declare(Date)
+
+V.Local.fAmt.Declare
+V.Local.fBaseAmt.Declare
+V.Local.fExchRate.Declare
+V.Local.fExchRate2.Declare
+V.Local.fBaseAmt2.Declare
+
+V.Local.i1.Declare
+
+V.Local.sAmt.Declare
+V.Local.sExchRate.Declare
+V.Local.sFilter.Declare
+V.Local.sGLAmt.Declare
+V.Local.sLabel.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+'Reset flexgrid, uGlobal.uJournal, and global variable values related to flexgrid sum
+F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtGL.RowCount--,0,-1)
+	F.Data.DataTable.DeleteRow("dtGL",V.Local.i1)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.AcceptChanges("dtGL")
+
+F.Intrinsic.String.Build("Account = '{0}'",V.Args.Account,V.Local.sFilter)
+F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+
+'Fill out the corresponding textboxes
+Gui.F_MiscCash.txt_GLAcct.Text(V.Args.Account)
+Gui.F_MiscCash.txt_GLDesc.Text(V.DataTable.dtCash(V.Local.sRet).Description!FieldValTrim)
+'Gui.F_MiscCash.txt_AcctNo.Text(V.DataTable.dtCash(V.Local.sRet).BankAccount!FieldValTrim)
+Gui.F_MiscCash.txt_AcctDesc.Text(V.DataTable.dtCash(V.Local.sRet).BankDesc!FieldValTrim)
+Gui.F_MiscCash.txt_Curr.Text(V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim)
+
+'Clear out amount textboxes
+Gui.F_MiscCash.txt_GLAmt.Text("")
+Gui.F_MiscCash.txt_GLAmtBase.Text("")
+
+'Check if amount has been entered
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+F.Intrinsic.Control.If(V.Local.fAmt,=,0)
+	F.Intrinsic.String.Format(0,"#,0.00",V.Local.sAmt)
+	Gui.F_MiscCash.txt_Amt.Text(V.Local.sAmt)
+	Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sAmt)
+F.Intrinsic.Control.EndIf
+Gui.F_MiscCash.txt_ExchRate.Enabled(False)
+Gui.F_MiscCash.txt_BaseAmt.Enabled(False)
+
+V.Local.fExchRate.Set(1)
+'If cash account currency is different from company currency
+F.Intrinsic.Control.If(V.Global.sCoCurr.Trim,<>,V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim)
+	Gui.F_MiscCash.txt_ExchRate.Enabled(True)
+	Gui.F_MiscCash.txt_BaseAmt.Enabled(True)
+	F.Intrinsic.String.Concat(V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim," to ",V.Global.sCoCurr.Trim,V.Local.sLabel)
+	Gui.F_MiscCash.lbl_ExchRate.Caption(V.Local.sLabel)
+	F.Intrinsic.String.Concat("Amount in ",V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim,V.Local.sLabel)
+	Gui.F_MiscCash.GsGCDetail.SetColumnProperty("gvGL","Amount1","Caption",V.Local.sLabel)
+
+	V.Local.dPostDate.Set(V.Screen.F_MiscCash!dtp_PostDate.Value)
+
+	'Get the latest exchange rate from the selected post date
+	F.Intrinsic.String.Build("select max(date_exch_rate) as ExchDate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate <= '{2}'",V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim,V.Global.sCoCurr.Trim,V.Local.dPostDate.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		Gui.F_MiscCash.dtpExchDate.Value(V.Ambient.Date)
+		V.Local.fExchRate.Set(0)
+		V.Local.fExchRate2.Set(0)
+	F.Intrinsic.Control.Else
+		V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+		Gui.F_MiscCash.dtpExchDate.Value(V.Local.dExchDate)
+		F.ODBC.conx!rst.Close
+		F.Intrinsic.String.Build("select exchange_rate as Rate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		V.Local.fExchRate.Set(V.ODBC.conx!rst.FieldValFloat!Rate)
+		F.Intrinsic.String.Build("select exchange_rate as Rate from GAB_6061_EXCH_RATES where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sSQL)
+		V.Local.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!Rate)		
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+	F.ODBC.conx!rst2.Close
+F.Intrinsic.Control.EndIf
+
+V.Global.fExchRate.Set(V.Local.fExchRate)
+V.Global.fExchRate2.Set(V.Local.fExchRate2)
+F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+Gui.F_MiscCash.txt_ExchRate.Text(V.Local.sExchRate)
+F.Intrinsic.Math.Mult(V.Local.fAmt,V.Local.fExchRate,V.Local.fBaseAmt)
+F.Intrinsic.Math.Round(V.Local.fBaseAmt,2,V.Local.fBaseAmt)
+F.Intrinsic.Math.Mult(V.Local.fAmt,V.Local.fExchRate2,V.Local.fBaseAmt2)
+F.Intrinsic.Math.Round(V.Local.fBaseAmt2,2,V.Local.fBaseAmt2)
+F.Intrinsic.String.Format(V.Local.fBaseAmt,"#,0.00",V.Local.sAmt)
+Gui.F_MiscCash.txt_BaseAmt.Text(V.Local.sAmt)
+
+'If amount has been entered, show the flexgrid
+F.Intrinsic.Control.If(V.Local.fAmt,<>,0)
+	F.Data.DataTable.AddRow("dtGL","Line",1,"Amount1",V.Local.fAmt,"Amount2",V.Local.fBaseAmt,"Amount3",V.Local.fBaseAmt2)
+
+	V.Global.fGLAmt.Set(V.Local.fAmt)
+	V.Global.fGLAmtBase.Set(V.Local.fBaseAmt)
+	F.Intrinsic.String.Format(V.Global.fGLAmt,"#,0.00",V.Local.sGLAmt)
+	Gui.F_MiscCash.txt_GLAmt.Text(V.Local.sGLAmt)
+	F.Intrinsic.String.Format(V.Global.fGLAmtBase,"#,0.00",V.Local.sGLAmt)
+	Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+F.Intrinsic.Control.EndIf
+Program.Sub.LoadScreen.End
+
+Program.Sub.GsGCDetail_CellValueChanged.Start
+V.Local.bNumeric.Declare
+V.Local.fGST.Declare
+V.Local.fGST2.Declare
+V.Local.sSQL.Declare
+V.Local.sValue.Declare
+V.Local.sValues.Declare
+V.Local.fEnteredAmt.Declare
+V.Local.fAmtBase.Declare
+V.Local.fExchRate.Declare
+V.Local.fAmtBase2.Declare
+V.Local.sZone.Declare
+V.Local.i1.Declare
+
+V.Local.fEnteredAmt.Set(V.Args.Value)
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Account")
+	F.Intrinsic.Control.CallSub(GLAccountVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+'F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Amount1")
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Amount1")
+	'Amount1 is keyed in
+	F.Intrinsic.Math.IsNumeric(V.Args.Value,V.Local.bNumeric)
+
+	F.Intrinsic.Control.If(V.Local.bNumeric)
+'		F.Intrinsic.Control.CallSub(AmountVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+		F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,=,V.Global.sCoCurr.Trim)
+			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fEnteredAmt,"Amount3",V.Local.fEnteredAmt)
+		F.Intrinsic.Control.Else
+			V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+			F.Intrinsic.Math.Mult(V.Local.fEnteredAmt,V.Local.fExchRate,V.Local.fAmtBase)
+			F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+			F.Intrinsic.Math.Mult(V.Local.fEnteredAmt,V.Global.fExchRate2,V.Local.fAmtBase2)
+			F.Intrinsic.Math.Round(V.Local.fAmtBase2,2,V.Local.fAmtBase2)
+			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fAmtBase,"Amount3",V.Local.fAmtBase2)
+		F.Intrinsic.Control.EndIf			
+		F.Intrinsic.Control.CallSub(updatebalance)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"ZONE")
+
+	V.Local.sValue.Set(V.Args.Value)
+	F.Intrinsic.Control.If(V.Local.sValue.Trim,<>,"")
+		F.Intrinsic.String.Build("select auth from v_ar_tax_tables where zone = '{0}'",V.Local.sValue.Trim,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtTax","conx",V.Local.sSQL)
+		F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTax.RowCount--,1)
+			F.Intrinsic.String.Build("{0}*!*{1}",V.Local.sValues,V.DataTable.dtTax(V.Local.i1).auth!FieldValTrim,V.Local.sValues)
+		F.Intrinsic.Control.Next(V.Local.i1)
+		F.Data.DataTable.Close("dtTax")
+		Gui.F_MiscCash.GsGCDetail.ColumnEdit("gvGL","GST","Dropdownlist",V.Local.sValues)
+	F.Intrinsic.Control.EndIf	
+	
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"GST")
+
+	V.Local.sValue.Set(V.Args.Value)
+	Gui.F_MiscCash.GsGCDetail.GetCellValueByColumnName("gvGL","ZONE",V.Args.RowIndex,V.Local.sZone)
+	F.Intrinsic.Control.If(V.Local.sValue.Trim,<>,"")
+		F.Intrinsic.String.Build("select rate from v_ar_tax_tables where zone = '{1}' and auth = '{0}'",V.Local.sValue.Trim,V.Local.sZone,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		F.Intrinsic.Math.Mult(V.DataTable.dtGL(V.Args.RowIndex).Amount2!FieldVal,V.ODBC.conx!rst.FieldVal!rate,V.Local.fGST)
+		F.Intrinsic.Math.Round(V.Local.fGST,2,V.Local.fGST)
+		F.Intrinsic.Math.Mult(V.DataTable.dtGL(V.Args.RowIndex).Amount3!FieldVal,V.ODBC.conx!rst.FieldVal!rate,V.Local.fGST2)
+		F.Intrinsic.Math.Round(V.Local.fGST2,2,V.Local.fGST2)
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",V.Local.fGST,"GSTAmt2",V.Local.fGST2)
+		F.Data.DataTable.AcceptChanges("dtGL")
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",0,"GSTAmt2",0)
+		F.Data.DataTable.AcceptChanges("dtGL")
+	F.Intrinsic.Control.EndIf
+
+		'Amount1 is keyed in
+'	F.Intrinsic.Math.IsNumeric(V.Args.Value,V.Local.bNumeric)
+
+'	F.Intrinsic.Control.If(V.Local.bNumeric)
+		F.Intrinsic.Control.CallSub(AmountVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+'	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Reference")
+	'Reference is keyed in
+	F.Intrinsic.Control.CallSub(ReferenceLengthVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCDetail_CellValueChanged.End
+
+Program.Sub.ReferenceLengthVerification.Start
+V.Local.iLen.Declare
+V.Local.sRet.Declare
+
+F.Intrinsic.String.Len(V.Args.Value,V.Local.iLen)
+F.Intrinsic.Control.If(V.Local.iLen,>,7)
+	F.Intrinsic.String.Left(V.Args.Value,7,V.Local.sRet)
+	F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Reference",V.Local.sRet)
+	F.Intrinsic.UI.Msgbox("Reference is longer than 7 characters")
+F.Intrinsic.Control.EndIf
+Program.Sub.ReferenceLengthVerification.End
+
+Program.Sub.GLAccountVerification.Start
+V.Local.fAmt.Declare
+V.Local.fAmtBase.Declare
+V.Local.fAmtBase2.Declare
+V.Local.fDiff.Declare
+V.Local.fExchRate.Declare
+V.Local.fGridAmt.Declare
+V.Local.iLine.Declare
+V.Local.iWidths.Declare
+V.Local.sCurrency.Declare
+V.Local.sFilter.Declare
+V.Local.sFilterResult.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.sTitles.Declare
+V.Local.fGridGSTAmt.Declare
+
+'Verify the GL account entered in the grid
+F.Intrinsic.String.Build("Account='{0}'",V.Args.Value,V.Local.sFilter)
+F.Data.DataTable.Select("dtGLDesc",V.Local.sFilter,V.Local.sFilterResult)
+F.Intrinsic.Control.If(V.Local.sFilterResult,=,"***NORETURN***")
+	F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"AccountDesc","")
+
+	'Open chart of accounts browser
+	F.Intrinsic.String.Split("GL Account*!*Description","*!*",V.Local.sTitles)
+	F.Intrinsic.String.Split("1200*!*2500","*!*",V.Local.iWidths)
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a GL account","conx","select gl_account as Account, descr as Description from v_gl_master order by gl_account",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Account",V.Local.sRet(0).Trim,"AccountDesc",V.Local.sRet(1).Trim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	'Verify that GL account is not a cash account
+	F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"AccountDesc",V.DataTable.dtGLDesc(V.Local.sFilterResult).Description!FieldValTrim)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.Msgbox("The selected GL account is a cash account")
+
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"AccountDesc","")
+
+		'Open chart of accounts browser
+		F.Intrinsic.String.Split("GL Account*!*Description","*!*",V.Local.sTitles)
+		F.Intrinsic.String.Split("1200*!*2500","*!*",V.Local.iWidths)
+		F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+		F.Intrinsic.UI.Browser("Select a GL account","conx","select gl_account as Account, descr as Description from v_gl_master order by gl_account",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+		F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+			F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Account",V.Local.sRet(0).Trim,"AccountDesc",V.Local.sRet(1).Trim)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'Check if a new line needs to be added by verifying total amount compared to total grid amount
+F.Intrinsic.Control.If(V.DataTable.dtGL(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+	F.Intrinsic.Control.If(V.DataTable.dtGL(V.Args.RowIndex).Amount1!FieldVal,>,0)
+		V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+		F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+		F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+		F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+		F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Local.fDiff)
+		F.Intrinsic.Control.If(V.Local.fDiff,>,0)
+			V.Local.sCurrency.Set(V.Screen.F_MiscCash!txt_Curr.Text)
+			F.Intrinsic.Math.Add(V.DataTable.dtGL.RowCount,1,V.Local.iLine)
+			F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+				F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLine,"Amount1",V.Local.fDiff,"Amount2",V.Local.fDiff,"Amount3",V.Local.fDiff)
+			F.Intrinsic.Control.Else
+				V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+				F.Intrinsic.Math.Mult(V.Local.fDiff,V.Local.fExchRate,V.Local.fAmtBase)
+				F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+				F.Intrinsic.Math.Mult(V.Local.fDiff,V.Global.fExchRate2,V.Local.fAmtBase2)
+				F.Intrinsic.Math.Round(V.Local.fAmtBase2,2,V.Local.fAmtBase2)
+				F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLine,"Amount1",V.Local.fDiff,"Amount2",V.Local.fAmtBase,"Amount3",V.Local.fAmtBase2)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.Data.DataTable.AcceptChanges("dtGL")
+		F.Intrinsic.Control.CallSub(UpdateBalance)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.GLAccountVerification.End
+
+Program.Sub.AmountVerification.Start
+V.Local.fAmt.Declare
+V.Local.fAmtBase.Declare
+V.Local.fDiff.Declare
+V.Local.fEnteredAmt.Declare
+V.Local.fExchRate.Declare
+V.Local.fGridAmt.Declare
+V.Local.fGST.Declare
+V.Local.fGridGSTAmt.Declare
+V.Local.fAmtBase2.Declare
+
+V.Local.iLine.Declare
+
+V.Local.sCurrency.Declare
+V.Local.sGST.Declare
+V.Local.sGLAmt.Declare
+V.Local.sSQL.Declare
+
+V.Local.sCurrency.Set(V.Screen.F_MiscCash!txt_Curr.Text)
+
+V.Local.fEnteredAmt.Set(V.Args.Value)
+'F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+F.Data.DataTable.Compute("dtGL","SUM(Amount2)","",V.Local.fGridAmt)
+F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+F.Intrinsic.Math.Sub(V.Local.fGridAmt,V.Local.fEnteredAmt,V.Local.fGridAmt)
+F.Intrinsic.Math.Abs(V.Local.fEnteredAmt,V.Local.fEnteredAmt)
+F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fEnteredAmt,V.Local.fGridAmt)
+F.Intrinsic.Math.Round(V.Local.fGridAmt,2,V.Local.fGridAmt)
+
+'V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_baseamt.Text)
+'Grid total is greater than entered amount, reduce the amount entered in the last row
+F.Intrinsic.Control.If(V.Local.fGridAmt,>,V.Local.fAmt)
+	F.Intrinsic.Math.Sub(V.Local.fGridAmt,V.Local.fAmt,V.Local.fDiff)
+	F.Intrinsic.Math.Sub(V.Local.fEnteredAmt,V.Local.fDiff,V.Local.fEnteredAmt)
+	F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,=,V.Global.sCoCurr.Trim)
+'		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fEnteredAmt)
+	F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",0,"GSTAmt2",0)
+		V.Local.fAmtBase.Set(V.Local.fEnteredAmt)
+	F.Intrinsic.Control.Else
+		V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+		F.Intrinsic.Math.Mult(V.Local.fEnteredAmt,V.Local.fExchRate,V.Local.fAmtBase)
+		F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+'		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fAmtBase)
+		F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",0,"GSTAmt2",0)
+	F.Intrinsic.Control.EndIf
+'Grid total is smaller than entered amount, add a new row
+F.Intrinsic.Control.ElseIf(V.Local.fGridAmt,<,V.Local.fAmt)
+	F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Local.fDiff)
+	F.Intrinsic.Math.Add(V.DataTable.dtGL.RowCount,1,V.Local.iLine)
+	F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,=,V.Global.sCoCurr.Trim)
+		F.Intrinsic.Control.If(V.DataTable.dtGL(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+'			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fEnteredAmt)
+			'Add new row if GL account has been selected in the last row
+			F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,<>,"")
+				F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLine,"Amount1",V.Local.fDiff,"Amount2",V.Local.fDiff,,"Amount3",V.Local.fDiff)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Math.Add(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Amount1!FieldVal,V.Local.fDiff,V.Local.fDiff)
+'				F.Data.DataTable.SetValue("dtGL",V.DataTable.dtGL.RowCount--,"Amount1",V.Local.fDiff,"Amount2",V.Local.fDiff)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount2",V.Local.fEnteredAmt,"Amount3",V.Local.fEnteredAmt)
+		F.Intrinsic.Control.EndIf
+		V.Local.fAmtBase.Set(V.Local.fEnteredAmt)
+	F.Intrinsic.Control.Else
+		V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+		F.Intrinsic.Control.If(V.DataTable.dtGL(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+'			F.Intrinsic.Math.Mult(V.Local.fEnteredAmt,V.Local.fExchRate,V.Local.fAmtBase)
+'			F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+'			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount1",V.Local.fEnteredAmt,"Amount2",V.Local.fAmtBase)
+			F.Intrinsic.Math.Mult(V.Local.fDiff,V.Local.fExchRate,V.Local.fAmtBase)
+			F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+			F.Intrinsic.Math.Mult(V.Local.fDiff,V.Global.fExchRate2,V.Local.fAmtBase2)
+			F.Intrinsic.Math.Round(V.Local.fAmtBase2,2,V.Local.fAmtBase2)
+			'Add new row if GL account has been selected in the last row
+			F.Intrinsic.Control.If(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Account!FieldValTrim,<>,"")
+				F.Data.DataTable.AddRow("dtGL","Line",V.Local.iLine,"Amount1",V.Local.fDiff,"Amount2",V.Local.fAmtBase,"Amount3",V.Local.fAmtBase2)
+			'Add the amount to the last row
+			F.Intrinsic.Control.Else	
+				F.Intrinsic.Math.Add(V.DataTable.dtGL(V.DataTable.dtGL.RowCount--).Amount1!FieldVal,V.Local.fDiff,V.Local.fDiff)
+				F.Intrinsic.Math.Mult(V.Local.fDiff,V.Local.fExchRate,V.Local.fAmtBase)
+				F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+'				F.Data.DataTable.SetValue("dtGL",V.DataTable.dtGL.RowCount--,"Amount1",V.Local.fDiff,"Amount2",V.Local.fAmtBase)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Mult(V.Local.fEnteredAmt,V.Local.fExchRate,V.Local.fAmtBase)
+			F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+'			F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"Amount2",V.Local.fAmtBase)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+'V.Local.sGST.Set(V.DataTable.dtGL(V.Args.RowIndex).GST!FieldValTrim)
+'F.Intrinsic.Control.If(V.Local.sGST.Trim,<>,"")
+'	F.Intrinsic.String.Build("select rate from v_ar_tax_tables where zone = 'SG' and auth = '{0}'",V.Local.sGST.Trim,V.Local.sSQL)
+'	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'	F.Intrinsic.Math.Mult(V.Local.fAmtBase,V.ODBC.conx!rst.FieldVal!rate,V.Local.fGST)
+'	F.Intrinsic.Math.Round(V.Local.fGST,2,V.Local.fGST)
+'	F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",V.Local.fGST)
+'	F.Data.DataTable.AcceptChanges("dtGL")
+'F.Intrinsic.Control.Else
+'	F.Data.DataTable.SetValue("dtGL",V.Args.RowIndex,"GSTAmt",0)
+'	F.Data.DataTable.AcceptChanges("dtGL")
+'F.Intrinsic.Control.EndIf
+
+'F.Data.DataTable.AcceptChanges("dtGL")
+F.Intrinsic.Control.CallSub(UpdateBalance)
+Program.Sub.AmountVerification.End
+
+Program.Sub.UpdateBalance.Start
+V.Local.fAmt.Declare
+V.Local.fAmtBase.Declare
+V.Local.fGridAmt.Declare
+V.Local.sGLAmt.Declare
+V.Local.fGridGSTAmt.Declare
+V.Local.fExchRate.Declare
+V.Local.fAmtAfter.Declare
+V.Local.fBaseAmtAfter.Declare
+V.Local.fAmtBase2.Declare
+
+'Update Balance
+V.Local.fAmt.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+F.Data.DataTable.Compute("dtGL","SUM(Amount1)","",V.Local.fGridAmt)
+F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+F.Intrinsic.Math.Div(V.Local.fGridGSTAmt,V.Local.fExchRate,V.Local.fGridGSTAmt)
+F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+F.Intrinsic.Math.Sub(V.Local.fAmt,V.Local.fGridAmt,V.Global.fGLAmt)
+F.Intrinsic.String.Format(V.Global.fGLAmt,"#,0.00",V.Local.sGLAmt)
+Gui.F_MiscCash.txt_GLAmt.Text(V.Local.sGLAmt)
+V.Local.fAmtBase.Set(V.Screen.F_MiscCash!txt_BaseAmt.Text)
+F.Data.DataTable.Compute("dtGL","SUM(Amount2)","",V.Local.fGridAmt)
+F.Data.DataTable.Compute("dtGL","SUM(GSTAmt)","",V.Local.fGridGSTAmt)
+F.Intrinsic.Math.Add(V.Local.fGridAmt,V.Local.fGridGSTAmt,V.Local.fGridAmt)
+F.Intrinsic.Math.Sub(V.Local.fAmtBase,V.Local.fGridAmt,V.Global.fGLAmtBase)
+F.Intrinsic.String.Format(V.Global.fGLAmtBase,"#,0.00",V.Local.sGLAmt)
+Gui.F_MiscCash.txt_GLAmtBase.Text(V.Local.sGLAmt)
+
+V.Local.fAmtAfter.Set(V.Screen.F_MiscCash!txt_Amt.Text)
+V.Local.fBaseAmtAfter.Set(V.Screen.F_MiscCash!txt_BaseAmt.Text)
+F.Intrinsic.Control.If(V.Local.fBaseAmtAfter,=,0.00)
+	F.Intrinsic.Control.If(V.Local.fAmtAfter,>,-0.03)
+	F.Intrinsic.Control.AndIf(V.Local.fAmtAfter,<,0.03)
+		Gui.F_MiscCash.txt_GLAmt.Text("0.00")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf		
+Program.Sub.UpdateBalance.End
+
+Program.Sub.GsGCDetail_RowCellClick.Start
+V.Local.fAmt.Declare
+V.Local.fAmtBase.Declare
+V.Local.fDeletedAmt.Declare
+V.Local.fExchRate.Declare
+V.Local.i1.Declare
+V.Local.iRow.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Delete")
+	F.Intrinsic.Control.If(V.DataTable.dtGL.RowCount,>,1)
+		F.Intrinsic.Control.If(V.DataTable.dtGL(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+			V.Local.fDeletedAmt.Set(V.DataTable.dtGL(V.Args.RowIndex).Amount1!FieldVal)
+			'Check if the deleted row is the last row
+			F.Intrinsic.Control.If(V.Args.RowIndex,=,V.DataTable.dtGL.RowCount--)
+				'Add the deleted amount to the second last row amount
+				F.Intrinsic.Math.Sub(V.Args.RowIndex,1,V.Local.iRow)
+			F.Intrinsic.Control.Else
+				'Add the deleted amount to the last row amount
+				V.Local.iRow.Set(V.Args.RowIndex)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Math.Add(V.DataTable.dtGL(V.Local.iRow).Amount1!FieldVal,V.Local.fDeletedAmt,V.Local.fAmt)
+			F.Intrinsic.Control.If(V.Global.sCashCurr.Trim,=,V.Global.sCoCurr.trim)
+				F.Data.DataTable.SetValue("dtGL",V.Local.iRow,"Amount1",V.Local.fAmt,"Amount2",V.Local.fAmt,"Amount3",V.Local.fAmt)
+			F.Intrinsic.Control.Else
+				V.Local.fExchRate.Set(V.Screen.F_MiscCash!txt_ExchRate.Text)
+				F.Intrinsic.Math.Mult(V.Local.fAmt,V.Local.fExchRate,V.Local.fAmtBase)
+				F.Intrinsic.Math.Round(V.Local.fAmtBase,2,V.Local.fAmtBase)
+				F.Intrinsic.Math.Mult(V.Local.fAmt,V.Global.fExchRate,V.Local.fAmtBase2)
+				F.Intrinsic.Math.Round(V.Local.fAmtBase2,2,V.Local.fAmtBase2)				
+				F.Data.DataTable.SetValue("dtGL",V.Local.iRow,"Amount1",V.Local.fAmt,"Amount2",V.Local.fAmtBase,"Amount3",V.Local.fAmtBase2)
+			F.Intrinsic.Control.EndIf
+
+			F.Data.DataTable.DeleteRow("dtGL",V.Args.RowIndex)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+
+	F.Data.DataTable.AcceptChanges("dtGL")
+	'Renumber line after delete
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtGL.RowCount--,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.iRow)
+		F.Data.DataTable.SetValue("dtGL",V.Local.i1,"Line",V.Local.iRow)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.Intrinsic.Control.CallSub(UpdateBalance)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCDetail_RowCellClick.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$12:00:00 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$Project will be used to see what menu items are access by what users
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200825162325221$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T6MS07nHOah9gX06ttElOU1On9YCXqu0FRB7J8ZjS72I=
+Program.Sub.Comments.End
