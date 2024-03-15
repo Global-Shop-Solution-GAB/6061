@@ -1,0 +1,589 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_ViewGL..Create
+Gui.F_ViewGL..Caption("GL Transaction Detail")
+Gui.F_ViewGL..Size(14250,9030)
+Gui.F_ViewGL..MinX(0)
+Gui.F_ViewGL..MinY(0)
+Gui.F_ViewGL..Position(0,0)
+Gui.F_ViewGL..FontSize(9)
+Gui.F_ViewGL..BackColor(-2147483633)
+Gui.F_ViewGL..MousePointer(0)
+Gui.F_ViewGL..Event(UnLoad,Unload)
+Gui.F_ViewGL.frame1.Create(Frame)
+Gui.F_ViewGL.frame1.Size(5115,810)
+Gui.F_ViewGL.frame1.Position(60,90)
+Gui.F_ViewGL.frame1.Caption("GL Account")
+Gui.F_ViewGL.frame1.FontSize(9)
+Gui.F_ViewGL.txtAccount.Create(TextBox,"",True,1605,315,0,120,300,True,0,"Arial",9,-2147483643,1)
+Gui.F_ViewGL.txtAccount.Parent("frame1")
+Gui.F_ViewGL.txtAccount.Event(LostFocus,txtAccount_LostFocus)
+Gui.F_ViewGL.txtAccountDesc.Create(TextBox,"",True,3165,315,0,1815,300,True,0,"Arial",9,-2147483643,1)
+Gui.F_ViewGL.txtAccountDesc.Parent("frame1")
+Gui.F_ViewGL.txtAccountDesc.Locked(True)
+Gui.F_ViewGL.frame2.Create(Frame)
+Gui.F_ViewGL.frame2.Size(1785,810)
+Gui.F_ViewGL.frame2.Position(5310,90)
+Gui.F_ViewGL.frame2.Caption("Starting")
+Gui.F_ViewGL.frame2.FontSize(9)
+Gui.F_ViewGL.dtpStart.Create(DatePicker)
+Gui.F_ViewGL.dtpStart.Size(1560,285)
+Gui.F_ViewGL.dtpStart.Position(120,300)
+Gui.F_ViewGL.dtpStart.Parent("frame2")
+Gui.F_ViewGL.frame3.Create(Frame)
+Gui.F_ViewGL.frame3.Size(1785,810)
+Gui.F_ViewGL.frame3.Position(7230,90)
+Gui.F_ViewGL.frame3.Caption("Ending")
+Gui.F_ViewGL.frame3.FontSize(9)
+Gui.F_ViewGL.dtpEnd.Create(DatePicker)
+Gui.F_ViewGL.dtpEnd.Size(1560,285)
+Gui.F_ViewGL.dtpEnd.Position(120,300)
+Gui.F_ViewGL.dtpEnd.Parent("frame3")
+Gui.F_ViewGL.GsGCDetail.Create(GsGridControl)
+Gui.F_ViewGL.GsGCDetail.Size(13875,7395)
+Gui.F_ViewGL.GsGCDetail.Position(60,975)
+Gui.F_ViewGL.cmdRefresh.Create(Button)
+Gui.F_ViewGL.cmdRefresh.Size(1740,810)
+Gui.F_ViewGL.cmdRefresh.Position(9135,90)
+Gui.F_ViewGL.cmdRefresh.Caption("REFRESH")
+Gui.F_ViewGL.cmdRefresh.FontSize(9)
+Gui.F_ViewGL.cmdRefresh.Event(Click,cmdRefresh_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sCoCurrency.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sIconPath.Declare
+
+'Set up GSS logo
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+Gui.F_ViewGL..Icon(V.Local.sIconPath)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+F.Data.Dictionary.CreateFromSQL("dicGL","conx","select gl_account as Account, rtrim(gl_account) from v_gl_master order by gl_account")
+Gui.F_ViewGL.txtAccount.AddAutoCompleteItem("dicGL","Dictionary")
+F.Data.Dictionary.Close("dicGL")
+
+'Get base currency from V_COMPANY_OPT
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+V.Global.sCoCurrency.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.Control.CallSub(loaddatatable)
+F.Intrinsic.Control.CallSub(SetContextMenus)
+
+Gui.F_ViewGL.GsGCDetail.Anchor(15)
+
+Gui.F_ViewGL..Show
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Data.DataTable.Close("dtGLDesc")
+F.Data.DataTable.Close("dtCalendar")
+F.Data.DataTable.Close("dtCash")
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.txtAccount_LostFocus.Start
+F.Intrinsic.Control.BlockEvents
+V.Local.iWidths.Declare
+V.Local.sAccount.Declare
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+V.Local.sTitles.Declare
+
+V.Local.sAccount.Set(V.Screen.F_ViewGL!txtAccount.Text)
+'Verify the entered GL account is correct
+F.Intrinsic.String.Build("Account = '{0}'",V.Local.sAccount.Trim,V.Local.sFilter)
+F.Data.DataTable.Select("dtGLDesc",V.Local.sFilter,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+	'GL account is found, load description to textbox
+	Gui.F_ViewGL.txtAccountDesc.Text(V.DataTable.dtGLDesc(V.Local.sRet).Description!FieldValTrim)
+F.Intrinsic.Control.Else
+	'GL account is not found, warn user and open GL account browser
+	F.Intrinsic.UI.Msgbox("Invalid GL account")
+	
+	'Open chart of accounts browser
+	F.Intrinsic.String.Split("GL Account*!*Description","*!*",V.Local.sTitles)
+	F.Intrinsic.String.Split("1200*!*2500","*!*",V.Local.iWidths)
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a GL account","conx","select gl_account as Account, descr as Description from v_gl_master order by gl_account",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+	
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+		Gui.F_ViewGL.txtAccount.Text(V.Local.sRet(0).trim)
+		Gui.F_ViewGL.txtAccountDesc.Text(V.Local.sRet(1).Trim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.UnBlockEvents
+Program.Sub.txtAccount_LostFocus.End
+
+Program.Sub.cmdRefresh_Click.Start
+V.Local.dBeg.Declare(Date)
+V.Local.dEnd.Declare(Date)
+
+V.Local.iYear1.Declare
+V.Local.iYear2.Declare
+
+V.Local.sAccount.Declare
+V.Local.sFormattedDate.Declare
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+
+V.Local.dBeg.Set(V.Screen.F_ViewGL!dtpStart.Value)
+V.Local.dEnd.Set(V.Screen.F_ViewGL!dtpEnd.Value)
+
+'Check if starting date is before ending date
+F.Intrinsic.Control.If(V.Local.dBeg,>,V.Local.dEnd)
+	F.Intrinsic.UI.Msgbox("Starting date must not be after Ending date")
+	Gui.F_ViewGL.dtpEnd.Value(V.Local.dBeg)
+F.Intrinsic.Control.Else
+	'Check if the selected date cross financial year
+	F.Intrinsic.String.Format(V.Local.dEnd,"MM/DD/YY",V.Local.sFormattedDate)
+	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Intrinsic.UI.Msgbox("GL calendar is not found for the ending date. Please check General Ledger > Administration > Calendar Period Maintenance or change the ending date.")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.Else
+		V.Local.iYear2.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.String.Format(V.Local.dBeg,"MM/DD/YY",V.Local.sFormattedDate)
+	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Intrinsic.UI.Msgbox("GL calendar is not found for the starting date.Please check General Ledger > Administration > Calendar Period Maintenance or change the starting date.")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.Else
+		V.Local.iYear1.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.If(V.Local.iYear1,=,V.Local.iYear2)
+		'Check if GL account has been selected
+		V.Local.sAccount.Set(V.Screen.F_ViewGL!txtAccount.Text)
+		'Verify the entered GL account is correct
+		F.Intrinsic.String.Build("Account = '{0}'",V.Local.sAccount.Trim,V.Local.sFilter)
+		F.Data.DataTable.Select("dtGLDesc",V.Local.sFilter,V.Local.sRet)
+		F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+			F.Intrinsic.UI.Msgbox("Please enter a valid GL account.")
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.CallSub(LoadTransaction)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.Msgbox("Starting and Ending date must not cross financial year.")
+		'Change ending date to the year end date of fiscal year starting date
+		F.Intrinsic.String.Build("FYR = '{0}'",V.Local.iYear1,V.Local.sFilter)
+		F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+		Gui.F_ViewGL.dtpEnd.Value(V.DataTable.dtCalendar(V.Local.sRet).Ending!FieldVal)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.LoadDatatable.Start
+V.Local.i1.Declare
+V.Local.sBankAccount.Declare
+
+'Datatable for GL account description reference
+F.Data.DataTable.CreateFromSQL("dtGLDesc","conx","select gl_account as Account, descr as Description from v_gl_master",True)
+
+'Datatable for fiscal year reference
+F.Data.DataTable.CreateFromSQL("dtCalendar","conx","select distinct start_year as FYR from v_gl_calendar",True)
+F.Data.DataTable.AddColumn("dtCalendar","Beginning","Date")
+F.Data.DataTable.AddColumn("dtCalendar","Ending","Date")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, beg_date from v_gl_calendar where period = '01'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Beginning")
+F.Data.Dictionary.Close("dicBeg")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, end_date from v_gl_calendar where period = '12'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Ending")
+F.Data.Dictionary.Close("dicBeg")
+
+'Datatable for cash account
+'F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+
+F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account_Enc as BankAccountEnc from v_cash_account",True)
+	F.Data.DataTable.AddColumn("dtCash","BankAccount","String")	
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCash.RowCount--,1)
+		F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.i1).BankAccountEnc!FieldVal,V.Local.sBankAccount)
+		F.Data.DataTable.SetValue("dtCash",V.Local.i1,"BankAccount",V.Local.sBankAccount.Trim)
+'		F.Intrinsic.Debug.ShowCallerInfo
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+Program.Sub.LoadDatatable.End
+
+Program.Sub.LoadTransaction.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+V.Local.dBegBeg.Declare(Date)
+V.Local.dBegEnd.Declare(Date)
+V.Local.dEnd.Declare(Date)
+V.Local.dStart.Declare(Date)
+V.Local.fAmtPosted.Declare
+V.Local.fBegBal.Declare
+V.Local.fEndBal.Declare
+V.Local.i1.Declare
+V.Local.iIndex.Declare
+V.Local.iYear.Declare
+V.Local.sAccount.Declare
+V.Local.sAccountDesc.Declare
+V.Local.sFilter.Declare
+V.Local.sFormattedDate.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.bCheck.Declare
+
+Gui.F_ViewGL.GsGCDetail.Visible(False)
+
+F.Intrinsic.Control.If(V.DataTable.dtDetail.Exists,=,True)
+	F.Data.DataTable.Close("dtDetail")
+F.Intrinsic.Control.EndIf
+
+V.Local.dStart.Set(V.Screen.F_ViewGL!dtpStart.Value)
+V.Local.dEnd.Set(V.Screen.F_ViewGL!dtpEnd.Value)
+
+V.Local.sAccount.Set(V.Screen.F_ViewGL!txtAccount.Text)
+
+'Non cash account, reconcile based on base currency showing foreign currency whenever applicable
+'Get GL detail from beginning of the fiscal year until the selected ending date
+F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, A.post_Date_sql as PostDate, A.line as Line, A.description as Description, A.reference as Reference, A.amount_cmpny as Amount,cast((B.amount_forex*B.Exchange_Rate_2) as numeric(10,2)) as Amount2, '' as Invoice, B.exchange_curr as Currency, convert(B.amount_forex,sql_numeric) as AmountF, Cast(B.Exchange_Rate as Numeric(10,5)) as ExchRate, Cast(B.Exchange_Rate_2 as Numeric(10,5)) as ExchRate2 from v_gl_journal_dtl A Left Join GAB_6061_BATCH_DTL B On A.Batch = B.Batch and A.Line = B.Line where A.gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by A.batch, A.post_Date_sql, A.line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtGL","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtGL","Mode","String","")
+
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, batch as Batch, post_Date_sql as PostDate, line as Line, vendor_name as Description, ' ' as Reference, amount_cmpny as Amount, Cast((amount_vend * B.exchange_rate) as numeric(10,2)) as Amount2, invoice_no as Invoice, exch_vend_curr as Currency, amount_vend as AmountF, Exch_Vend_Rate as ExchRate, B.exchange_rate as ExchRate2 from v_gl_ap_detail A LEFT JOIN (SELECT * FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '{3}') B On (IF(A.EXCH_DATE_SQL<>'1900-01-01',A.EXCH_DATE_SQL,'1900-01-01')) = B.Date_Exch_Rate and A.exch_vend_curr = B.TO_ISO_CODE where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' order by batch, post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtAP","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtAP","Mode","String","AP")
+F.Data.DataTable.Merge("dtAP","dtGL",True,1)
+F.Data.DataTable.Close("dtAP")
+
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, post_Date_sql as PostDate, A.line as Line, name_vendor as Description, ' ' as Reference, amount_cmpny as Amount, invoice_no as Invoice from v_gl_ap_check_dtl A left join (select batch as Batch, cust_vendor from v_gl_ap_check_dtl where post_date_sql between '{1}' and '{2}' and cust_vendor <> '' group by Batch, cust_vendor)C On A.Batch = C.Batch Left Join v_vendor_master B on C.cust_vendor = B.vendor where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' order by batch, post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, A.post_Date_sql as PostDate, A.line as Line, name_vendor as Description, ' ' as Reference, amount_cmpny as Amount, invoice_no as Invoice from v_gl_ap_check_dtl A Inner Join (Select Batch, Post_Date_Sql from V_GL_Detail Group by Batch,Post_Date_Sql) B on A.Batch = B.Batch and Cast(A.Post_Date_sql as Date) = Cast(B.Post_Date_sql as Date) left join (select batch as Batch, cust_vendor from v_gl_ap_check_dtl where post_date_sql between '{1}' and '{2}' and cust_vendor <> '' group by Batch, cust_vendor)C On A.Batch = C.Batch Left Join v_vendor_master D on C.cust_vendor = D.vendor where gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by batch, A.post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account where gl_cash_acct = '{0}'",V.Local.sAccount.Trim,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+V.Local.bCheck.Set(True)
+'	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, A.post_Date_sql as PostDate, A.line as Line, name_vendor as Description, ' ' as Reference, -c.Amount as Amount, invoice_no as Invoice, IF(C.Exchange_curr<>'',C.Exchange_curr,'{3}') as Currency, -C.AmountF As AmountF, C.exchange_rate as ExchRate from v_gl_ap_check_dtl A Inner Join (Select Batch, Post_Date_Sql from V_GL_Detail Group by Batch,Post_Date_Sql) B on A.Batch = B.Batch and Cast(A.Post_Date_sql as Date) = Cast(B.Post_Date_sql as Date) left join (select batch_num as Batch, vendor, exchange_curr, exchange_rate, sum(amt_transaction) as amount, sum(exchange_amt) as AmountF from v_ap_open_items where gl_Account = '{0}' and date_batch between '{1}' and '{2}' and vendor <> '' group by Batch_num, vendor, exchange_curr, exchange_rate)C On A.Batch = C.Batch Left Join v_vendor_master D on C.vendor = D.vendor where gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by batch, A.post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, A.post_Date_sql as PostDate, A.line as Line, name_vendor as Description, ' ' as Reference, -c.Amount as Amount, Cast((-C.AmountF * E.exchange_rate) as numeric(10,2)) as Amount2, invoice_no as Invoice, IF(C.Exchange_curr<>'',C.Exchange_curr,'{3}') as Currency, -C.AmountF As AmountF, C.exchange_rate as ExchRate, E.exchange_rate as ExchRate2 from v_gl_ap_check_dtl A Inner Join (Select Batch, Post_Date_Sql from V_GL_Detail Group by Batch,Post_Date_Sql) B on A.Batch = B.Batch and Cast(A.Post_Date_sql as Date) = Cast(B.Post_Date_sql as Date) left join (select batch_num as Batch, vendor, date_exchange, exchange_curr, exchange_rate, sum(amt_transaction) as amount, sum(exchange_amt) as AmountF from v_ap_open_items where gl_Account = '{0}' and date_batch between '{1}' and '{2}' and vendor <> '' group by Batch_num, vendor, exchange_curr, exchange_rate, date_exchange)C On A.Batch = C.Batch Left Join v_vendor_master D on C.vendor = D.vendor left join (SELECT * FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '{3}') E On C.Date_Exchange = E.Date_Exch_Rate and c.exchange_curr = E.TO_ISO_CODE where A.gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by batch, A.post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+F.Intrinsic.Control.Else
+	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.batch as Batch, A.post_Date_sql as PostDate, A.line as Line, name_vendor as Description, ' ' as Reference, amount_cmpny as Amount, Cast((A.CHECK_NET_VEND * E.exchange_rate) as numeric(10,2)) as Amount2, invoice_no as Invoice,A.exch_vend_curr as Currency, A.CHECK_NET_VEND as Amount,Exch_Vend_Rate as ExchRate, E.exchange_rate as ExchRate2 from v_gl_ap_check_dtl A Inner Join (Select Batch, Post_Date_Sql from V_GL_Detail Group by Batch,Post_Date_Sql) B on A.Batch = B.Batch and Cast(A.Post_Date_sql as Date) = Cast(B.Post_Date_sql as Date) left join (select batch as Batch, cust_vendor from v_gl_ap_check_dtl where post_date_sql between '{1}' and '{2}' and cust_vendor <> '' group by Batch, cust_vendor)C On A.Batch = C.Batch Left Join v_vendor_master D on C.cust_vendor = D.vendor left join (SELECT * FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '{3}') E On (IF(A.EXCH_DATE_SQL<>'1900-01-01',A.EXCH_DATE_SQL,'1900-01-01')) = E.Date_Exch_Rate and A.exch_vend_curr = E.TO_ISO_CODE where A.gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by batch, A.post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+F.Data.DataTable.CreateFromSQL("dtCheck","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtCheck","Mode","String","AP Check")
+F.Data.DataTable.Merge("dtCheck","dtGL",True,1)
+F.Data.DataTable.Close("dtCheck")
+
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, batch as Batch, post_Date_sql as PostDate, line as Line, cust_name as Description, ' ' as Reference, amount_cmpny as Amount, Cast((amount_oe * B.exchange_rate) as numeric(10,2)) as Amount2, invoice_no as Invoice, exch_oe_curr as Currency, amount_oe as AmountF,  Exch_OE_Rate as ExchRate, B.exchange_rate as ExchRate2 from v_gl_ar_detail A LEFT JOIN (SELECT * FROM GAB_6061_EXCH_RATES WHERE FROM_ISO_CODE = '{3}') B On (IF(A.EXCH_DATE_SQL<>'1900-01-01',A.EXCH_DATE_SQL,'1900-01-01')) = B.Date_Exch_Rate and A.exch_oe_curr = B.TO_ISO_CODE where A.gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by batch, post_Date_sql, line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'	F.Intrinsic.Debug.ShowCallerInfo
+F.Data.DataTable.CreateFromSQL("dtAR","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtAR","Mode","String","AR")
+F.Data.DataTable.Merge("dtAR","dtGL",True,1)
+F.Data.DataTable.Close("dtAR")
+
+F.Data.DataView.Create("dtGL","dvGL",22,"","PostDate ASC")
+F.Data.DataView.ToDataTable("dtGL","dvGL","dtTemp",True)
+F.Data.DataView.Close("dtGL","dvGL")
+F.Data.DataTable.Close("dtGL")
+
+F.Data.DataTable.Clone("dtTemp","dtDetail",True)
+
+V.Local.sAccountDesc.Set(V.Screen.F_ViewGL!txtAccountDesc.Text)
+
+'Get beginning balance until the selected date
+'Get financial year info
+F.Intrinsic.String.Format(V.Local.dStart,"MM/DD/YY",V.Local.sFormattedDate)
+F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+V.Local.iYear.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+V.Local.dBegBeg.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+
+'Get beginning balance of the year
+F.Intrinsic.String.Build("select beg_bal from v_gl_balances where fiscal_yr = '{0}' and acct = '{1}'",V.Local.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)
+
+'Get the sum of all transactions posted between year start date and selected start date
+F.Intrinsic.Date.DateAdd("D",-1,V.Local.dStart,V.Local.dBegEnd)
+F.Intrinsic.String.Build("select sum(amount_cmpny) from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldValPervasiveDate,V.Local.dBegEnd.PervasiveDate,V.Local.sSQL)
+F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fBegBal)
+
+F.Data.DataTable.AddRow("dtDetail","PostDate",V.Local.dStart,"Description","Beginning Balance:","Reference",V.Local.sAccountDesc.Trim,"Amount",V.Local.fBegBal)
+
+'Get the sum of all transactions posted between start date and end date
+F.Intrinsic.Control.If(V.DataTable.dtDetail.RowCount,=,0)
+	V.Local.fAmtPosted.Set(0)
+F.Intrinsic.Control.Else
+	F.Data.DataTable.Compute("dtTemp","SUM(Amount)","",V.Local.fAmtPosted)
+F.Intrinsic.Control.EndIf
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fEndBal)
+
+F.Data.DataTable.Merge("dtTemp","dtDetail",True,1)
+F.Data.DataTable.Close("dtTemp")
+F.Data.DataTable.AcceptChanges("dtDetail")
+	
+'Add ending balance to dtDetail
+F.Data.DataTable.AddRow("dtDetail","PostDate",V.Local.dEnd,"Description","Ending Balance:","Reference",V.Local.sAccountDesc.Trim,"Amount",V.Local.fEndBal)
+
+'F.Data.DataTable.AddExpressionColumn("dtDetail","BatchLine","String","Batch+Line")
+'//F.Data.DataTable.AddColumn("dtDetail","Currency","String")
+'//	F.Data.DataTable.AddColumn("dtDetail","AmountF","Float")
+'F.Data.DataTable.AddExpressionColumn("dtDetail","ExchRate","Float","IIF(AmountF<>0,Amount/AmountF,0)")
+'//F.Data.DataTable.AddColumn("dtDetail","ExchRate","Float")
+'F.Data.DataTable.AddColumn("dtDetail","Invoice","String")
+'F.Data.DataTable.AddColumn("dtDetail","Mode","String")
+
+'Update batch info in foreign currency if exists
+'//F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, exch_vend_curr as Currency, amount_vend as Amount, invoice_no as Invoice, invc_date_sql as InvoiceDate, Exch_Vend_Rate as ExchRate from v_gl_ap_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_vend_curr <> '' and exch_vend_curr <> '{3}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'//F.Data.DataTable.CreateFromSQL("dtFDetail","conx",V.Local.sSQL,True)
+'//F.Data.DataTable.AddColumn("dtFDetail","Mode","String","AP")
+
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.exch_vend_curr as Currency, A.amount_vend as Amount, invoice_no as Invoice, invc_date_sql as InvoiceDate from v_gl_ap_check_dtl A where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_vend_curr <> '' and exch_vend_curr <> '{3}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(B.EXCH_VEND_CURR<>'',B.EXCH_VEND_CURR,'USD') as Currency, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount, A.invoice_No as Invoice, A.Invc_Date_SQL as InvoiceDate from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'//F.Intrinsic.Control.If(V.Local.bCheck,=,True)
+'	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(B.EXCH_VEND_CURR<>'',B.EXCH_VEND_CURR,'{3}') as Currency, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount, A.invoice_No as Invoice, A.Invc_Date_SQL as InvoiceDate, B.Exch_Vend_Rate as ExchRate from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, A.Exch_Vend_Rate, SUM(A.CHECK_NET_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR, A.Exch_Vend_Rate) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(B.Exchange_curr<>'',B.Exchange_curr,'{3}') as Currency, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount, A.invoice_No as Invoice, A.Invc_Date_SQL as InvoiceDate, B.exchange_rate as ExchRate from v_gl_ap_check_dtl A Left Join (select batch_num as Batch, vendor,Exchange_Curr, exchange_rate, sum(exchange_amt) as amount from v_ap_open_items where gl_Account = '{0}' and date_batch between '{1}' and '{2}' and vendor <> '' group by Batch_num, vendor,Exchange_Curr, Exchange_Rate) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'F.Intrinsic.Debug.ShowCallerInfo
+'//	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(C.Exchange_curr<>'',C.Exchange_curr,'{3}') as Currency, -c.Amount as Amount, invoice_no as Invoice, A.Invc_Date_SQL as InvoiceDate, C.exchange_rate as ExchRate from v_gl_ap_check_dtl A Inner Join (Select Batch, Post_Date_Sql from V_GL_Detail Group by Batch,Post_Date_Sql) B on A.Batch = B.Batch and Cast(A.Post_Date_sql as Date) = Cast(B.Post_Date_sql as Date) left join (select batch_num as Batch, vendor, Exchange_Curr, Exchange_Rate, sum(Exchange_Amt) as amount from v_ap_open_items where gl_Account = '{0}' and date_batch between '{1}' and '{2}' and vendor <> '' group by Batch_num, vendor, Exchange_Curr, Exchange_Rate)C On A.Batch = C.Batch Left Join v_vendor_master D on C.vendor = D.vendor where gl_number = '{0}' and A.post_date_sql between '{1}' and '{2}' order by A.batch, A.post_Date_sql, A.line",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'//F.Intrinsic.Control.Else
+'//	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, A.exch_vend_curr as Currency, A.CHECK_NET_VEND as Amount, invoice_no as Invoice, invc_date_sql as InvoiceDate, Exch_Vend_Rate as ExchRate from v_gl_ap_check_dtl A where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_vend_curr <> '' and exch_vend_curr <> '{3}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'//F.Intrinsic.Control.EndIf
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(A.PAYMENT_CURR<>'',A.PAYMENT_CURR,'{3}') as Currency, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount, A.invoice_No as Invoice, A.Invc_Date_SQL as InvoiceDate from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.CHECK_NET_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'//F.Data.DataTable.CreateFromSQL("dtCheck","conx",V.Local.sSQL,True)
+'//F.Data.DataTable.AddColumn("dtCheck","Mode","String","AP Check")
+'//F.Data.DataTable.Merge("dtCheck","dtFDetail",True,1)
+'//F.Data.DataTable.Close("dtCheck")
+
+'//F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine,exch_oe_curr as Currency, amount_oe as Amount, invoice_no as Invoice, invc_date_sql as InvoiceDate, Exch_OE_Rate as ExchRate from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_oe_curr <> '' and exch_oe_curr <> '{3}'",V.Local.sAccount.Trim,V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency.Trim,V.Local.sSQL)
+'//F.Data.DataTable.CreateFromSQL("dtAR","conx",V.Local.sSQL,True)
+'//F.Data.DataTable.AddColumn("dtAR","Mode","String","AR")
+'//F.Data.DataTable.Merge("dtAR","dtFDetail",True,1)
+'//F.Data.DataTable.Close("dtAR")
+
+'//F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine,exchange_curr as Currency, convert(amount_forex,sql_numeric) as Amount, '' as Invoice, Cast('1900-01-01' as Date) as InvoiceDate, Cast(Exchange_Rate as Numeric(10,5)) as ExchRate from GAB_5060_BATCH_DTL where  post_date_sql between '{0}' and '{1}'",V.Local.dStart.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'//F.Data.DataTable.CreateFromSQL("dtGLF","conx",V.Local.sSQL,True)
+'F.Data.DataTable.AddColumn("dtGLF","Invoice","String")
+'F.Data.DataTable.AddColumn("dtGLF","InvoiceDate","Date")
+'//F.Data.DataTable.AddColumn("dtGLF","Mode","String","")
+'//F.Data.DataTable.Merge("dtGLF","dtFDetail",True,1)
+'//F.Data.DataTable.Close("dtGLF")
+
+'//F.Data.Dictionary.CreateFromDataTable("dicAP","dtFDetail","BatchLine","Currency")
+'//F.Data.Dictionary.SetDefaultReturn("dicAP",V.Global.sCoCurrency.Trim)
+'//F.Data.DataTable.FillFromDictionary("dtDetail","dicAP","BatchLine","Currency")
+'//F.Data.Dictionary.Close("dicAP")
+'//F.Data.Dictionary.CreateFromDataTable("dicAP","dtFDetail","BatchLine","Amount")
+'//F.Data.Dictionary.SetDefaultReturn("dicAP","0")
+'//F.Data.DataTable.FillFromDictionary("dtDetail","dicAP","BatchLine","AmountF")
+'//F.Data.Dictionary.Close("dicAP")
+'//	F.Data.Dictionary.CreateFromDataTable("dicAP","dtFDetail","BatchLine","ExchRate")
+'//	F.Data.Dictionary.SetDefaultReturn("dicAP","0")
+'//	F.Data.DataTable.FillFromDictionary("dtDetail","dicAP","BatchLine","ExchRate")
+'//	F.Data.Dictionary.Close("dicAP")
+'F.Data.Dictionary.CreateFromDataTable("dicAP","dtFDetail","BatchLine","Invoice")
+'F.Data.Dictionary.SetDefaultReturn("dicAP","")
+'F.Data.DataTable.FillFromDictionary("dtDetail","dicAP","BatchLine","Invoice")
+'F.Data.Dictionary.Close("dicAP")
+'F.Data.Dictionary.CreateFromDataTable("dicAP","dtFDetail","BatchLine","Mode")
+'F.Data.Dictionary.SetDefaultReturn("dicAP","")
+'F.Data.DataTable.FillFromDictionary("dtDetail","dicAP","BatchLine","Mode")
+'F.Data.Dictionary.Close("dicAP")
+
+'//F.Data.DataTable.Close("dtFDetail")
+
+F.Intrinsic.Control.CallSub(GridViewSetup)
+
+'Check if GL account is cash account
+F.Intrinsic.String.Build("Account = '{0}'",V.Local.sAccount.Trim,V.Local.sFilter)
+F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+	'Cash account, add beginning balance and ending balance in foreign currency
+	F.Intrinsic.String.Build("select beg_bal from GAB_6061_GL_BEG_BAL where gl_account = '{0}' and fiscal_yr = {1}",V.Local.sAccount.Trim,V.Local.iYear,V.Local.sSQL)
+	F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+	F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)
+
+	'Get GL detail batch info for the selected year
+	F.Intrinsic.String.Build("select batch as Batch, line as Line, amount_cmpny as Amount from gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegBeg.PervasiveDate,V.Local.dBegEnd.PervasiveDate,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtGLDetail","conx",V.Local.sSQL,True)
+	
+	'Get custom GL detail batch info for the selected year
+	F.Intrinsic.String.Build("select batch as Batch, line as Line, amount_forex as Amount from GAB_6061_BATCH_DTL where post_date_sql between '{0}' and '{1}'",V.Local.dBegBeg.PervasiveDate,V.Local.dBegEnd.PervasiveDate,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtGABDetail","conx",V.Local.sSQL,True)
+	
+	'User LINQ to get the two table join with the required info
+	F.Data.Linq.Join("InnerJoin","datatable","dtGLDetail*!*GL","datatable","dtGABDetail*!*GAB","GL.Batch = GAB.Batch AND GL.Line = GAB.Line","GL.Batch*!*GL.Line*!*GAB.Amount","","","","dtDetailF",True)
+'	F.Data.Linq.Join("LeftJoin","datatable","dtGLDetail*!*GL","datatable","dtGABDetail*!*GAB","GL.Batch = GAB.Batch AND GL.Line = GAB.Line","GL.Batch*!*GL.Line*!*GAB.Amount","","","","dtDetailF",True)
+	F.Intrinsic.Control.If(V.DataTable.dtDetailF.RowCount,=,0)
+		V.Local.fAmtPosted.Set(0)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.Compute("dtDetailF","SUM(Amount)","",V.Local.fAmtPosted)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtGLDetail")
+	F.Data.DataTable.Close("dtGABDetail")
+	F.Data.DataTable.Close("dtDetailF")
+	F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fBegBal)
+	
+	F.Intrinsic.String.Build("select batch as Batch, line as Line, amount_vend as Amount from v_gl_ap_detail where GL_number = '{0}' and post_date_sql between '{1}' and '{2}' union all select A.batch as Batch, A.line as Line, -B.Amount as Amount from v_gl_ap_check_dtl A left join (select batch as Batch, Sum(check_net_vend) as Amount from v_gl_ap_check_dtl where GL_number <> '{0}' and post_date_sql between '{1}' and '{2}' group by batch) B On Rtrim(A.Batch) = Rtrim(B.Batch) where GL_number = '{0}' and post_date_sql between '{1}' and '{2}' union all select batch as Batch, line as Line, amount_oe as Amount from v_gl_ar_detail where GL_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegBeg.PervasiveDate,V.Local.dBegEnd.PervasiveDate,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtGLDetail","conx",V.Local.sSQL,True)
+	F.Intrinsic.Control.If(V.DataTable.dtGLDetail.RowCount,=,0)
+		V.Local.fAmtPosted.Set(0)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.Compute("dtGLDetail","SUM(Amount)","",V.Local.fAmtPosted)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtGLDetail")
+	F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fBegBal)
+	
+	'Get the sum of all forex transactions posted between start date and end date
+	F.Intrinsic.Control.If(V.DataTable.dtDetail.RowCount,=,0)
+		V.Local.fAmtPosted.Set(0)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.Compute("dtDetail","SUM(AmountF)","",V.Local.fAmtPosted)
+	F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.String.Build("select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account where gl_cash_acct = '{0}'",V.Local.sAccount.Trim,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+		F.Data.DataTable.SetValue("dtDetail",0,"AmountF",V.Local.fBegBal,"Currency",V.ODBC.conx!rst.FieldVal!Currency)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fEndBal)
+		F.Data.DataTable.SetValue("dtDetail",V.DataTable.dtDetail.RowCount--,"AmountF",V.Local.fEndBal,"Currency",V.ODBC.conx!rst.FieldVal!Currency)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.SetValue("dtDetail",0,"AmountF",V.Local.fBegBal)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fEndBal)
+		F.Data.DataTable.SetValue("dtDetail",V.DataTable.dtDetail.RowCount--,"AmountF",V.Local.fEndBal)
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.conx!rst.Close
+F.Intrinsic.Control.EndIf
+
+Gui.F_ViewGL.GsGCDetail.Visible(True)
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End 
+F.Intrinsic.Control.EndTry
+Program.Sub.LoadTransaction.End
+
+Program.Sub.GridViewSetup.Start
+V.Local.sLabel.Declare
+
+Gui.F_ViewGL.GsGCDetail.AddGridviewFromDatatable("gvGL","dtDetail")
+Gui.F_ViewGL.GsGCDetail.MainView("gvGL")
+
+Gui.F_ViewGL.GsGCDetail.SetGridviewProperty("gvGL","AllowSort",False)
+Gui.F_ViewGL.GsGCDetail.SetGridviewProperty("gvGL","AllowFilter",False)
+
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","BatchLine","Visible",False)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Batch","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Line","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Description","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Reference","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount2","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Currency","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate2","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","AmountF","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Invoice","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Mode","HeaderHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Batch","CellHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","CellHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Line","CellHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Currency","CellHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Mode","CellHAlignment","Center")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","Caption","Post Date")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","AmountF","Caption","Forex Amt")
+F.Intrinsic.String.Build("Exch. Rate to {0}",V.Global.sCoCurrency.Trim,V.Local.sLabel)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate2","Caption","2nd Exchange Rate")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate","Caption",V.Local.sLabel)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount","Caption","Base Amount")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","DisplayCustomDatetime","d")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount","DisplayCustomNumeric","#,###,##0.00")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","AmountF","DisplayCustomNumeric","#,###,##0.00")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate","DisplayCustomNumeric","#,###,##0.00000")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Batch","MinWidth","80")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Line","MinWidth","40")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Description","MinWidth","200")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Reference","MinWidth","110")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount2","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Currency","MinWidth","60")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate2","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","AmountF","MinWidth","100")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Invoice","MinWidth","150")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Mode","MinWidth","40")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Batch","Fixed","Left")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","Fixed","Left")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Line","Fixed","Left")
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Batch","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","PostDate","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Line","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Description","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Reference","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Amount2","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Currency","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","ExchRate2","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","AmountF","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Invoice","HeaderFontBold",True)
+Gui.F_ViewGL.GsGCDetail.SetColumnProperty("gvGL","Mode","HeaderFontBold",True)
+
+Gui.F_ViewGL.GsGCDetail.SetRowAppearance("gvGL",0,"Fontbold",True)
+Gui.F_ViewGL.GsGCDetail.SetRowAppearance("gvGL",V.DataTable.dtDetail.RowCount--,"Fontbold",True)
+Program.Sub.GridViewSetup.End
+
+Program.Sub.SetContextMenus.Start
+Gui.F_ViewGL..ContextMenuCreate("CTXDETAIL")
+Gui.F_ViewGL.GsGCDetail.ContextMenuAttach("CTXDETAIL")
+Gui.F_ViewGL..ContextMenuAddItem("CTXDETAIL","Export",0,"Export")
+Gui.F_ViewGL..ContextMenuSetItemEventHandler("CTXDETAIL","Export","ContextMenuExport")
+Program.Sub.SetContextMenus.End
+
+Program.Sub.ContextMenuExport.Start
+V.Local.bExist.Declare
+V.Local.sFilename.Declare
+
+F.Intrinsic.Control.If(V.DataTable.dtDetail.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataTable.dtDetail.RowCount,>,0)
+		F.Automation.MSExcel.CheckPresence(V.Local.bExist)
+		F.Intrinsic.Control.If(V.Local.bExist)
+			F.Intrinsic.UI.ShowSaveFileDialog("","*.xlsx|",V.Local.sFilename)
+			F.Intrinsic.Control.If(V.Local.sFileName,<>,"***CANCEL***")
+				F.Intrinsic.String.Concat(V.Local.sFilename,".xlsx",V.Local.sFilename)
+				Gui.F_ViewGL.GsGCDetail.Export(V.Local.sFilename,"xlsx")
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sFilename,"","",1)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			F.Intrinsic.UI.ShowSaveFileDialog("","*.csv|",V.Local.sFilename)
+			F.Intrinsic.Control.If(V.Local.sFileName,<>,"***CANCEL***")
+				F.Intrinsic.String.Concat(V.Local.sFilename,".csv",V.Local.sFilename)
+				Gui.F_ViewGL.GsGCDetail.Export(V.Local.sFilename,"csv")
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sFilename,"","",1)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.ContextMenuExport.End
+
+Program.Sub.Comments.Start
+${$0$}$View GL Detail with Foreign Currency$}$MHERTANTO$}$9/27/2019 3:20:43 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This program is GL manual journal that allows multi-currency entry. Data related to exchange rate are stored in a custom table. The program also stores batch posted in AP and AR which is in foreign currency.
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200818160350848$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fd4HAgfUMhN9SYvcG/Z3oZEP55KMAZMLDY=
+Program.Sub.Comments.End
