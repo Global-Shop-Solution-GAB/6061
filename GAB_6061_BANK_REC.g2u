@@ -1,0 +1,1774 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_BankRec..Create
+Gui.F_BankRec..Caption("Bank Reconciliation [APAC]")
+Gui.F_BankRec..Size(13830,11400)
+Gui.F_BankRec..MinX(0)
+Gui.F_BankRec..MinY(0)
+Gui.F_BankRec..Position(0,0)
+Gui.F_BankRec..FontSize(9)
+Gui.F_BankRec..BackColor(-2147483633)
+Gui.F_BankRec..MousePointer(0)
+Gui.F_BankRec..Event(UnLoad,Unload)
+Gui.F_BankRec.lbl1.Create(Label,"GL Account",True,1485,255,0,60,60,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.txtGLAcct.Create(TextBox,"",True,1440,315,0,105,285,True,0,"Arial",9,-2147483643,1)
+'Gui.F_BankRec.txtGLAcct.Event(LostFocus,txtGLAcct_LostFocus)
+Gui.F_BankRec.txtGLAcct.Locked(True)
+Gui.F_BankRec.cmdBrwAcct.Create(Button)
+Gui.F_BankRec.cmdBrwAcct.Size(420,420)
+Gui.F_BankRec.cmdBrwAcct.Position(4635,195)
+Gui.F_BankRec.cmdBrwAcct.Caption("^")
+Gui.F_BankRec.cmdBrwAcct.Event(Click,cmdBrw_Click)
+Gui.F_BankRec.txtGLDesc.Create(TextBox,"",True,2835,315,0,1680,285,True,0,"Arial",9,-2147483643,1)
+Gui.F_BankRec.txtGLDesc.Locked(True)
+Gui.F_BankRec.lbl2.Create(Label,"Description",True,1935,255,0,1635,60,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.dtpStatement.Create(DatePicker)
+Gui.F_BankRec.dtpStatement.Size(1650,285)
+Gui.F_BankRec.dtpStatement.Position(6975,285)
+Gui.F_BankRec.lbl3.Create(Label,"Statement Date",True,1635,255,0,6945,60,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.txtCurr.Create(TextBox,"",True,810,315,0,5610,285,True,0,"Arial",9,-2147483643,1)
+Gui.F_BankRec.txtCurr.Locked(True)
+Gui.F_BankRec.lbl4.Create(Label,"Currency",True,885,255,0,5595,60,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.txtEnding.Create(TextBox,"",True,2325,315,0,9045,285,True,0,"Arial",9,-2147483643,1)
+Gui.F_BankRec.txtEnding.NumericOnly(1)
+Gui.F_BankRec.lbl5.Create(Label,"Statement Ending Balance",True,2325,255,0,9135,60,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.cmdProcess.Create(Button)
+Gui.F_BankRec.cmdProcess.Size(1815,585)
+Gui.F_BankRec.cmdProcess.Position(11685,30)
+Gui.F_BankRec.cmdProcess.Caption("Process")
+Gui.F_BankRec.cmdProcess.FontSize(9)
+Gui.F_BankRec.cmdProcess.Event(Click,cmdProcess_Click)
+Gui.F_BankRec.frameIn.Create(Frame)
+Gui.F_BankRec.frameIn.Size(13380,2595)
+Gui.F_BankRec.frameIn.Position(105,675)
+Gui.F_BankRec.frameIn.Caption("Debits")
+Gui.F_BankRec.frameIn.FontSize(9)
+Gui.F_BankRec.GsGCIn.Create(GsGridControl)
+Gui.F_BankRec.GsGCIn.Size(13170,1875)
+Gui.F_BankRec.GsGCIn.Position(105,285)
+Gui.F_BankRec.GsGCIn.Parent("frameIn")
+Gui.F_BankRec.GsGCIn.Event(CellValueChanged,GsGCIn_CellValueChanged)
+Gui.F_BankRec.GsGCIn.SetFocus
+Gui.F_BankRec.chkClearIn.Create(CheckBox)
+Gui.F_BankRec.chkClearIn.Size(1560,285)
+Gui.F_BankRec.chkClearIn.Position(105,2235)
+Gui.F_BankRec.chkClearIn.Parent("frameIn")
+Gui.F_BankRec.chkClearIn.Caption("Clear All")
+Gui.F_BankRec.chkClearIn.FontSize(9)
+Gui.F_BankRec.chkClearIn.Event(Click,chkClearIn_Click)
+Gui.F_BankRec.frameOut.Create(Frame)
+Gui.F_BankRec.frameOut.Size(13380,2595)
+Gui.F_BankRec.frameOut.Position(105,3300)
+Gui.F_BankRec.frameOut.Caption("Credits")
+Gui.F_BankRec.frameOut.FontSize(9)
+Gui.F_BankRec.GsGCOut.Create(GsGridControl)
+Gui.F_BankRec.GsGCOut.Size(13170,1875)
+Gui.F_BankRec.GsGCOut.Position(105,285)
+Gui.F_BankRec.GsGCOut.Parent("frameOut")
+Gui.F_BankRec.GsGCOut.Event(CellValueChanged,GsGCOut_CellValueChanged)
+Gui.F_BankRec.chkClearOut.Create(CheckBox)
+Gui.F_BankRec.chkClearOut.Size(1560,285)
+Gui.F_BankRec.chkClearOut.Position(105,2235)
+Gui.F_BankRec.chkClearOut.Parent("frameOut")
+Gui.F_BankRec.chkClearOut.Caption("Clear All")
+Gui.F_BankRec.chkClearOut.FontSize(9)
+Gui.F_BankRec.chkClearOut.Event(Click,chkClearOut_Click)
+Gui.F_BankRec.frameSummary.Create(Frame)
+Gui.F_BankRec.frameSummary.Size(6960,2655)
+Gui.F_BankRec.frameSummary.Position(120,8145)
+Gui.F_BankRec.frameSummary.Caption("Summary")
+Gui.F_BankRec.frameSummary.FontSize(9)
+Gui.F_BankRec.GsGCSummary.Create(GsGridControl)
+Gui.F_BankRec.GsGCSummary.Size(6765,2265)
+Gui.F_BankRec.GsGCSummary.Position(105,285)
+Gui.F_BankRec.GsGCSummary.Parent("frameSummary")
+Gui.F_BankRec.frameAdj.Create(Frame)
+Gui.F_BankRec.frameAdj.Size(11520,2190)
+Gui.F_BankRec.frameAdj.Position(105,5910)
+Gui.F_BankRec.frameAdj.Caption("Adjusting Entries")
+Gui.F_BankRec.frameAdj.FontSize(9)
+Gui.F_BankRec.GsGCAdj.Create(GsGridControl)
+Gui.F_BankRec.GsGCAdj.Size(11280,1785)
+Gui.F_BankRec.GsGCAdj.Position(105,270)
+Gui.F_BankRec.GsGCAdj.Parent("frameAdj")
+Gui.F_BankRec.GsGCAdj.Event(CellValueChanged,GsGCAdj_CellValueChanged)
+Gui.F_BankRec.GsGCAdj.Event(RowCellClick,GsGCAdj_RowCellClick)
+Gui.F_BankRec.cmdUpdate.Create(Button)
+Gui.F_BankRec.cmdUpdate.Size(2580,660)
+Gui.F_BankRec.cmdUpdate.Position(7185,8265)
+Gui.F_BankRec.cmdUpdate.Caption("Update")
+Gui.F_BankRec.cmdUpdate.FontSize(9)
+Gui.F_BankRec.cmdUpdate.Event(Click,cmdUpdate_Click)
+Gui.F_BankRec.frameExch.Create(Frame)
+Gui.F_BankRec.frameExch.Size(1710,1275)
+Gui.F_BankRec.frameExch.Position(11745,5910)
+Gui.F_BankRec.frameExch.Caption("Exchange Rate")
+Gui.F_BankRec.frameExch.FontSize(9)
+Gui.F_BankRec.lblExchange.Create(Label,"Label",True,1455,255,0,105,405,True,0,"Arial",9,-2147483633,0)
+Gui.F_BankRec.lblExchange.Parent("frameExch")
+Gui.F_BankRec.txtExchRate.Create(TextBox,"",True,1425,315,0,150,690,True,0,"Arial",9,-2147483643,1)
+Gui.F_BankRec.txtExchRate.Parent("frameExch")
+Gui.F_BankRec.txtExchRate.NumericOnly(1)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.sCoCurr.Declare
+V.Global.iYear.Declare
+V.Global.fExchRate2.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sIconPath.Declare
+V.Local.sLabel.Declare
+V.Local.i1.Declare
+V.Local.sBankAccount.Declare
+
+'Set up GSS logo
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+Gui.F_BankRec..Icon(V.Local.sIconPath)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'Get base currency from V_COMPANY_OPT
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+V.Global.sCoCurr.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+F.Intrinsic.String.Build("{0} to {0}",V.Global.sCoCurr.Trim,V.Local.sLabel)
+Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+F.ODBC.conx!rst.Close
+
+'Get all the cash accounts
+F.Data.Dictionary.CreateFromSQL("dicCash","conx","SELECT DISTINCT GL_CASH_ACCT, gl_cash_acct FROM CASH_ACCOUNT ORDER BY GL_CASH_ACCT")
+Gui.F_BankRec.txtGLAcct.AddAutoCompleteItem("dicCash","Dictionary")
+F.Data.Dictionary.Close("dicCash")
+
+'Cash account datatable for reference
+'F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+'F.Data.DataTable.AddColumn("dtCash","Description","String")
+'F.Data.Dictionary.CreateFromSQL("dicDesc","conx","select gl_account as Account, descr as Description from v_gl_master")
+'F.Data.Dictionary.SetDefaultReturn("dicDesc","")
+'F.Data.DataTable.FillFromDictionary("dtCash","dicDesc","Account","Description")
+'F.Data.Dictionary.Close("dicDesc")
+F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+	F.Data.DataTable.AddColumn("dtCash","Description","String")
+	F.Data.Dictionary.CreateFromSQL("dicDesc","conx","select gl_account as Account, descr as Description from v_gl_master")
+	F.Data.Dictionary.SetDefaultReturn("dicDesc","")
+	F.Data.DataTable.FillFromDictionary("dtCash","dicDesc","Account","Description")
+	F.Data.Dictionary.Close("dicDesc")
+F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account_enc as BankAccountEnc from v_cash_account",True)
+	F.Data.DataTable.AddColumn("dtCash","Description","String")
+	F.Data.DataTable.AddColumn("dtCash","BankAccount","String")	
+	F.Data.Dictionary.CreateFromSQL("dicDesc","conx","select gl_account as Account, descr as Description from v_gl_master")
+	F.Data.Dictionary.SetDefaultReturn("dicDesc","")
+	F.Data.DataTable.FillFromDictionary("dtCash","dicDesc","Account","Description")
+	F.Data.Dictionary.Close("dicDesc")
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCash.RowCount--,1)
+		F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.i1).BankAccountEnc!FieldVal,V.Local.sBankAccount)
+		F.Data.DataTable.SetValue("dtCash",V.Local.i1,"BankAccount",V.Local.sBankAccount.Trim)
+'		F.Intrinsic.Debug.ShowCallerInfo
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf	
+
+'Datatable for fiscal year reference
+F.Data.DataTable.CreateFromSQL("dtCalendar","conx","select distinct start_year as FYR from v_gl_calendar",True)
+F.Data.DataTable.AddColumn("dtCalendar","Beginning","Date")
+F.Data.DataTable.AddColumn("dtCalendar","Ending","Date")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, beg_date from v_gl_calendar where period = '01'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Beginning")
+F.Data.Dictionary.Close("dicBeg")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, end_date from v_gl_calendar where period = '12'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Ending")
+F.Data.Dictionary.Close("dicBeg")
+
+'Datatable for GL Master
+F.Data.DataTable.CreateFromSQL("dtGLDesc","conx","select gl_account as Account, descr as Description from v_gl_master",True)
+
+Gui.F_BankRec..Show
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Intrinsic.Control.If(V.DataTable.dtTrans.Exists,=,True)
+	F.Data.DataView.Close("dtTrans","dvIn")
+	F.Data.DataView.Close("dtTrans","dvOut")
+	F.Data.DataTable.Close("dtTrans")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtAdj.Exists,=,True)
+	F.Data.DataTable.Close("dtAdj")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtSummary.Exists,=,True)
+	F.Data.DataTable.Close("dtSummary")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.txtGLAcct_LostFocus.Start
+V.Local.sFilter.Declare
+V.Local.sLabel.Declare
+V.Local.sRet.Declare
+
+F.Intrinsic.String.Build("Account = '{0}'",V.Screen.F_BankRec!txtGLAcct.Text,V.Local.sFilter)
+F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+	Gui.F_MiscCash.txt_GLAcct.Text("")
+	F.Intrinsic.UI.Msgbox("Invalid cash account")
+	F.Intrinsic.Control.CallSub(cmdbrw_click)
+F.Intrinsic.Control.Else
+	Gui.F_BankRec.txtCurr.Text(V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim)
+	Gui.F_BankRec.txtGLDesc.Text(V.DataTable.dtCash(V.Local.sRet).Description!FieldValTrim)
+	F.Intrinsic.String.Build("{0} to {1}",V.DataTable.dtCash(V.Local.sRet).Currency!FieldValTrim,V.Global.sCoCurr.Trim,V.Local.sLabel)
+	Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+	F.Intrinsic.Control.CallSub(retrieveexchangerate)
+F.Intrinsic.Control.EndIf
+Program.Sub.txtGLAcct_LostFocus.End
+
+Program.Sub.cmdBrw_Click.Start
+V.Local.iWidths.Declare
+V.Local.sLabel.Declare
+V.Local.sQuery.Declare
+V.Local.sRet.Declare
+V.Local.sTitles.Declare
+V.Local.sBrowserList.Declare
+V.Local.sFilter.Declare
+V.Local.i1.Declare
+V.Local.sBankAccount.Declare
+
+F.Intrinsic.String.Split("GL Account*!*GL Description*!*Currency*!*Cash Account Description*!*Cash Account No.","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1600*!*4000*!*800*!*3500*!*1600","*!*",V.Local.iWidths)
+
+'V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+
+'F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+'F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+'F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+'	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+'	Gui.F_BankRec.txtCurr.Text(V.Local.sRet(2).Trim)
+'	Gui.F_BankRec.txtGLAcct.Text(V.Local.sRet(0).Trim)
+'	Gui.F_BankRec.txtGLDesc.Text(V.Local.sRet(1).Trim)
+'	F.Intrinsic.String.Build("{0} to {1}",V.Local.sRet(2).Trim,V.Global.sCoCurr.Trim,V.Local.sLabel)
+'	Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+'	F.Intrinsic.Control.CallSub(retrieveexchangerate)
+'F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		Gui.F_BankRec.txtCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_BankRec.txtGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_BankRec.txtGLDesc.Text(V.Local.sRet(1).Trim)
+		F.Intrinsic.String.Build("{0} to {1}",V.Local.sRet(2).Trim,V.Global.sCoCurr.Trim,V.Local.sLabel)
+		Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+		F.Intrinsic.Control.CallSub(retrieveexchangerate)
+	F.Intrinsic.Control.EndIf	
+F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+	V.Local.sQuery.Set("SELECT C.GL_CASH_ACCT, G.DESCR,C.EXCH_CURR, C.BANK_DESC, C.BANK_ACCOUNT_ENC as Bank_Account FROM V_CASH_ACCOUNT C LEFT JOIN V_GL_MASTER G ON C.GL_CASH_ACCT = G.GL_ACCOUNT ORDER BY C.EXCH_CURR, C.BANK_DESC")
+	F.Data.DataTable.CreateFromSQL("dtCashTemp","conx",V.Local.sQuery,True)
+	F.Data.DataTable.Select("dtCashTemp","",V.Local.sRet)
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sRet.UBound,1)
+	F.Global.Encryption.Decrypt(V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Account!FieldVal,V.Local.sBankAccount)
+		F.Intrinsic.Control.If(V.Local.i1,=,0)
+			F.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}*!*{4}",V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("{0}$!${1}*!*{2}*!*{3}*!*{4}*!*{5}",V.Local.sBrowserList.Trim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).GL_Cash_Acct!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Descr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Exch_Curr!FieldValTrim,V.DataTable.dtCashTemp(V.Local.sRet(V.Local.i1)).Bank_Desc!FieldValTrim,V.Local.sBankAccount,V.Local.sBrowserList)
+		F.Intrinsic.Control.EndIf	
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.Data.DataTable.Close("dtCashTemp")
+		
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.BrowserFromString("Select a Cash Account",V.Local.sBrowserList,"*!*","$!$",V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+'	F.Intrinsic.UI.Browser("Select a Cash Account","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	
+		Gui.F_BankRec.txtCurr.Text(V.Local.sRet(2).Trim)
+		Gui.F_BankRec.txtGLAcct.Text(V.Local.sRet(0).Trim)
+		Gui.F_BankRec.txtGLDesc.Text(V.Local.sRet(1).Trim)
+		F.Intrinsic.String.Build("{0} to {1}",V.Local.sRet(2).Trim,V.Global.sCoCurr.Trim,V.Local.sLabel)
+		Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+		F.Intrinsic.Control.CallSub(retrieveexchangerate)
+	F.Intrinsic.Control.EndIf		
+F.Intrinsic.Control.EndIf
+Program.Sub.cmdBrw_Click.End
+
+Program.Sub.cmdProcess_Click.Start
+V.Local.fAmount.Declare
+V.Local.i1.Declare
+V.Local.sAccount.Declare
+V.Local.sAmount.Declare
+V.Local.sCaption.Declare
+V.Local.sCurrency.Declare
+V.Local.sLabel.Declare
+V.Local.dEnd.Declare
+V.Local.sSQL.Declare
+V.Local.sFlag.Declare
+
+V.Local.dEnd.Set(V.Screen.F_BankRec!dtpStatement.Value)
+
+'F.Intrinsic.String.Build("select CLOSE_GL from V_GL_CALENDAR where END_DATE <= '{0}'",V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.sFlag)
+'F.Intrinsic.Control.If(V.Local.sFlag.Trim,=,"")
+'	F.Intrinsic.UI.Msgbox("Calendar period closed for Statement Date.","Bank Reconcile (5060)"
+'	F.Intrinsic.Control.ExitSub
+'F.Intrinsic.Control.EndIf
+
+F.Intrinsic.UI.InvokeWaitDialog("Loading Data, Please wait...")
+
+V.Local.sCaption.Set(V.Screen.F_BankRec!cmdProcess.Caption)
+'Proceed with loading bank rec data
+F.Intrinsic.Control.If(V.Local.sCaption.Trim,=,"Process")
+	V.Local.sAccount.Set(V.Screen.F_BankRec!txtGLAcct.Text)
+	V.Local.sAmount.Set(V.Screen.F_BankRec!txtEnding.Text)
+	V.Local.sCurrency.Set(V.Screen.F_BankRec!txtCurr.Text)
+	
+	'Only process if all textboxes have been filled in
+	F.Intrinsic.Control.If(V.Local.sAccount.Trim,<>,"")
+	F.Intrinsic.Control.AndIf(V.Local.sCurrency.Trim,<>,"")
+	F.Intrinsic.Control.AndIf(V.Local.sAmount.Trim,<>,"")
+		V.Local.fAmount.Set(V.Screen.F_BankRec!txtEnding.Text)
+		F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+		Gui.F_BankRec.txtEnding.Text(V.Local.sAmount)
+		
+		F.Intrinsic.Control.CallSub(loadscreen)
+		F.Intrinsic.Control.CallSub(RetrieveExchangeRate)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	'Lock txtGLAcct, txtCurr, dtpStatement, txtEnding
+	Gui.F_BankRec.txtGLAcct.Locked(True)
+	Gui.F_BankRec.txtEnding.Locked(True)
+	Gui.F_BankRec.dtpStatement.Enabled(False)
+	Gui.F_BankRec.cmdBrwAcct.Enabled(False)
+	
+	'Change caption to Reset
+	Gui.F_BankRec.cmdProcess.Caption("Reset")
+	Gui.F_BankRec.cmdUpdate.Visible(True)
+'Reset screen for a new bank rec process
+F.Intrinsic.Control.ElseIf(V.Local.sCaption.Trim,=,"Reset")
+	'Clear out the grids
+	F.Intrinsic.Control.If(V.DataTable.dtTrans.Exists,=,True)
+	F.Intrinsic.Control.AndIf(V.DataTable.dtTrans.RowCount,>,0)
+		F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtTrans.RowCount--,0,-1)
+			F.Data.DataTable.DeleteRow("dtTrans",V.Local.i1)
+		F.Intrinsic.Control.Next(V.Local.i1)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtAdj.Exists,=,True)
+	F.Intrinsic.Control.AndIf(V.DataTable.dtAdj.RowCount,>,0)
+		F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtAdj.RowCount--,0,-1)
+			F.Data.DataTable.DeleteRow("dtAdj",V.Local.i1)
+		F.Intrinsic.Control.Next(V.Local.i1)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSummary.Exists,=,True)
+	F.Intrinsic.Control.AndIf(V.DataTable.dtSummary.RowCount,>,0)
+		F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtSummary.RowCount--,0,-1)
+			F.Data.DataTable.DeleteRow("dtSummary",V.Local.i1)
+		F.Intrinsic.Control.Next(V.Local.i1)
+	F.Intrinsic.Control.EndIf
+	
+	'Clear out textboxes
+	Gui.F_BankRec.txtGLAcct.Text("")
+	Gui.F_BankRec.txtGLDesc.Text("")
+	Gui.F_BankRec.txtCurr.Text("")
+	Gui.F_BankRec.txtEnding.Text("")
+	Gui.F_BankRec.txtExchRate.Text("")
+	
+	'Lock exchange rate
+	Gui.F_BankRec.txtExchRate.Enabled(False)
+	
+	'Set exchange rate label to default
+	F.Intrinsic.String.Build("{0} to {0}",V.Global.sCoCurr.Trim,V.Local.sLabel)
+	Gui.F_BankRec.lblExchange.Caption(V.Local.sLabel)
+	
+	'Unlock txtGLAcct, txtCurr, dtpStatement, txtEnding
+	Gui.F_BankRec.txtGLAcct.Locked(False)
+	Gui.F_BankRec.txtEnding.Locked(False)
+	Gui.F_BankRec.dtpStatement.Enabled(True)
+	Gui.F_BankRec.cmdBrwAcct.Enabled(True)
+	
+	'Change caption to Process
+	Gui.F_BankRec.cmdProcess.Caption("Process")
+	Gui.F_BankRec.cmdUpdate.Visible(False)
+F.Intrinsic.Control.EndIf
+F.Intrinsic.UI.CloseWaitDialog
+Program.Sub.cmdProcess_Click.End
+
+Program.Sub.LoadScreenold.Start
+V.Local.dBegYear.Declare(Date)
+V.Local.dCleared.Declare(Date)
+V.Local.dEnd.Declare(Date)
+V.Local.fAmtPosted.Declare
+V.Local.fBegBal.Declare
+V.Local.fDiff.Declare
+V.Local.fEnding.Declare
+V.Local.fGLBalance.Declare
+V.Local.fTotalIn.Declare
+V.Local.fTotalOut.Declare
+V.Local.fInOut.Declare
+V.Local.i1.Declare
+V.Local.iYear.Declare
+V.Local.sAccount.Declare
+V.Local.sCurrency.Declare
+V.Local.sFilter.Declare
+V.Local.sFormattedDate.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+V.Local.sAccount.Set(V.Screen.F_BankRec!txtGLAcct.Text)
+V.Local.sCurrency.Set(V.Screen.F_BankRec!txtCurr.Text)
+V.Local.dEnd.Set(V.Screen.F_BankRec!dtpStatement.Value)
+V.Local.fEnding.Set(V.Screen.F_BankRec!txtEnding.Text)
+
+'Check if there is a previous clearance before
+F.Intrinsic.String.Build("select max(date_cleared) as Cleared from GAB_5060_BANK_REC where gl_account = '{0}'",V.Local.sAccount.Trim,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+V.Local.sRet.Set(V.ODBC.conx!rst.FieldVal!Cleared)
+F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+	'There is a previous clearance before, get the ending balance
+	V.Local.dCleared.Set(V.ODBC.conx!rst.FieldVal!Cleared)
+	F.ODBC.conx!rst.Close
+	F.Intrinsic.String.Build("select end_bal from GAB_5060_BANK_REC where gl_account = '{0}' and date_cleared = '{1}'",V.Local.sAccount.Trim,V.Local.dCleared.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	V.Local.fGLBalance.Set(V.ODBC.conx!rst.FieldVal!end_bal)
+	'Set beginning date to look for transactions to be 1 day after clear date
+	F.Intrinsic.Date.DateAdd("D",1,V.Local.dCleared,V.Local.dBegYear)
+F.Intrinsic.Control.Else
+	'There is no previous clearance, get GL balance from beginning balance plus transactions up to date
+	'Get start date of the fiscal year
+	'Get financial year info
+	F.Intrinsic.String.Format(V.Ambient.Date,"MM/DD/YY",V.Local.sFormattedDate)
+	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+	V.Local.iYear.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+	V.Local.dBegYear.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+	
+	'Cash account is base currency, compute from core table
+	F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+		'Get beginning balance of the year
+		F.Intrinsic.String.Build("select beg_bal from v_gl_balances where fiscal_yr = '{0}' and acct = '{1}'",V.Local.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)	
+		
+		'Get the sum of all transactions posted between year start date and selected start date
+		F.Intrinsic.String.Build("select sum(amount_cmpny) from v_gl_detail where post_date_sql between '{0}' and '{1}' and gl_number = '{2}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+	'Cash account is not base currency, compute from custom table
+	F.Intrinsic.Control.Else
+		'Get beginning balance of the year
+		F.Intrinsic.String.Build("select beg_bal from GAB_5060_GL_BEG_BAL where fiscal_yr = '{0}' and gl_account = '{1}'",V.Local.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)
+	
+		'Get the sum of all transactions posted between year start date and selected start date
+		F.Intrinsic.String.Build("select sum(A.AMOUNT_FOREX) from GAB_5060_BATCH_DTL A Left Join GAB_5060_CASH_CLEAR B ON A.BATCH = B.BATCH AND A.LINE = B.LINE where A.post_date_sql between '{0}' and '{1}' and B.GL_Account = '{2}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.Control.If(V.DataTable.dtTrans.Exists,=,True)
+	F.Data.DataView.Close("dtTrans","dvIn")
+	F.Data.DataView.Close("dtTrans","dvOut")
+	F.Data.DataTable.Close("dtTrans")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtFDetail.Exists,=,True)
+	F.Data.DataTable.Close("dtFDetail")
+F.Intrinsic.Control.EndIf
+
+'Load all transactions that have not been cleared into datatable
+F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, line as Line, post_date_sql as PostDate from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0",V.Local.sAccount.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtTrans","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddExpressionColumn("dtTrans","BatchLine","String","Batch+Line")
+F.Data.DataTable.AddColumn("dtTrans","Description","String")
+F.Data.DataTable.AddColumn("dtTrans","Amount","Float")
+'F.Data.DataTable.AddColumn("dtTrans","AmountBase","Float")
+F.Data.DataTable.AddColumn("dtTrans","Type","String")
+'F.Data.DataTable.AddExpressionColumn("dtTrans","Flag","Long","IIF(Clear = True,1,0)")
+F.Data.DataTable.AddColumn("dtTrans","Flag","Long",0)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTrans.RowCount--,1)
+	F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Clear!FieldVal,=,True)
+		F.Data.DataTable.SetValue("dtTrans",V.Local.i1,"Flag",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+'Create reference datatable to fill Description, Type, and Amount at dtTrans
+'AP
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_vend as Amount, convert(amount_cmpny,sql_float) as AmountBase, vendor_name as Reference from v_gl_ap_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtFDetail","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtFDetail","Mode","String","AP")
+'AR
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_oe as Amount, convert(amount_cmpny,sql_float) as AmountBase, cust_name as Reference from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtAR","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtAR","Mode","String","AR")
+F.Data.DataTable.Merge("dtAR","dtFDetail",True,1)
+F.Data.DataTable.Close("dtAR")
+'AP Check
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_vend as Amount, convert(amount_cmpny,sql_float) as AmountBase, Check_Name as Reference from v_gl_ap_check_dtl where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount, convert(-A.amount_cmpny,sql_float) as AmountBase, A.Check_Name as Reference from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, IF(A.EXCHANGE_AMT<>'',-A.EXCHANGE_AMT,0) as Amount, convert(-A.AMT_TRANSACTION,sql_float) as AmountBase, A.Check_Name as Reference from V_AP_OPEN_ITEMS A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtCheck","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtCheck","Mode","String","AP Check")
+F.Data.DataTable.Merge("dtCheck","dtFDetail",True,1)
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Data.DataTable.Close("dtCheck")
+'Other than AP and AR
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, convert(amount_forex,sql_numeric) as Amount from GAB_5060_BATCH_DTL where post_date_sql between '{0}' and '{1}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtGLF","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddColumn("dtGLF","AmountBase","Float")
+F.Data.DataTable.AddColumn("dtGLF","Reference","String")
+F.Data.DataTable.AddColumn("dtGLF","Mode","String","JE")
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, Description from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dicGL","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dicGL","")
+F.Data.DataTable.FillFromDictionary("dtGLF","dicGL","BatchLine","Reference")
+F.Data.Dictionary.Close("dicGL")
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_cmpny from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dicGL","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dicGL",0)
+F.Data.DataTable.FillFromDictionary("dtGLF","dicGL","BatchLine","AmountBase")
+'Cash account currency is base currency
+'F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Amount")
+'Cash account currency is not base currency
+'F.Intrinsic.Control.EndIf
+F.Data.Dictionary.Close("dicGL")
+F.Data.DataTable.Merge("dtGLF","dtFDetail",True,1)
+F.Data.DataTable.Close("dtGLF")
+
+'F.Intrinsic.Debug.ShowCallerInfo
+
+F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Reference")
+F.Data.Dictionary.SetDefaultReturn("dicGL","")
+F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Description")
+F.Data.Dictionary.Close("dicGL")
+
+F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Mode")
+F.Data.Dictionary.SetDefaultReturn("dicGL","")
+F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Type")
+F.Data.Dictionary.Close("dicGL")
+
+'F.Intrinsic.Debug.ShowCallerInfo
+'Cash account currency is base currency
+F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+	F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","AmountBase")
+'Cash account currency is not base currency
+F.Intrinsic.Control.Else
+	F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Amount")	
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.SetDefaultReturn("dicGL",0)
+F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Amount")
+F.Data.Dictionary.Close("dicGL")
+F.Data.DataTable.Close("dtFDetail")
+
+'Split into incoming and outgoing based on amount (positive or negative)
+F.Data.DataView.Create("dtTrans","dvIn",22,"Amount >= 0","PostDate ASC, Batch ASC, Line ASC")
+F.Data.DataView.Create("dtTrans","dvOut",22,"Amount < 0","PostDate ASC, Batch ASC, Line ASC")
+
+Gui.F_BankRec.GsGCIn.AddGridviewFromDataview("gvIn","dtTrans","dvIn")
+Gui.F_BankRec.GsGCIn.MainView("gvIn")
+
+Gui.F_BankRec.GsGCOut.AddGridviewFromDataview("gvOut","dtTrans","dvOut")
+Gui.F_BankRec.GsGCOut.MainView("gvOut")
+
+'Prepare adjusting entry grid
+F.Intrinsic.Control.If(V.DataTable.dtAdj.Exists,=,True)
+	F.Data.DataTable.Close("dtAdj")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtAdj",True)
+F.Data.DataTable.AddColumn("dtAdj","Account","String")
+F.Data.DataTable.AddColumn("dtAdj","AccountDesc","String")
+F.Data.DataTable.AddColumn("dtAdj","Description","String")
+F.Data.DataTable.AddColumn("dtAdj","Amount","Float",0)
+F.Data.DataTable.AddColumn("dtAdj","Delete","Long")
+F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","")
+
+Gui.F_BankRec.GsGCAdj.AddGridviewFromDatatable("gvAdj","dtAdj")
+Gui.F_BankRec.GsGCAdj.MainView("gvAdj")
+
+'Prepare summary grid
+F.Intrinsic.Control.If(V.DataTable.dtSummary.Exists,=,True)
+	F.Data.DataTable.Close("dtSummary")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtSummary",True)
+F.Data.DataTable.AddColumn("dtSummary","Line","Long")
+F.Data.DataTable.AddColumn("dtSummary","Description","String")
+F.Data.DataTable.AddColumn("dtSummary","Amount","Float")
+
+F.Data.DataTable.AddRow("dtSummary","Line",1,"Description","Statement Ending Balance","Amount",V.Local.fEnding)
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount >= 0 and Flag = 0",V.Local.fTotalIn)
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount < 0 and Flag = 0",V.Local.fTotalOut)
+F.Intrinsic.Math.Abs(V.Local.fTotalOut,V.Local.fTotalOut)
+F.Data.DataTable.AddRow("dtSummary","Line",2,"Description","Outstanding Checks/ Credits (-)","Amount",V.Local.fTotalOut)
+F.Data.DataTable.AddRow("dtSummary","Line",3,"Description","Deposits/ Debits (+)","Amount",V.Local.fTotalIn)
+'F.Data.DataTable.AddRow("dtSummary","Line",4,"Description","GL Balance (-)","Amount",V.Local.fGLBalance)
+'F.Data.DataTable.AddRow("dtSummary","Line",5,"Description","Adjusting Entries (-)","Amount",0)
+F.Intrinsic.Math.Add(V.Local.fTotalIn,V.Local.fTotalOut,V.Local.fInOut)
+'F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fInOut,V.Local.fGLBalance)
+F.Data.DataTable.AddRow("dtSummary","Line",4,"Description","GL Balance (-)","Amount",V.Local.fGLBalance)
+F.Intrinsic.Math.Add(V.Local.fEnding,V.Local.fTotalIn,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.Local.fTotalOut,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.Local.fGLBalance,V.Local.fDiff)
+F.Data.DataTable.AddRow("dtSummary","Line",5,"Description","Adjusting Entries (-)","Amount",0)
+F.Intrinsic.Math.Add(V.Local.fEnding,V.Local.fTotalIn,V.Local.fDiff) 
+F.Data.DataTable.AddRow("dtSummary","Line",6,"Description","Unreconciled Differences","Amount",V.Local.fDiff)
+
+Gui.F_BankRec.GsGCSummary.AddGridviewFromDatatable("gvSum","dtSummary")
+Gui.F_BankRec.GsGCSummary.MainView("gvSum")
+
+F.Intrinsic.Control.CallSub(gridviewproperties)
+Program.Sub.LoadScreenold.End
+
+Program.Sub.LoadScreen.Start
+V.Local.dBegYear.Declare(Date)
+V.Local.dClearedBegYear.Declare
+V.Local.dCleared.Declare(Date)
+V.Local.dEnd.Declare(Date)
+V.Local.fAmtPosted.Declare
+V.Local.fSum.Declare
+V.Local.fBegBal.Declare
+V.Local.fDiff.Declare
+V.Local.fEnding.Declare
+V.Local.fGLBalance.Declare
+V.Local.fTotalIn.Declare
+V.Local.fTotalOut.Declare
+V.Local.fInOut.Declare
+V.Local.i1.Declare
+V.Local.iYear.Declare
+V.Local.sAccount.Declare
+V.Local.sCurrency.Declare
+V.Local.sFilter.Declare
+V.Local.sFormattedDate.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.sDate.Declare
+
+V.Local.sAccount.Set(V.Screen.F_BankRec!txtGLAcct.Text)
+V.Local.sCurrency.Set(V.Screen.F_BankRec!txtCurr.Text)
+V.Local.dEnd.Set(V.Screen.F_BankRec!dtpStatement.Value)
+V.Local.fEnding.Set(V.Screen.F_BankRec!txtEnding.Text)
+
+'Check if there is a previous clearance before
+'F.Intrinsic.String.Build("select max(date_cleared) as Cleared from GAB_5060_BANK_REC where gl_account = '{0}'",V.Local.sAccount.Trim,V.Local.sSQL)
+'F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'V.Local.sRet.Set(V.ODBC.conx!rst.FieldVal!Cleared)
+'F.Intrinsic.Control.If(V.Local.sRet.Trim,<>,"")
+'	'There is a previous clearance before, get the ending balance
+'	V.Local.dCleared.Set(V.ODBC.conx!rst.FieldVal!Cleared)
+'	F.ODBC.conx!rst.Close
+'	F.Intrinsic.String.Build("select end_bal from GAB_5060_BANK_REC where gl_account = '{0}' and date_cleared = '{1}'",V.Local.sAccount.Trim,V.Local.dCleared.PervasiveDate,V.Local.sSQL)
+'	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'	V.Local.fGLBalance.Set(V.ODBC.conx!rst.FieldVal!end_bal)
+'	'Set beginning date to look for transactions to be 1 day after clear date
+'	F.Intrinsic.Date.DateAdd("D",1,V.Local.dCleared,V.Local.dClearedBegYear)
+'	F.Intrinsic.String.Format(V.Ambient.Date,"MM/DD/YY",V.Local.sFormattedDate)
+'	F.Intrinsic.String.Format(V.Local.dEnd,"MM/DD/YY",V.Local.sFormattedDate)
+'	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+'	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+'	V.Global.iYear.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+'	V.Local.dBegYear.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+'F.Intrinsic.Control.Else
+	'There is no previous clearance, get GL balance from beginning balance plus transactions up to date
+	'Get start date of the fiscal year
+	'Get financial year info
+'	F.Intrinsic.String.Format(V.Ambient.Date,"MM/DD/YY",V.Local.sFormattedDate)
+'	F.Intrinsic.String.Format(V.Local.dEnd,"MM/DD/YY",V.Local.sFormattedDate)
+'	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+'	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+'	V.Global.iYear.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+'	V.Local.dBegYear.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+	
+	'Cash account is base currency, compute from core table
+'	F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Intrinsic.Debug.ShowCallerInfo
+		'Get beginning balance of the year
+'		F.Intrinsic.String.Build("select beg_bal from v_gl_balances where fiscal_yr = '{0}' and acct = '{1}'",V.Global.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+'		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)	
+		
+		'Get the sum of all transactions posted between year start date and selected start date
+'		F.Intrinsic.String.Build("select sum(amount_cmpny) from v_gl_detail where post_date_sql between '{0}' and '{1}' and gl_number = '{2}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+'		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+'		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+'		F.Intrinsic.Debug.ShowCallerInfo
+	'Cash account is not base currency, compute from custom table
+'	F.Intrinsic.Control.Else
+		'Get beginning balance of the year
+'		F.Intrinsic.String.Build("select beg_bal from GAB_5060_GL_BEG_BAL where fiscal_yr = '{0}' and gl_account = '{1}'",V.Global.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+'		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)
+'		
+		'Get the sum of all transactions posted between year start date and selected start date
+'		F.Intrinsic.String.Build("Select sum(A.Amount) from (select sum(A.AMOUNT_FOREX) as Amount from GAB_5060_BATCH_DTL A Left Join GAB_5060_CASH_CLEAR B ON A.BATCH = B.BATCH AND A.LINE = B.LINE where A.post_date_sql between '{0}' and '{1}' and B.GL_Account = '{2}' union all select sum(amount_oe) from v_gl_ar_detail where gl_number = '{2}' and post_date_sql between '{0}' and '{1}' union all select sum(IF(B.AMOUNT<>'',-B.AMOUNT,0)) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{2}' AND A.post_date_sql between '{0}' and '{1}') A",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+'						F.Intrinsic.Debug.ShowCallerInfo
+'		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+'		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+'		F.Intrinsic.Debug.ShowCallerInfo
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.EndIf
+'F.ODBC.conx!rst.Close
+
+	'Get start date of the fiscal year
+	'Get financial year info
+'	F.Intrinsic.String.Format(V.Ambient.Date,"MM/DD/YY",V.Local.sFormattedDate)
+	F.Intrinsic.String.Format(V.Local.dEnd,"MM/DD/YY",V.Local.sFormattedDate)
+	F.Intrinsic.String.Build("Beginning <= #{0}# AND Ending >= #{0}#",V.Local.sFormattedDate,V.Local.sFilter)
+	F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+	V.Global.iYear.Set(V.DataTable.dtCalendar(V.Local.sRet).FYR!FieldVal)
+	F.Intrinsic.String.Build("{0}-01-01",V.Global.iYear,V.Local.sDate)
+	V.Local.dBegYear.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+'	V.Local.dBegYear.Set(V.Local.sDate)
+	
+	'Cash account is base currency, compute from core table
+	F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Intrinsic.Debug.ShowCallerInfo
+		'Get beginning balance of the year
+		F.Intrinsic.String.Build("select beg_bal from v_gl_balances where fiscal_yr = '{0}' and acct = '{1}'",V.Global.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)	
+		
+		'Get the sum of all transactions posted between year start date and selected start date
+		F.Intrinsic.String.Build("select sum(amount_cmpny) from v_gl_detail where post_date_sql between '{0}' and '{1}' and gl_number = '{2}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+'		F.Intrinsic.Debug.ShowCallerInfo
+	'Cash account is not base currency, compute from custom table
+	F.Intrinsic.Control.Else
+		'Get beginning balance of the year
+		F.Intrinsic.String.Build("select beg_bal from GAB_5060_GL_BEG_BAL where fiscal_yr = '{0}' and gl_account = '{1}'",V.Global.iYear,V.Local.sAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fBegBal)
+		F.Intrinsic.Math.Add(V.Local.fBegBal,0,V.Local.fBegBal)
+		
+		'Get the sum of all transactions posted between year start date and selected start date
+		F.Intrinsic.String.Build("Select sum(A.Amount) from (select sum(A.AMOUNT_FOREX) as Amount from GAB_5060_BATCH_DTL A Left Join GAB_5060_CASH_CLEAR B ON A.BATCH = B.BATCH AND A.LINE = B.LINE where A.post_date_sql between '{0}' and '{1}' and B.GL_Account = '{2}' union all select sum(amount_oe) from v_gl_ar_detail where gl_number = '{2}' and post_date_sql between '{0}' and '{1}' union all select sum(IF(B.AMOUNT<>'',-B.AMOUNT,0)) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.CHECK_NET_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{2}' AND A.post_date_sql between '{0}' and '{1}') A",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sAccount.Trim,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'		F.Intrinsic.Debug.ShowCallerInfo
+		F.ODBC.Connection!conx.ExecuteandReturn(V.Local.sSQL,V.Local.fAmtPosted)
+'						F.Intrinsic.Debug.ShowCallerInfo
+		F.Intrinsic.Math.Add(V.Local.fAmtPosted,0,V.Local.fAmtPosted)
+		
+		F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fAmtPosted,V.Local.fGLBalance)
+'		F.Intrinsic.Debug.ShowCallerInfo
+	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtTrans.Exists,=,True)
+	F.Data.DataView.Close("dtTrans","dvIn")
+	F.Data.DataView.Close("dtTrans","dvOut")
+	F.Data.DataTable.Close("dtTrans")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtFDetail.Exists,=,True)
+	F.Data.DataTable.Close("dtFDetail")
+F.Intrinsic.Control.EndIf
+
+'Load all transactions that have not been cleared into datatable
+'F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, line as Line, post_date_sql as PostDate, 'AP' AS Type from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and batch like 'A%'",V.Local.sAccount.Trim,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtTrans","conx",V.Local.sSQL,True)
+'F.Data.DataTable.AddExpressionColumn("dtTrans","BatchLine","String","Batch+Line")
+'F.Data.DataTable.AddColumn("dtTrans","Description","String")
+'F.Data.DataTable.AddColumn("dtTrans","Amount","Float")
+'F.Data.DataTable.AddColumn("dtTrans","AmountBase","Float")
+'F.Data.DataTable.AddColumn("dtTrans","Type","String")
+'F.Data.DataTable.AddExpressionColumn("dtTrans","Flag","Long","IIF(Clear = True,1,0)")
+'F.Data.DataTable.AddColumn("dtTrans","Flag","Long",0)
+
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTrans.RowCount--,1)
+'	F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Clear!FieldVal,=,True)
+'		F.Data.DataTable.SetValue("dtTrans",V.Local.i1,"Flag",1)
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Next(V.Local.i1)
+
+'Create reference datatable to fill Description, Type, and Amount at dtTrans
+'AP
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_vend as Amount from v_gl_ap_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dtFDetail","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dtFDetail",0)
+'F.Data.DataTable.FillFromDictionary("dtTrans","dtFDetail","BatchLine","Amount")
+'F.Data.Dictionary.Close("dtFDetail")
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, vendor_name as Description from v_gl_ap_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dtFDetail","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dtFDetail","")
+'F.Data.DataTable.FillFromDictionary("dtTrans","dtFDetail","BatchLine","Description")
+'F.Data.Dictionary.Close("dtFDetail")
+
+'AR
+'Load all transactions that have not been cleared into datatable
+'F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, line as Line, post_date_sql as PostDate, 'AR' AS Type, REFERENCE AS Description from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0 and batch like 'R%' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.clear_flag as Clear, A.batch as Batch, A.line as Line, A.post_date_sql as PostDate, 'AR' AS Type, A.REFERENCE AS Description from GAB_5060_CASH_CLEAR A Inner Join DEPOSIT_IDS B ON A.BATCH = B.BATCH AND Convert(A.POST_DATE_SQL,sql_char) = convert(IF (SUBSTRING (B.P_DATE ,1 ,4 )>= '1900' AND SUBSTRING (B.P_DATE ,1 ,4 )<= '2999' AND SUBSTRING (B.P_DATE ,5 ,2 )<= '12' AND SUBSTRING (B.P_DATE ,5 ,2 )>= '01' AND SUBSTRING (B.P_DATE ,7 ,2 )<= '31' AND SUBSTRING (B.P_DATE ,7 ,2 )>= '01' ,CONVERT (SUBSTRING (B.P_DATE ,1 ,4 )+'-' +SUBSTRING (B.P_DATE ,5 ,2 )+'-' +SUBSTRING (B.P_DATE ,7 ,2 ),SQL_DATE ),CONVERT ('1900-01-01' ,SQL_DATE )),sql_char) where A.gl_account = '{0}' and A.bank_rec_id = 0 and A.clear_flag = 0 and A.batch like 'R%' and A.post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select Cast(1 as Bit) as Clear, A.batch as Batch, A.line as Line, A.post_date_sql as PostDate, 'AR' AS Type, A.REFERENCE AS Description from GAB_5060_CASH_CLEAR A Inner Join DEPOSIT_IDS B ON A.BATCH = B.BATCH AND Convert(A.POST_DATE_SQL,sql_char) = convert(IF (SUBSTRING (B.P_DATE ,1 ,4 )>= '1900' AND SUBSTRING (B.P_DATE ,1 ,4 )<= '2999' AND SUBSTRING (B.P_DATE ,5 ,2 )<= '12' AND SUBSTRING (B.P_DATE ,5 ,2 )>= '01' AND SUBSTRING (B.P_DATE ,7 ,2 )<= '31' AND SUBSTRING (B.P_DATE ,7 ,2 )>= '01' ,CONVERT (SUBSTRING (B.P_DATE ,1 ,4 )+'-' +SUBSTRING (B.P_DATE ,5 ,2 )+'-' +SUBSTRING (B.P_DATE ,7 ,2 ),SQL_DATE ),CONVERT ('1900-01-01' ,SQL_DATE )),sql_char) where A.gl_account = '{0}' and A.bank_rec_id = 0 and A.clear_flag = 0 and A.batch like 'R%' and A.post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtTransAR","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddExpressionColumn("dtTransAR","BatchLine","String","Batch+Line")
+'F.Data.DataTable.AddColumn("dtTransAR","Description","String")
+F.Data.DataTable.AddColumn("dtTransAR","Amount","Float")
+F.Data.DataTable.AddColumn("dtTransAR","AmountBase","Float")
+'F.Data.DataTable.AddColumn("dtTransAR","Type","String")
+'F.Data.DataTable.AddExpressionColumn("dtTrans","Flag","Long","IIF(Clear = True,1,0)")
+F.Data.DataTable.AddColumn("dtTransAR","Flag","Long",0)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTransAR.RowCount--,1)
+	F.Intrinsic.Control.If(V.DataTable.dtTransAR(V.Local.i1).Clear!FieldVal,=,True)
+		F.Data.DataTable.SetValue("dtTransAR",V.Local.i1,"Flag",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_oe as Amount from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_oe as Amount from v_gl_ar_detail where gl_number = '{0}' and post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dtAR","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dtAR",0)
+F.Data.DataTable.FillFromDictionary("dtTransAR","dtAR","BatchLine","Amount")
+F.Data.DataTable.Compute("dtTransAR","Sum(Amount)","",V.Local.fSum)
+F.Data.Dictionary.Close("dtAR")
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_CMPNY as AmountBASE from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_CMPNY as AmountBASE from v_gl_ar_detail where gl_number = '{0}' and post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dtAR","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dtAR",0)
+F.Data.DataTable.FillFromDictionary("dtTransAR","dtAR","BatchLine","AmountBASE")
+F.Data.DataTable.Compute("dtTransAR","Sum(Amount)","",V.Local.fSum)
+F.Data.Dictionary.Close("dtAR")
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, cust_name as description from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dtAR","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dtAR","")
+'F.Data.DataTable.FillFromDictionary("dtTransAR","dtAR","BatchLine","Description")
+'F.Data.Dictionary.Close("dtAR")
+
+'AP Check
+'F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, line as Line, post_date_sql as PostDate, 'AP Check' AS Type from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0 and batch like 'A%' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, CONVERT('0',SQL_nUMERIC) as Line, post_date_sql as PostDate, Rtrim(REFERENCE) AS Description, 'AP Check' AS Type from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0 and batch like 'A%' and post_date_sql between '{1}' and '{2}' GROUP BY CLEAR_FLAG, BATCH, Line, POST_DATE_SQL, REFERENCE, TYPE",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select Cast(1 as Bit) as Clear, batch as Batch, CONVERT('0',SQL_nUMERIC) as Line, post_date_sql as PostDate, Rtrim(REFERENCE) AS Description, 'AP Check' AS Type from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0 and batch like 'A%' and post_date_sql <= '{2}' GROUP BY CLEAR_FLAG, BATCH, Line, POST_DATE_SQL, REFERENCE, TYPE",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtTrans","conx",V.Local.sSQL,True)
+'F.Data.DataTable.AddExpressionColumn("dtTrans","BatchLine","String","Batch+Line")
+F.Data.DataTable.AddExpressionColumn("dtTrans","BatchLine","String","Batch+Description")
+'F.Data.DataTable.AddColumn("dtTrans","Description","String")
+F.Data.DataTable.AddColumn("dtTrans","Amount","Float")
+F.Data.DataTable.AddColumn("dtTrans","AmountBase","Float")
+'F.Data.DataTable.AddColumn("dtTransCheck","Type","String")
+'F.Data.DataTable.AddExpressionColumn("dtTrans","Flag","Long","IIF(Clear = True,1,0)")
+F.Data.DataTable.AddColumn("dtTrans","Flag","Long",0)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTrans.RowCount--,1)
+	F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Clear!FieldVal,=,True)
+		F.Data.DataTable.SetValue("dtTrans",V.Local.i1,"Flag",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_vend as Amount, convert(amount_cmpny,sql_float) as AmountBase, Check_Name as Reference from v_gl_ap_check_dtl where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, convert(A.amount_cmpny,sql_float) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'	F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, convert(-A.amt_transaction,sql_float) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'	F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.amt_transaction,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+	F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.amt_transaction,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch <= '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Intrinsic.Control.Else
+'	F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, IF(B.AMOUNT<>'',-B.AMOUNT,0) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'	F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, convert(-A.exchange_amt,sql_float) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+	'F.Intrinsic.Debug.ShowCallerInfo
+'	F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, convert(-A.exchange_amt,sql_float) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)	
+'	F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.exchange_amt,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+	F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.exchange_amt,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch <= '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.CreateFromSQL("dtCheck","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dtCheck",0)
+F.Data.DataTable.FillFromDictionary("dtTrans","dtCheck","BatchLine","Amount")
+'F.Data.DataTable.FillFromDictionary("dtTrans","dtCheck","Batch","Amount")
+F.Data.Dictionary.Close("dtCheck")
+
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, convert(A.amount_cmpny,sql_float) as AmountBASE from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.AMOUNT_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, convert(-A.amt_transaction,sql_float) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.amt_transaction,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Intrinsic.String.Build("select A.batch_num+Rtrim(A.check_num) as batchLine, sum(convert(-A.amt_transaction,sql_float)) as Amount from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch <= '{2}' group by batchLine",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dtCheck","conx",V.Local.sSQL)
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Data.Dictionary.SetDefaultReturn("dtCheck",0)
+F.Data.DataTable.FillFromDictionary("dtTrans","dtCheck","BatchLine","AmountBASE")
+F.Data.Dictionary.Close("dtCheck")
+
+'F.Intrinsic.String.Build("select A.batch+convert(A.line,sql_char) as BatchLine, B.Check_Name as Reference from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.Check_Name from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.Check_Name) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'F.Intrinsic.String.Build("select A.batch_num+convert(CONVERT(A.BATCH_line,SQL_INTEGER),sql_char) as BatchLine, A.Check_Num as Reference from v_ap_open_items A where A.gl_account = '{0}' AND A.date_batch between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurr.Trim,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dtCheck","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dtCheck","")
+'F.Data.DataTable.FillFromDictionary("dtTrans","dtCheck","BatchLine","Description")
+'F.Data.Dictionary.Close("dtCheck")
+'F.Intrinsic.Debug.ShowCallerInfo
+
+'Other than AP and AR
+'F.Intrinsic.String.Build("select clear_flag as Clear, batch as Batch, line as Line, post_date_sql as PostDate, 'JE' AS Type, REFERENCE AS Description from GAB_5060_CASH_CLEAR where gl_account = '{0}' and bank_rec_id = 0 and clear_flag = 0 and batch like 'J%' and post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select Cast(1 as Bit) as Clear, A.batch as Batch, A.line as Line, A.post_date_sql as PostDate, 'JE' AS Type, A.REFERENCE AS Description from GAB_5060_CASH_CLEAR A Inner Join DEPOSIT_IDS B ON A.BATCH = B.BATCH AND Convert(A.POST_DATE_SQL,sql_char) = convert(IF (SUBSTRING (B.P_DATE ,1 ,4 )>= '1900' AND SUBSTRING (B.P_DATE ,1 ,4 )<= '2999' AND SUBSTRING (B.P_DATE ,5 ,2 )<= '12' AND SUBSTRING (B.P_DATE ,5 ,2 )>= '01' AND SUBSTRING (B.P_DATE ,7 ,2 )<= '31' AND SUBSTRING (B.P_DATE ,7 ,2 )>= '01' ,CONVERT (SUBSTRING (B.P_DATE ,1 ,4 )+'-' +SUBSTRING (B.P_DATE ,5 ,2 )+'-' +SUBSTRING (B.P_DATE ,7 ,2 ),SQL_DATE ),CONVERT ('1900-01-01' ,SQL_DATE )),sql_char) where A.gl_account = '{0}' and A.bank_rec_id = 0 and A.clear_flag = 0 and A.batch like 'J%' and A.post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtTransGL","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddExpressionColumn("dtTransGL","BatchLine","String","Batch+Line")
+'F.Data.DataTable.AddColumn("dtTransGL","Description","String")
+F.Data.DataTable.AddColumn("dtTransGL","Amount","Float")
+F.Data.DataTable.AddColumn("dtTransGL","AmountBase","Float")
+'F.Data.DataTable.AddColumn("dtTransGL","Type","String")
+'F.Data.DataTable.AddExpressionColumn("dtTrans","Flag","Long","IIF(Clear = True,1,0)")
+F.Data.DataTable.AddColumn("dtTransGL","Flag","Long",0)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTransGL.RowCount--,1)
+	F.Intrinsic.Control.If(V.DataTable.dtTransGL(V.Local.i1).Clear!FieldVal,=,True)
+		F.Data.DataTable.SetValue("dtTransGL",V.Local.i1,"Flag",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_cmpny from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_cmpny from v_gl_detail where gl_number = '{0}' and post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.Control.Else
+'	F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, convert(amount_forex,sql_numeric) as Amount from GAB_5060_BATCH_DTL where post_date_sql between '{0}' and '{1}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+	F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, convert(amount_forex,sql_numeric) as Amount from GAB_5060_BATCH_DTL where post_date_sql <= '{1}'",V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.CreateFromSQL("dtGLF","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dtGLF",0)
+F.Data.DataTable.FillFromDictionary("dtTransGL","dtGLF","BatchLine","Amount")
+F.Data.Dictionary.Close("dtGLF")
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_cmpny from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, amount_cmpny from v_gl_detail where gl_number = '{0}' and post_date_sql <= '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dtGLF","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dtGLF",0)
+F.Data.DataTable.FillFromDictionary("dtTransGL","dtGLF","BatchLine","AmountBASE")
+F.Data.Dictionary.Close("dtGLF")
+
+'F.Intrinsic.String.Build("select batch+convert(line,sql_char) as BatchLine, Description from v_gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.Local.sAccount.Trim,V.Local.dBegYear.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dtGLF","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dtGLF","")
+'F.Data.DataTable.FillFromDictionary("dtTransGL","dtGLF","BatchLine","Description")
+'F.Data.Dictionary.Close("dtGLF")
+
+F.Data.DataTable.Merge("dtTransGL","dtTrans",True,1)
+F.Data.DataTable.Close("dtTransGL")
+
+F.Data.DataTable.Merge("dtTransAR","dtTrans",True,1)
+F.Data.DataTable.Close("dtTransAR")
+
+'F.Data.DataTable.Merge("dtTransCheck","dtTrans",True,1)
+'F.Data.DataTable.Close("dtTransCheck")
+
+'F.Intrinsic.Debug.ShowCallerInfo
+
+'F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Reference")
+'F.Data.Dictionary.SetDefaultReturn("dicGL","")
+'F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Description")
+'F.Data.Dictionary.Close("dicGL")
+
+'F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Mode")
+'F.Data.Dictionary.SetDefaultReturn("dicGL","")
+'F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Type")
+'F.Data.Dictionary.Close("dicGL")
+
+'F.Intrinsic.Debug.ShowCallerInfo
+'Cash account currency is base currency
+'F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+'	F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","AmountBase")
+'Cash account currency is not base currency
+'F.Intrinsic.Control.Else
+'	F.Data.Dictionary.CreateFromDataTable("dicGL","dtFDetail","BatchLine","Amount")	
+'F.Intrinsic.Control.EndIf
+'F.Data.Dictionary.SetDefaultReturn("dicGL",0)
+'F.Data.DataTable.FillFromDictionary("dtTrans","dicGL","BatchLine","Amount")
+'F.Data.Dictionary.Close("dicGL")
+'F.Data.DataTable.Close("dtFDetail")
+
+'Split into incoming and outgoing based on amount (positive or negative)
+F.Data.DataView.Create("dtTrans","dvIn",22,"Amount >= 0","PostDate ASC, Batch ASC, Line ASC")
+F.Data.DataView.Create("dtTrans","dvOut",22,"Amount < 0","PostDate ASC, Batch ASC, Line ASC")
+
+Gui.F_BankRec.GsGCIn.AddGridviewFromDataview("gvIn","dtTrans","dvIn")
+
+Gui.F_BankRec.GsGCOut.AddGridviewFromDataview("gvOut","dtTrans","dvOut")
+
+'Prepare adjusting entry grid
+F.Intrinsic.Control.If(V.DataTable.dtAdj.Exists,=,True)
+	F.Data.DataTable.Close("dtAdj")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtAdj",True)
+F.Data.DataTable.AddColumn("dtAdj","Account","String")
+F.Data.DataTable.AddColumn("dtAdj","AccountDesc","String")
+F.Data.DataTable.AddColumn("dtAdj","Description","String")
+F.Data.DataTable.AddColumn("dtAdj","Amount","Float",0)
+F.Data.DataTable.AddColumn("dtAdj","Delete","Long")
+F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","")
+
+Gui.F_BankRec.GsGCAdj.AddGridviewFromDatatable("gvAdj","dtAdj")
+
+'Prepare summary grid
+F.Intrinsic.Control.If(V.DataTable.dtSummary.Exists,=,True)
+	F.Data.DataTable.Close("dtSummary")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Create("dtSummary",True)
+F.Data.DataTable.AddColumn("dtSummary","Line","Long")
+F.Data.DataTable.AddColumn("dtSummary","Description","String")
+F.Data.DataTable.AddColumn("dtSummary","Amount","Float")
+
+F.Data.DataTable.AddRow("dtSummary","Line",1,"Description","Statement Ending Balance","Amount",V.Local.fEnding)
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount >= 0 and Flag = 0",V.Local.fTotalIn)
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount < 0 and Flag = 0",V.Local.fTotalOut)
+F.Intrinsic.Math.Abs(V.Local.fTotalOut,V.Local.fTotalOut)
+F.Data.DataTable.AddRow("dtSummary","Line",2,"Description","Outstanding Checks/ Credits (-)","Amount",V.Local.fTotalOut)
+F.Data.DataTable.AddRow("dtSummary","Line",3,"Description","Deposits/ Debits (+)","Amount",V.Local.fTotalIn)
+'F.Data.DataTable.AddRow("dtSummary","Line",4,"Description","GL Balance (-)","Amount",V.Local.fGLBalance)
+'F.Data.DataTable.AddRow("dtSummary","Line",5,"Description","Adjusting Entries (-)","Amount",0)
+F.Intrinsic.Math.Sub(V.Local.fTotalIn,V.Local.fTotalOut,V.Local.fInOut)
+'F.Intrinsic.Debug.ShowCallerInfo
+'F.Intrinsic.Math.Sub(V.Local.fInOut,V.Local.fGLBalance,V.Local.fGLBalance)
+
+'F.Intrinsic.Control.If(V.Local.sCurrency.Trim,<>,V.Global.sCoCurr.Trim)
+'	F.Intrinsic.Math.Add(V.Local.fBegBal,V.Local.fInOut,V.Local.fGLBalance)
+'F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.AddRow("dtSummary","Line",4,"Description","GL Balance (-)","Amount",V.Local.fGLBalance)
+F.Intrinsic.Math.Add(V.Local.fEnding,V.Local.fTotalIn,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.Local.fTotalOut,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.Local.fGLBalance,V.Local.fDiff)
+F.Data.DataTable.AddRow("dtSummary","Line",5,"Description","Adjusting Entries (-)","Amount",0)
+'F.Intrinsic.Math.Add(V.Local.fEnding,V.Local.fTotalIn,V.Local.fDiff) 
+F.Data.DataTable.AddRow("dtSummary","Line",6,"Description","Unreconciled Differences","Amount",V.Local.fDiff)
+
+Gui.F_BankRec.GsGCSummary.AddGridviewFromDatatable("gvSum","dtSummary")
+
+Gui.F_BankRec.chkClearIn.Value(1)
+Gui.F_BankRec.chkClearOut.Value(1)
+
+F.Intrinsic.Control.CallSub(gridviewproperties)
+
+Gui.F_BankRec.GsGCIn.MainView("gvIn")
+Gui.F_BankRec.GsGCOut.MainView("gvOut")
+Gui.F_BankRec.GsGCAdj.MainView("gvAdj")
+Gui.F_BankRec.GsGCSummary.MainView("gvSum")
+Program.Sub.LoadScreen.End
+
+Program.Sub.GridViewProperties.Start
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","BatchLine","Visible",False)
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","AMOUNTBASE","Visible",False)
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Clear","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Batch","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Line","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","PostDate","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Description","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Amount","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Type","HeaderHAlignment","Center")
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Batch","CellHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Line","CellHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","PostDate","CellHAlignment","Center")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Type","CellHAlignment","Center")
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","PostDate","Caption","Date")
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Clear","MinWidth","40")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Batch","MinWidth","60")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Line","MinWidth","50")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","PostDate","MinWidth","100")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Description","MinWidth","160")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Amount","MinWidth","100")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Type","MinWidth","50")
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","PostDate","DisplayCustomDatetime","d")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Amount","DisplayCustomNumeric","#,###,##0.00")
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","LINE","DisplayCustomNumeric","#,###,##0")
+
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Clear","ReadOnly",False)
+Gui.F_BankRec.GsGCIn.SetColumnProperty("gvIn","Clear","AllowEdit",True)
+'---------------------------------------------------------------------------------------------
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","BatchLine","Visible",False)
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","AMOUNTBASE","Visible",False)
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Clear","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Batch","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Line","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","PostDate","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Description","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Amount","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Type","HeaderHAlignment","Center")
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Batch","CellHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Line","CellHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","PostDate","CellHAlignment","Center")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Type","CellHAlignment","Center")
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","PostDate","Caption","Date")
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Clear","MinWidth","40")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Batch","MinWidth","60")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Line","MinWidth","50")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","PostDate","MinWidth","100")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Description","MinWidth","160")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Amount","MinWidth","100")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Type","MinWidth","50")
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","PostDate","DisplayCustomDatetime","d")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Amount","DisplayCustomNumeric","#,###,##0.00")
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","LINE","DisplayCustomNumeric","#,###,##0")
+
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Clear","ReadOnly",False)
+Gui.F_BankRec.GsGCOut.SetColumnProperty("gvOut","Clear","AllowEdit",True)
+'---------------------------------------------------------------------------------------------
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Account","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","AccountDesc","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Description","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Amount","HeaderHAlignment","Center")
+
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Account","MinWidth","90")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","AccountDesc","MinWidth","150")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Description","MinWidth","220")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Amount","MinWidth","120")
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Delete","MinWidth","70")
+
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Amount","DisplayCustomNumeric","#,###,##0.00")
+
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Account","ReadOnly",False)
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Description","ReadOnly",False)
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Amount","ReadOnly",False)
+
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Account","AllowEdit",True)
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Description","AllowEdit",True)
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Amount","AllowEdit",True)
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Delete","AllowEdit",False)
+
+Gui.F_BankRec.GsGCAdj.SetColumnProperty("gvAdj","Delete","ShowCaption",False)
+Gui.F_BankRec.GsGCAdj.ColumnEdit("gvAdj","Delete","EditorButton","Delete")
+'---------------------------------------------------------------------------------------------
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Line","Visible",False)
+
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Description","HeaderHAlignment","Center")
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Amount","HeaderHAlignment","Center")
+
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Description","MinWidth","250")
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Amount","MinWidth","120")
+
+Gui.F_BankRec.GsGCSummary.SetColumnProperty("gvSum","Amount","DisplayCustomNumeric","#,###,##0.00")
+
+Gui.F_BankRec.GsGCSummary.SetRowAppearance("gvSum",5,"Fontbold",True)
+Program.Sub.GridViewProperties.End
+
+Program.Sub.UpdateDifferences.Start
+V.Local.fDiff.Declare
+
+'Update reconcile differences after something has been done to the Debits/Credits/Adjustment grids
+F.Intrinsic.Math.Add(V.DataTable.dtSummary(0).Amount!FieldVal,V.DataTable.dtSummary(2).Amount!FieldVal,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.DataTable.dtSummary(1).Amount!FieldVal,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.DataTable.dtSummary(3).Amount!FieldVal,V.Local.fDiff)
+F.Intrinsic.Math.Sub(V.Local.fDiff,V.DataTable.dtSummary(4).Amount!FieldVal,V.Local.fDiff)
+F.Data.DataTable.SetValue("dtSummary",5,"Amount",V.Local.fDiff)
+Program.Sub.UpdateDifferences.End
+
+Program.Sub.GsGCIn_CellValueChanged.Start
+V.Local.bValue.Declare
+V.Local.fTotalIn.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Clear")
+	V.Local.bValue.Set(V.Args.Value)
+	F.Intrinsic.Control.If(V.Local.bValue)
+		F.Data.DataTable.SetValue("dtTrans",V.Args.RowIndex,"Flag",1)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.SetValue("dtTrans",V.Args.RowIndex,"Flag",0)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount >= 0 and Flag = 0",V.Local.fTotalIn)
+	F.Data.DataTable.SetValue("dtSummary",2,"Amount",V.Local.fTotalIn)
+	F.Intrinsic.Control.CallSub(updatedifferences)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCIn_CellValueChanged.End
+
+Program.Sub.GsGCOut_CellValueChanged.Start
+V.Local.bValue.Declare
+V.Local.fTotalOut.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Clear")
+	V.Local.bValue.Set(V.Args.Value)
+	F.Intrinsic.Control.If(V.Local.bValue)
+		F.Data.DataTable.SetValue("dtTrans",V.Args.RowIndex,"Flag",1)
+	F.Intrinsic.Control.Else
+		F.Data.DataTable.SetValue("dtTrans",V.Args.RowIndex,"Flag",0)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount < 0 and Flag = 0",V.Local.fTotalOut)
+	F.Intrinsic.Math.Mult(-1,V.Local.fTotalOut,V.Local.fTotalOut)
+	F.Data.DataTable.SetValue("dtSummary",1,"Amount",V.Local.fTotalOut)
+	F.Intrinsic.Control.CallSub(updatedifferences)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCOut_CellValueChanged.End
+
+Program.Sub.RetrieveExchangeRate.Start
+V.Local.dExchDate.Declare(Date)
+V.Local.dStatement.Declare(Date)
+V.Local.fExchRate.Declare
+V.Local.sCurrency.Declare
+V.Local.sExchRate.Declare
+V.Local.sSQL.Declare
+
+V.Local.sCurrency.Set(V.Screen.F_BankRec!txtCurr.Text)
+F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+	V.Local.fExchRate.Set(1)
+	Gui.F_BankRec.txtExchRate.Enabled(False)
+F.Intrinsic.Control.Else
+	V.Local.dStatement.Set(V.Screen.F_BankRec!dtpStatement.Value)
+	
+	'Get the latest exchange rate from the statement date
+	F.Intrinsic.String.Build("select max(date_exch_rate) as ExchDate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate <= '{2}'",V.Local.sCurrency.Trim,V.Global.sCoCurr.Trim,V.Local.dStatement.PervasiveDate,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		V.Local.fExchRate.Set(1)
+	F.Intrinsic.Control.Else
+		V.Local.dExchDate.Set(V.ODBC.conx!rst.FieldVal!ExchDate)
+		Gui.F_MiscCash.dtpExchDate.Value(V.Local.dExchDate)
+		F.ODBC.conx!rst.Close
+		F.Intrinsic.String.Build("select exchange_rate as Rate from v_exchange_rates where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.Local.sCurrency.Trim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		F.Intrinsic.String.Build("select exchange_rate as Rate from GAB_6061_EXCH_RATES where from_iso_code = '{0}' and to_iso_code = '{1}' and date_exch_rate = '{2}'",V.Local.sCurrency.Trim,V.Global.sCoCurr.Trim,V.Local.dExchDate.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst2",V.Local.sSQL)
+		V.Local.fExchRate.Set(V.ODBC.conx!rst.FieldValFloat!Rate)
+		V.Global.fExchRate2.Set(V.ODBC.conx!rst2.FieldValFloat!Rate)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+	
+	Gui.F_BankRec.txtExchRate.Enabled(True)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Format(V.Local.fExchRate,"#,0.00000",V.Local.sExchRate)
+Gui.F_BankRec.txtExchRate.Text(V.Local.sExchRate)
+Program.Sub.RetrieveExchangeRate.End
+
+Program.Sub.GsGCAdj_CellValueChanged.Start
+V.Local.bNumeric.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Account")
+	F.Intrinsic.Control.CallSub(GLAccountVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Amount")
+	'Amount1 is keyed in
+	F.Intrinsic.Math.IsNumeric(V.Args.Value,V.Local.bNumeric)
+	
+	F.Intrinsic.Control.If(V.Local.bNumeric)
+		F.Intrinsic.Control.CallSub(AmountVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Description")
+	'Reference is keyed in
+	F.Intrinsic.Control.CallSub(DescriptionLengthVerification,"RowIndex",V.Args.RowIndex,"Value",V.Args.Value)
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCAdj_CellValueChanged.End
+
+Program.Sub.DescriptionLengthVerification.Start
+V.Local.iLen.Declare
+V.Local.sRet.Declare
+
+F.Intrinsic.String.Len(V.Args.Value,V.Local.iLen)
+F.Intrinsic.Control.If(V.Local.iLen,>,30)
+	F.Intrinsic.String.Left(V.Args.Value,30,V.Local.sRet)
+	F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"Description",V.Local.sRet)
+	F.Intrinsic.UI.Msgbox("Description is longer than 30 characters")
+F.Intrinsic.Control.EndIf
+Program.Sub.DescriptionLengthVerification.End
+
+Program.Sub.GLAccountVerification.Start
+V.Local.fAdjustment.Declare
+V.Local.fAmtBase.Declare
+V.Local.fDiff.Declare
+V.Local.fExchRate.Declare
+V.Local.fGridAmt.Declare
+V.Local.iLine.Declare
+V.Local.iWidths.Declare
+V.Local.sCurrency.Declare
+V.Local.sFilter.Declare
+V.Local.sFilterResult.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.sTitles.Declare
+
+'Verify the GL account entered in the grid
+F.Intrinsic.String.Build("Account='{0}'",V.Args.Value,V.Local.sFilter)
+F.Data.DataTable.Select("dtGLDesc",V.Local.sFilter,V.Local.sFilterResult)
+F.Intrinsic.Control.If(V.Local.sFilterResult,=,"***NORETURN***")
+	F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"AccountDesc","")
+	
+	'Open chart of accounts browser
+	F.Intrinsic.String.Split("GL Account*!*Description","*!*",V.Local.sTitles)
+	F.Intrinsic.String.Split("1200*!*2500","*!*",V.Local.iWidths)
+	F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+	F.Intrinsic.UI.Browser("Select a GL account","conx","select gl_account as Account, descr as Description from v_gl_master order by gl_account",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+	
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+		F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"Account",V.Local.sRet(0).Trim,"AccountDesc",V.Local.sRet(1).Trim)
+		F.Intrinsic.Control.CallSub(UpdateTotalAdjustment)
+		F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Amount!FieldVal,<>,0)
+		F.Intrinsic.Control.AndIf(V.DataTable.dtAdj(V.DataTable.dtAdj.RowCount--).Account!FieldValTrim,<>,"")
+			F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","","Amount",0)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	'Verify that GL account is not a cash account
+	F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"AccountDesc",V.DataTable.dtGLDesc(V.Local.sFilterResult).Description!FieldValTrim)
+		F.Intrinsic.Control.CallSub(UpdateTotalAdjustment)
+		F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","")
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.Msgbox("The selected GL account is a cash account")
+		
+		F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"AccountDesc","")
+		
+		'Open chart of accounts browser
+		F.Intrinsic.String.Split("GL Account*!*Description","*!*",V.Local.sTitles)
+		F.Intrinsic.String.Split("1200*!*2500","*!*",V.Local.iWidths)
+		F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+		F.Intrinsic.UI.Browser("Select a GL account","conx","select gl_account as Account, descr as Description from v_gl_master order by gl_account",V.Local.sTitles,V.Local.iWidths,12500,10000,V.Local.sRet)
+		
+		F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+			F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+			F.Data.DataTable.SetValue("dtAdj",V.Args.RowIndex,"Account",V.Local.sRet(0).Trim,"AccountDesc",V.Local.sRet(1).Trim)
+			F.Intrinsic.Control.CallSub(UpdateTotalAdjustment)
+			F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Amount!FieldVal,<>,0)
+			F.Intrinsic.Control.AndIf(V.DataTable.dtAdj(V.DataTable.dtAdj.RowCount--).Account!FieldValTrim,<>,"")
+				F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","","Amount",0)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+'Check if a new line needs to be added by verifying total amount compared to total grid amount
+'F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+'	F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Amount!FieldVal,<>,0)
+'		F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAdjustment)
+'		F.Data.DataTable.SetValue("dtSummary",4,"Amount",V.Local.fAdjustment)
+'		F.Intrinsic.Control.CallSub(updatedifferences)
+'		F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","")
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.EndIf
+Program.Sub.GLAccountVerification.End
+
+Program.Sub.AmountVerification.Start
+V.Local.fAdjustment.Declare
+
+'Check if a new line needs to be added by verifying total amount compared to total grid amount
+F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+	F.Intrinsic.Control.If(V.Args.Value,<>,0)
+		F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAdjustment)
+		F.Data.DataTable.SetValue("dtSummary",4,"Amount",V.Local.fAdjustment)
+		F.Intrinsic.Control.CallSub(updatedifferences)
+		F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+		F.Intrinsic.Control.AndIf(V.DataTable.dtAdj(V.DataTable.dtAdj.RowCount--).Account!FieldValTrim,<>,"")
+			F.Data.DataTable.AddRow("dtAdj","Account","","AccountDesc","","Description","","Amount",0)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.AmountVerification.End
+
+Program.Sub.GsGCAdj_RowCellClick.Start
+V.Local.fAdjustment.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Delete")
+	F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Args.RowIndex).Account!FieldValTrim,<>,"")
+	F.Intrinsic.Control.AndIf(V.DataTable.dtAdj.RowCount,>,1)
+		F.Data.DataTable.DeleteRow("dtAdj",V.Args.RowIndex)
+		F.Data.DataTable.AcceptChanges("dtAdj")
+		F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAdjustment)
+		F.Data.DataTable.SetValue("dtSummary",4,"Amount",V.Local.fAdjustment)
+		F.Intrinsic.Control.CallSub(updatedifferences)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCAdj_RowCellClick.End
+
+Program.Sub.cmdUpdate_Click.Start
+V.Local.dStatement.Declare(Date)
+V.Local.dToday.Declare(Date)
+V.Local.fAdj.Declare
+V.Local.fAmount.Declare
+V.Local.fAmountBase.Declare
+V.Local.fSummaryAmount.Declare
+V.Local.fDiff.Declare
+V.Local.fEnding.Declare
+V.Local.fExchRate.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iID.Declare
+V.Local.sAccount.Declare
+V.Local.sBatch.Declare
+V.Local.sCashAccount.Declare
+V.Local.sCurrency.Declare
+V.Local.sField.Declare
+V.Local.sFile.Declare
+V.Local.sFileName.Declare
+V.Local.sFileRow.Declare
+V.Local.sMonth.Declare
+V.Local.sParam.Declare
+V.Local.sSQL.Declare
+V.Local.sQuery.Declare
+V.Local.sTemp.Declare
+V.Local.sUser.Declare
+V.Local.sYear.Declare
+V.Local.sLineType.Declare
+V.Local.sDescription.Declare
+V.Local.sBatchType.Declare
+V.Local.sBIParam.Declare
+V.Local.sBIParamVal.Declare
+V.Local.iReportID.Declare
+V.Local.sLine.Declare
+V.Local.sFormattedDate.Declare
+
+'Update differences
+F.Intrinsic.Control.CallSub(updatedifferences)
+F.Intrinsic.Math.Round(V.DataTable.dtSummary(5).Amount!FieldVal,2,V.Local.fDiff)
+F.Intrinsic.Control.If(V.Local.fDiff,=,0)
+	'Get a new bank rec ID
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select max(id) as ID from GAB_5060_BANK_REC")
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		V.Local.iID.Set(1)
+	F.Intrinsic.Control.Else
+		V.Local.iID.Set(V.ODBC.conx!rst.FieldVal!ID)
+		F.Intrinsic.Math.Add(V.Local.iID,1,V.Local.iID)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+	
+	'Store ending balance in GAB_5060_BANK_REC
+	V.Local.fEnding.Set(V.Screen.F_BankRec!txtEnding.Text)
+	V.Local.dStatement.Set(V.Screen.F_BankRec!dtpStatement.Value)
+	V.Local.sAccount.Set(V.Screen.F_BankRec!txtGLAcct.Text)
+	V.Local.sCurrency.Set(V.Screen.F_BankRec!txtCurr.Text)
+	V.Local.fExchRate.Set(V.Screen.F_BankRec!txtExchRate.Text)
+	
+	F.Intrinsic.String.Build("Delete From GAB_5060_PRT_BANKREC Where TERMINAL = '{0}';",V.Caller.Terminal.Trim,V.Local.sSQL)
+	F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+	
+		'Insert Summary records to GAB_5060_PRT_BANKREC
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtSummary.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtSummary(V.Local.i1).Line!FieldVal,=,2)
+			F.Data.Dataview.ToDataTable("dtTrans","dvIn","dtIn")
+			F.Data.Datatable.Compute("dtIn","SUM(AmountBase)","",V.Local.fSummaryAmount)
+			F.Data.Datatable.Close("dtIn")
+		F.Intrinsic.Control.ElseIf(V.DataTable.dtSummary(V.Local.i1).Line!FieldVal,=,3)
+			F.Data.Dataview.ToDataTable("dtTrans","dvOut","dtOut")
+			F.Data.Datatable.Compute("dtOut","SUM(AmountBase)","",V.Local.fSummaryAmount)
+			F.Intrinsic.Math.Mult(-1,V.Local.fSummaryAmount,V.Local.fSummaryAmount)
+			F.Data.Datatable.Close("dtOut")
+		F.Intrinsic.Control.ElseIf(V.DataTable.dtSummary(V.Local.i1).Line!FieldVal,=,4)
+			F.Intrinsic.String.Build("select beg_bal from v_gl_balances where fiscal_yr = '{0}' and acct = '{1}'",V.Global.iYear,V.Local.sAccount,V.Local.sSQL)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				F.Intrinsic.String.Build("Beginning Balance for fiscal year {0} is not found. Please do year end process first and try again.",V.Global.iYear,V.Local.sAccount,V.Local.sSQL)
+				F.Intrinsic.UI.Msgbox(V.Local.sSQL.Trim)
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.Else		
+				V.Local.fSummaryAmount.Set(V.ODBC.conx!rst.FieldVal!beg_bal)
+			F.Intrinsic.Control.Endif
+			F.ODBC.conx!rst.Close
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Math.Mult(V.DataTable.dtSummary(V.Local.i1).Amount!FieldValFloat,V.Local.fExchRate,V.Local.fSummaryAmount)
+		F.Intrinsic.Control.EndIf
+
+		F.Intrinsic.String.Concat("H",V.DataTable.dtSummary(V.Local.i1).Line!FieldVal,V.Local.sLineType)		
+		F.Intrinsic.String.Build("insert into GAB_6061_PRT_BANKREC(TERMINAL, COMPANY, LINE_TYPE, GL_ACCOUNT, CURRENCY, STATEMENT_DATE, DESCRIPTION, AMOUNT, BASE_CURRENCY, BASE_AMOUNT) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}',{7}, '{8}',{9});",V.Caller.Terminal.Trim,V.Caller.CompanyCode.Trim,V.Local.sLineType,V.Local.sAccount.Trim,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.DataTable.dtSummary(V.Local.i1).Description!FieldValTrim,V.DataTable.dtSummary(V.Local.i1).Amount!FieldValFloat,V.Global.sCoCurr.Trim,V.Local.fSummaryAmount,V.Local.sSQL)
+		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	F.Intrinsic.String.Build("insert into GAB_6061_BANK_REC(id,gl_account,date_cleared,end_bal) values({0},'{1}','{2}',{3});",V.Local.iID,V.Local.sAccount.Trim,V.Local.dStatement.PervasiveDate,V.Local.fEnding,V.Local.sSQL)
+	F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtAdj.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,=,0)
+			F.Intrinsic.Math.Add(1,V.Local.i1,V.Local.i2)
+			F.Data.DataTable.DeleteRow("dtAdj",V.Local.i1)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	'Update clear flag in GAB_5060_CASH_CLEAR
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtTrans.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Clear!FieldVal,=,True)
+			F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Type!FieldValTrim,=,"AP Check")
+				F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set clear_flag = 1, bank_rec_id = {0} where batch = '{1}' and Reference = '{2}' and post_date_sql = '{3}'",V.Local.iID,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).Description!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Build("update GAB_6061_CASH_CLEAR set clear_flag = 1, bank_rec_id = {0} where batch = '{1}' and line = {2} and post_date_sql = '{3}'",V.Local.iID,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).Line!FieldVal,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL)
+			F.Intrinsic.Control.EndIf
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+
+			F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Amount!FieldVal,<,0)
+				V.Local.sLineType.Set("LC")
+			F.Intrinsic.Control.Else
+				V.Local.sLineType.Set("LD")
+			F.Intrinsic.Control.EndIf			
+			
+			F.Intrinsic.String.Build("insert into GAB_6061_PRT_BANKREC(TERMINAL, COMPANY, LINE_TYPE, GL_ACCOUNT, CURRENCY, STATEMENT_DATE, BATCH, LINE, POST_DATE, BATCH_TYPE, DESCRIPTION, AMOUNT, BASE_CURRENCY, BASE_AMOUNT) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}',{13});",V.Caller.Terminal.Trim,V.Caller.CompanyCode.Trim,V.Local.sLineType.Trim,V.Local.sAccount.Trim,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).LINE!FieldVal,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.DataTable.dtTrans(V.Local.i1).TYPE!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).DESCRIPTION!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).AMOUNT!FieldValFloat,V.Global.sCoCurr.Trim,V.DataTable.dtTrans(V.Local.i1).AMOUNTBASE!FieldValFloat,V.Local.sQuery)
+'			F.Intrinsic.Debug.ShowCallerInfo
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+			
+			F.Intrinsic.String.Build("select line, amount_cmpny from gl_detail where batch = '{0}' and gl_number = '{1}' and post_date_sql = '{2}'",V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.Local.sAccount.Trim,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+			V.Local.sLine.Set(V.ODBC.conx!rst.FieldVal!line)
+			V.Local.fAmountBase.Set(V.ODBC.conx!rst.FieldVal!amount_cmpny)
+			F.Intrinsic.String.LPad(V.Local.sLine,"0",4,V.Local.sLine)
+			F.ODBC.conx!rst.Close
+			
+			F.Intrinsic.String.Left(V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,1,V.Local.sBatchType)
+			
+			F.Intrinsic.Control.If(V.Local.sBatchType,=,"A")
+				F.Intrinsic.String.Format(V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,"MMDDYY",V.Local.sFormattedDate)
+				F.Intrinsic.String.Build("update AP_OPEN_ITEMS set FLAG_CK_CLEARED = 'Y' where batch_num = '{1}' and date_batch = '{3}' and check_num = '{4}'",V.Local.iID,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.Local.sLine,V.Local.sFormattedDate,V.DataTable.dtTrans(V.Local.i1).Description!FieldValTrim,V.Local.sSQL)
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.ElseIf(V.Local.sBatchType,=,"R")
+			F.Intrinsic.String.Format(V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,"YYYYMMDD",V.Local.sFormattedDate)
+				F.Intrinsic.String.Build("update DEPOSIT_IDS set CLEARED_FLAG = 'Y', cleared_amt = '{0}' where batch = '{1}' and p_date = '{3}'",V.Local.fAmountBase,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.Local.sLine,V.Local.sFormattedDate,V.Local.sSQL)
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)				
+			F.Intrinsic.Control.ElseIf(V.Local.sBatchType,=,"J")
+				F.Intrinsic.String.Format(V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,"YYYYMMDD",V.Local.sFormattedDate)			
+				F.Intrinsic.String.Build("update DEPOSIT_IDS set CLEARED_FLAG = 'Y', cleared_amt = '{0}' where batch = '{1}' and batch_line = '{2}' and p_date = '{3}'",V.Local.fAmountBase,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.Local.sLine,V.Local.sFormattedDate,V.Local.sSQL)
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)				
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Build("update GAB_5060_CASH_CLEAR set clear_flag = 0 where batch = '{1}' and line = {2} and post_date_sql = '{3}'",V.Local.iID,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).Line!FieldVal,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL)
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			
+			F.Intrinsic.Control.If(V.DataTable.dtTrans(V.Local.i1).Amount!FieldVal,<,0)
+				V.Local.sLineType.Set("OC")
+			F.Intrinsic.Control.Else
+				V.Local.sLineType.Set("OD")
+			F.Intrinsic.Control.EndIf			
+			
+			F.Intrinsic.String.Build("insert into GAB_6061_PRT_BANKREC(TERMINAL, COMPANY, LINE_TYPE, GL_ACCOUNT, CURRENCY, STATEMENT_DATE, BATCH, LINE, POST_DATE, BATCH_TYPE, DESCRIPTION, AMOUNT, BASE_CURRENCY, BASE_AMOUNT) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}',{13});",V.Caller.Terminal.Trim,V.Caller.CompanyCode.Trim,V.Local.sLineType.Trim,V.Local.sAccount.Trim,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.DataTable.dtTrans(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).LINE!FieldVal,V.DataTable.dtTrans(V.Local.i1).PostDate!FieldValPervasiveDate,V.DataTable.dtTrans(V.Local.i1).TYPE!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).DESCRIPTION!FieldValTrim,V.DataTable.dtTrans(V.Local.i1).AMOUNT!FieldValFloat,V.Global.sCoCurr.Trim,V.DataTable.dtTrans(V.Local.i1).AMOUNTBASE!FieldValFloat,V.Local.sQuery)
+'			F.Intrinsic.Debug.ShowCallerInfo
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)			
+			
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAdj)
+	
+	'Create JE for adjusting entry
+	F.Intrinsic.Control.If(V.DataTable.dtAdj.RowCount,>,0)
+'	F.Intrinsic.Control.AndIf(V.Local.fAdj,>,0)
+		'Get exchange rate and currency
+		F.Intrinsic.Math.Round(V.Local.fExchRate,5,V.Local.fExchRate)
+		'Create journal entry in base currency for upload with XGL004
+		F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtAdj.RowCount--,1)
+'		F.Intrinsic.Debug.ShowCallerInfo		
+		F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,<>,0)
+			F.Intrinsic.String.RPad(V.DataTable.dtAdj(V.Local.i1).Account!FieldVal," ",15,V.Local.sFileRow)
+			F.Intrinsic.Control.If(V.Local.sCurrency.Trim,=,V.Global.sCoCurr.Trim)
+				V.Local.fAmount.Set(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Math.Mult(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,V.Local.fExchRate,V.Local.fAmount)
+				F.Intrinsic.Math.Round(V.Local.fAmount,2,V.Local.fAmount)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Math.Mult(-1,V.Local.fAmount,V.Local.fAmount)			
+			F.Intrinsic.String.LPad(V.Local.fAmount," ",12,V.Local.sField)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+			
+			F.Intrinsic.String.Left(V.DataTable.dtAdj(V.Local.i1).Description!FieldVal,30,V.Local.sTemp)
+			F.Intrinsic.String.RPad(V.Local.sTemp," ",30,V.Local.sTemp)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,V.Local.sFileRow)
+			
+			F.Intrinsic.String.Format(V.Ambient.Date,"MM",V.Local.sMonth)
+			F.Intrinsic.String.Format(V.Ambient.Date,"YY",V.Local.sYear)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+			
+			F.Intrinsic.String.RPad("BANKREC"," ",7,V.Local.sTemp)
+			F.Intrinsic.String.Build("ADJ {0}",V.Local.dStatement,V.Local.sField)
+			F.Intrinsic.String.RPad(V.Local.sField," ",15,V.Local.sField)
+			F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,",",V.Local.sField,V.Local.sFileRow)
+			
+			F.Intrinsic.Control.If(V.Local.sFile.Trim,=,"")
+				V.Local.sFile.Set(V.Local.sFileRow)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf	
+		F.Intrinsic.Control.Next(V.Local.i1)
+		
+		'Last line to balance the batch
+		V.Local.sCashAccount.Set(V.Screen.F_BankRec!txtGLAcct.text)
+		F.Intrinsic.String.RPad(V.Local.sCashAccount," ",15,V.Local.sFileRow)
+		F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAmount)
+		F.Intrinsic.Control.If(V.Local.sCurrency.Trim,<>,V.Global.sCoCurr.Trim)
+			F.Intrinsic.Math.Mult(V.Local.fAmount,V.Local.fExchRate,V.Local.fAmount)
+			F.Intrinsic.Math.Round(V.Local.fAmount,2,V.Local.fAmount)
+		F.Intrinsic.Control.EndIf
+'		F.Intrinsic.Math.Mult(-1,V.Local.fAmount,V.Local.fAmount)
+		F.Intrinsic.String.LPad(V.Local.fAmount," ",12,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+		
+		F.Intrinsic.String.Build("BANK REC {0}",V.Local.dStatement,V.Local.sTemp)
+		F.Intrinsic.String.RPad(V.Local.sTemp," ",30,V.Local.sTemp)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,V.Local.sFileRow)
+		
+		F.Intrinsic.String.Format(V.Ambient.Date,"MM",V.Local.sMonth)
+		F.Intrinsic.String.Format(V.Ambient.Date,"YY",V.Local.sYear)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+		
+		F.Intrinsic.String.RPad("BANKREC"," ",7,V.Local.sTemp)
+		F.Intrinsic.String.Build("ADJ {0}",V.Local.dStatement,V.Local.sField)
+		F.Intrinsic.String.RPad(V.Local.sField," ",15,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sTemp,",",V.Local.sField,V.Local.sFileRow)
+		F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+	
+		'Save the file to GLtttccc located in FILES folder
+		F.Intrinsic.String.Concat(V.Caller.FilesDir,"\GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sFileName)
+		F.Intrinsic.File.String2File(V.Local.sFileName,V.Local.sFile)
+		
+		'Preparing the program parameter and run XGL004
+		F.Intrinsic.String.RPad(V.Caller.User," ",8,V.Local.sUser)
+		F.Intrinsic.String.Concat("GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sParam)
+		F.Intrinsic.String.RPad(V.Local.sParam," ",12,V.Local.sParam)
+		F.Intrinsic.String.Concat(V.Ambient.QuadQuote,V.Caller.CompanyCode,V.Local.sParam,V.Local.sUser.UCase,V.Ambient.QuadQuote,V.Local.sParam)
+		F.Intrinsic.Task.LaunchGSSSync("XGL004","-C",V.Local.sParam)
+		
+		'Get the latest batch number processed
+		V.Local.dToday.Set(V.Ambient.Date)
+		F.Intrinsic.String.Build("select batch from v_gl_jrnl_entry where userid = '{0}' and last_chg_pgm = 'XGL004' and last_chg_date = '{1}' order by last_chg_time desc",V.Local.sUser.Trim,V.Local.dToday.PervasiveDate,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+		V.Local.sBatch.Set(V.ODBC.conx!rst.FieldVal!batch)
+		F.ODBC.conx!rst.Close
+	
+		'Update post date to statement date
+		F.Intrinsic.String.Format(V.Local.dStatement,"YYYYMMDD",V.Local.sTemp)
+		F.Intrinsic.String.Build("update gl_jrnl_entry set p_date = '{0}' where batch = '{1}' and userid = '{2}'",V.Local.sTemp,V.Local.sBatch,V.Local.sUser,V.Local.sSQL)
+		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+		
+		'Store data into custom table
+		F.Intrinsic.Control.If(V.Local.sCurrency.Trim,<>,V.Global.sCoCurr.Trim)
+			F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtAdj.RowCount--,1)
+				F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+				F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,<>,0)
+					F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE,EXCHANGE_RATE_2) values('{0}',{1},'{2}',{3},'{4}','{5}',{6},{7});",V.Local.sBatch.Trim,V.Local.i2,V.Local.dStatement.PervasiveDate,V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sSQL)
+					F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+					
+					F.Intrinsic.Control.If(V.DataTable.dtAdj(V.Local.i1).Amount!FieldVal,<,0)
+						V.Local.sBatchType.Set("DR")
+					F.Intrinsic.Control.Else
+						V.Local.sBatchType.Set("CR")
+					F.Intrinsic.Control.EndIf
+										
+					F.Intrinsic.String.Build("insert into GAB_6061_PRT_BANKREC(TERMINAL,COMPANY, LINE_TYPE, GL_ACCOUNT, CURRENCY, STATEMENT_DATE, BATCH, LINE, POST_DATE, BATCH_TYPE, DESCRIPTION, AMOUNT, BASE_CURRENCY, BASE_AMOUNT) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}',{13});",V.Caller.Terminal.Trim,V.Caller.CompanyCode.Trim,ZZ,V.DataTable.dtAdj(V.Local.i1).ACCOUNT!FieldValTrim,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.Local.sBatch.Trim,V.Local.i2,V.Local.dStatement.PervasiveDate,V.Local.sBatchType.Trim,V.DataTable.dtAdj(V.Local.i1).DESCRIPTION!FieldValTrim,V.DataTable.dtAdj(V.Local.i1).AMOUNT!FieldVal,V.Global.sCoCurr.Trim,V.Local.fAmount,V.Local.sQuery)
+			
+					F.ODBC.Connection!conx.Execute(V.Local.sQuery)						
+					
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.i1)
+			F.Intrinsic.Math.Add(V.Local.i2,1,V.Local.i2)
+			F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAmount)
+			F.Intrinsic.Math.Mult(-1,V.Local.fAmount,V.Local.fAmount)
+			F.Intrinsic.String.Build("insert into GAB_6061_BATCH_DTL(batch,line,POST_DATE_SQL,AMOUNT_FOREX,EXCHANGE_CURR,DATE_EXCHANGE,EXCHANGE_RATE) values('{0}',{1},'{2}',{3},'{4}','{5}',{6},{7},);",V.Local.sBatch.Trim,V.Local.i2,V.Local.dStatement.PervasiveDate,V.Local.fAmount,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.Local.fExchRate,V.Global.fExchRate2,V.Local.sSQL)
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			
+			F.Intrinsic.Control.If(V.Local.fAmount,<,0)
+				V.Local.sBatchType.Set("DR")
+			F.Intrinsic.Control.Else
+				V.Local.sBatchType.Set("CR")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("BANK REC {0}",V.Local.dStatement,V.Local.sDescription)
+			F.Intrinsic.Math.Mult(V.Local.fAmount,V.Local.fExchRate,V.Local.fAmountBase)
+										
+			F.Intrinsic.String.Build("insert into GAB_6061_PRT_BANKREC(TERMINAL,COMPANY, LINE_TYPE, GL_ACCOUNT, CURRENCY, STATEMENT_DATE, BATCH, LINE, POST_DATE, BATCH_TYPE, DESCRIPTION, AMOUNT, BASE_CURRENCY, BASE_AMOUNT) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},'{12}',{13});",V.Caller.Terminal.Trim,V.Caller.CompanyCode.Trim,ZZ,V.Local.sAccount,V.Local.sCurrency.Trim,V.Local.dStatement.PervasiveDate,V.Local.sBatch.Trim,V.Local.i2,V.Local.dStatement.PervasiveDate,V.Local.sBatchType.Trim,V.Local.sDescription,V.Local.fAmountBase,V.Global.sCoCurr.Trim,V.Local.fAmount,V.Local.sQuery)
+			
+			F.ODBC.Connection!conx.Execute(V.Local.sQuery)						
+		F.Intrinsic.Control.EndIf
+		
+		'Create entry in GAB_5060_CASH_CLEAR for adjustment
+		F.Intrinsic.Math.Add(V.DataTable.dtAdj.RowCount,1,V.Local.i2)
+		F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(batch,line,post_date_sql,gl_account,clear_flag) values('{0}',{1},'{2}','{3}',1);",V.Local.sBatch.Trim,V.Local.i2,V.Local.dStatement.PervasiveDate,V.Local.sCashAccount.Trim,V.Local.sSQL)
+		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+		
+		F.Intrinsic.String.Build("Batch {0} has been created",V.Local.sBatch,V.Local.sTemp)
+		F.Intrinsic.UI.Msgbox(V.Local.sTemp)
+		
+		F.Global.BI.GetIDFromName("GAB_5060_BANK_RECON.rpt",V.Local.iReportID)
+	
+		F.Intrinsic.Control.If(V.Local.iReportID,=,-1)
+			F.Intrinsic.UI.Msgbox("GAB 5060 Bank Reconcile report has not been setup. Please tell your administrator to setup the report.","GAB 5060 Bank Reconcile (APAC)")
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Split("Terminal*!*","*!*",V.Local.sBIParam)
+			F.Intrinsic.String.Build("{0}*!*",V.Caller.Terminal,V.Local.sBIParamVal)
+			F.Intrinsic.String.Split(V.Local.sBIParamVal,"*!*",V.Local.sBIParamVal)
+			F.Global.BI.PrintReport(V.Local.iReportID,16,V.Local.sBIParam,V.Local.sBIParamVal,"GSView",True)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.CallSub(cmdprocess_click)	
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Update cannot be processed. Unreconciled difference is not 0.")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+Program.Sub.cmdUpdate_Click.End
+
+Program.Sub.chkClearIn_Click.Start
+V.Local.fTotalIn.Declare
+V.Local.i1.Declare
+
+F.Intrinsic.Control.If(V.Screen.F_BankRec!chkClearIn.Value,=,1)
+	'Clear All
+	F.Data.DataView.SetValue("dtTrans","dvIn",-1,"Clear",True,"Flag",1)
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataView.dtTrans!dvin.RowCount--,1)
+'		F.Data.DataTable.SetValue("dtTransGL",V.Local.i1,"Flag",1)
+'	F.Data.DataView.SetValue("dtTrans","dvIn",V.Local.i1,"Clear",True,"Flag",1)
+'F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.Else
+	'Unclear All
+	F.Data.DataView.SetValue("dtTrans","dvIn",-1,"Clear",False,"Flag",0)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount >= 0 and Flag = 0",V.Local.fTotalIn)
+F.Data.DataTable.SetValue("dtSummary",2,"Amount",V.Local.fTotalIn)
+F.Intrinsic.Control.CallSub(updatedifferences)
+Program.Sub.chkClearIn_Click.End
+
+Program.Sub.chkClearOut_Click.Start
+V.Local.fTotalOut.Declare
+
+F.Intrinsic.Control.If(V.Screen.F_BankRec!chkClearOut.Value,=,1)
+	'Clear All
+	F.Data.DataView.SetValue("dtTrans","dvOut",-1,"Clear",True,"Flag",1)
+F.Intrinsic.Control.Else
+	'Unclear All
+	F.Data.DataView.SetValue("dtTrans","dvOut",-1,"Clear",False,"Flag",0)
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Compute("dtTrans","SUM(Amount)","Amount < 0 and Flag = 0",V.Local.fTotalOut)
+F.Data.DataTable.SetValue("dtSummary",1,"Amount",V.Local.fTotalOut)
+F.Intrinsic.Control.CallSub(updatedifferences)
+Program.Sub.chkClearOut_Click.End
+
+Program.Sub.UpdateTotalAdjustment.Start
+V.Local.fAdjustment.Declare
+
+F.Data.DataTable.Compute("dtAdj","SUM(Amount)","",V.Local.fAdjustment)
+F.Data.DataTable.SetValue("dtSummary",4,"Amount",V.Local.fAdjustment)
+F.Intrinsic.Control.CallSub(updatedifferences)
+Program.Sub.UpdateTotalAdjustment.End
+
+Program.Sub.Comments.Start
+${$0$}$Bank Reconciliation for Multi Currency$}$MHERTANTO$}$11/1/2019 2:57:34 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This program is used to create a Certificate of Conformity for PT Pudak Scientific based on their CofC for Claverhampton. The CofC is taken from shipment and related work order info.
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200818160358710$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fd4HAgfUMhN9cG7zrEj4zfFxRadxDN8egY=
+Program.Sub.Comments.End
