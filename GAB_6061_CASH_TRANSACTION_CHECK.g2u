@@ -1,0 +1,139 @@
+﻿Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.i1.Declare
+V.Local.i3.Declare
+V.Local.i2.Declare
+V.Local.sBatchID.Declare
+V.Local.sFilter.Declare
+V.Local.sGABScript.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+V.Local.sSQL1.Declare
+V.Local.sSQL2.Declare
+V.Local.sSQL3.Declare
+V.Local.sSQL4.Declare
+V.Local.sSQL5.Declare
+V.Local.dPostDate.Declare
+V.Local.sBankAccount.Declare
+V.Local.sRefn.Declare
+
+'Hook 42400
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'Datatable for cash account
+'F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account as BankAccount from v_cash_account",True)
+
+'F.Intrinsic.Control.If(V.Caller.GSSVersion,=,"2018.1")
+	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account",True)
+'F.Intrinsic.Control.ElseIf(V.Caller.GSSVersion,=,"2019.1")
+'	F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc, bank_account_Enc as BankAccountEnc from v_cash_account",True)
+'	F.Data.DataTable.AddColumn("dtCash","BankAccount","String")	
+	
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCash.RowCount--,1)
+'		F.Global.Encryption.Decrypt(V.DataTable.dtCash(V.Local.i1).BankAccountEnc!FieldVal,V.Local.sBankAccount)
+'		F.Data.DataTable.SetValue("dtCash",V.Local.i1,"BankAccount",V.Local.sBankAccount.Trim)
+'		F.Intrinsic.Debug.ShowCallerInfo
+'	F.Intrinsic.Control.Next(V.Local.i1)
+'F.Intrinsic.Control.EndIf
+
+'Datatable for BI_COMB_JE_AUDIT
+F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate from V_BI_COMB_JE_AUDIT where trmnl = '{0}' and account <> '' group by batch_num, post_date order by batch_num",V.Caller.Terminal,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtAudit","conx",V.Local.sSQL)
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtAudit.RowCount--,1)
+	F.Intrinsic.String.Left(V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,1,V.Local.sBatchID)
+	F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"R")
+		F.Intrinsic.String.Build("select * from v_gl_ar_detail where batch = '{0}' and post_date_sql = '{1}'",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtAudit(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL1)
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"A")
+'		F.Intrinsic.String.Build("select * from V_GL_AP_CHECK_DTL where batch = '{0}' and post_date_sql = '{1}'",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtAudit(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL1)		
+		F.Intrinsic.String.Build("select BATCH_NUM AS BATCH, BATCH_LINE AS LINE, DATE_BATCH AS POST_DATE_SQL, GL_ACCOUNT AS GL_NUMBER, CHECK_NUM as Refn from V_AP_OPEN_ITEMS where BATCH_NUM = '{0}' and DATE_BATCH = '{1}'",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtAudit(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL1)		
+	F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"J")	
+		F.Intrinsic.String.Build("select Batch, Account as GL_Number, P_Date as Post_Date_SQL, reference as Refn from v_gl_jrnl_entry where batch = '{0}' and p_date = '{1}'",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtAudit(V.Local.i1).PostDate!FieldValPervasiveDate,V.Local.sSQL1)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.CreateFromSQL("dtGLCheck","conx",V.Local.sSQL1)
+		
+	F.Intrinsic.Control.For(V.Local.i2,0,V.DataTable.dtGLCheck.RowCount--,1)
+		F.Intrinsic.String.Build("select gl_cash_acct as Account, exch_curr as Currency, bank_desc as BankDesc from v_cash_account where gl_cash_acct = '{0}'",V.DataTable.dtGLCheck(V.Local.i2).GL_NUMBER!FieldValTrim,V.Local.sSQL2)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstCash",V.Local.sSQL2)
+		F.Intrinsic.Control.If(V.ODBC.conx!rstCash.EOF,=,False)
+'		F.Intrinsic.String.Concat("Account = '",V.DataTable.dtGLCheck(V.Local.i2).GL_NUMBER!FieldValTrim,"'",V.Local.sFilter)
+'		F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtGLCheck(V.Local.i2).GL_NUMBER!FieldValTrim,V.Local.sFilter)
+'		F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+'		F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+		
+		V.Local.dPostDate.Set(V.DataTable.dtGLCheck(V.Local.i2).Post_Date_SQL!FieldVal)
+		
+		'Cash receipt -> GL_AR_DETAIL
+		F.Intrinsic.Control.If(V.Local.sBatchID.Trim,=,"R")
+			F.Intrinsic.String.Build("select line as Line from v_gl_ar_detail where batch = '{0}' and post_date_sql = '{1}' and gl_number = '{2}'",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sSQL3)
+		'Payment -> AP_OPEN_ITEMS
+		F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"A")
+'			F.Intrinsic.String.Build("select CONVERT(line,SQL_INTEGER) as Line from V_GL_AP_CHECK_DTL where batch = '{0}' and post_date_sql = '{1}' and gl_number = '{2}'",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sSQL3)
+			F.Intrinsic.String.Build("select CONVERT(BATCH_line,SQL_INTEGER) as Line from V_AP_OPEN_ITEMS where batch_NUM = '{0}' and DATE_BATCH = '{1}' and GL_ACCOUNT = '{2}'",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sSQL3)
+'		F.Intrinsic.Debug.ShowCallerInfo
+		'Manual Journal -> GL_JOURNAL_DTL
+		F.Intrinsic.Control.ElseIf(V.Local.sBatchID.Trim,=,"J")
+			F.Intrinsic.String.Build("select convert(line,sql_integer) as Line from v_gl_jrnl_entry where batch = '{0}' and p_date = '{1}' and account = '{2}'",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sSQL3)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.Control.ExitSub
+		F.Intrinsic.Control.EndIf
+		
+		F.Data.DataTable.CreateFromSQL("dtBatch","conx",V.Local.sSQL3)
+			
+		F.Intrinsic.Control.For(V.Local.i3,0,V.DataTable.dtBatch.RowCount--,1)
+		F.Intrinsic.String.Build("select * from GAB_6061_CASH_CLEAR where batch = '{0}' and line = '{1}' and post_date_sql = '{2}' and gl_account = '{3}'",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.DataTable.dtBatch(V.Local.i3).Line!FieldVal,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sSQL4)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL4)
+		F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+			F.Intrinsic.String.Replace(V.DataTable.dtGLCheck(V.Local.i2).Refn!FieldValTrim,"'"," ",V.Local.sRefn)
+			F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(batch,line,post_date_sql,gl_account,reference) values('{0}',{1},'{2}','{3}','{4}');",V.DataTable.dtGLCheck(V.Local.i2).Batch!FieldValTrim,V.DataTable.dtBatch(V.Local.i3).Line!FieldVal,V.Local.dPostDate.PervasiveDate,V.DataTable.dtGLCheck(V.Local.i2).GL_Number!FieldValTrim,V.Local.sRefn.Trim,V.Local.sSQL5)
+	'			F.Intrinsic.Debug.ShowCallerInfo
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL5)
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conx!rst.Close			
+'				F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(batch,line,post_date_sql,gl_account) values('{0}',{1},'{2}','{3}');",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtBatch(V.Local.i2).Line!FieldVal,V.DataTable.dtAudit(V.Local.i1).PostDate!FieldValPervasiveDate,V.DataTable.dtAudit(V.Local.i1).Account!FieldValTrim,V.Local.sSQL)
+'				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+		F.Intrinsic.Control.Next(V.Local.i3)
+		F.Data.DataTable.Close("dtBatch")
+		
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rstCash.Close	
+	F.Intrinsic.Control.Next(V.Local.i2)
+	F.Data.DataTable.Close("dtGLCheck")		
+		
+	F.Global.General.SetPassedDataElement("Batch",V.DataTable.dtAudit(V.Local.i1).Batch!FieldValTrim)
+	F.Global.General.SetPassedDataElement("PostDate",V.DataTable.dtAudit(V.Local.i1).PostDate!FieldVal)
+'	F.Global.General.SetPassedDataElement("CashAccount",V.DataTable.dtAudit(V.Local.i1).Account!FieldValTrim)
+	F.Global.General.SetPassedDataElement("Mode","UPDATE")
+		
+	F.Intrinsic.String.Concat(V.Caller.GasDir,"\GAB_6061_PRINT_VOUCHER.g2u",V.Local.sGABScript)
+	F.Global.General.CallSyncGAS(V.Local.sGABScript)
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtAudit")
+
+'Datatable for BI_COMB_JE_AUDIT
+'F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, account as Account from V_BI_COMB_JE_AUDIT where trmnl = '{0}' and account <> '' order by batch_num, batch_line",V.Caller.Terminal,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtBatch","conx",V.Local.sSQL)
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBatch.RowCount--,1)
+'	'If GL account is cash account, store info in GAB_6061_CASH_CLEAR
+'	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtBatch(V.Local.i1).Account!FieldValTrim,V.Local.sFilter)
+'	F.Data.DataTable.Select("dtCash",V.Local.sFilter,V.Local.sRet)
+'	F.Intrinsic.Control.If(V.Local.sRet,<>,"***NORETURN***")
+'		F.Intrinsic.String.Build("insert into GAB_6061_CASH_CLEAR(batch,line,post_date_sql,gl_account) values('{0}',{1},'{2}','{3}');",V.DataTable.dtBatch(V.Local.i1).Batch!FieldValTrim,V.DataTable.dtBatch(V.Local.i1).Line!FieldVal,V.DataTable.dtBatch(V.Local.i1).PostDate!FieldValPervasiveDate,V.DataTable.dtBatch(V.Local.i1).Account!FieldValTrim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Next(V.Local.i1)
+'F.Data.DataTable.Close("dtBatch")
+F.Data.DataTable.Close("dtCash")
+
+F.ODBC.Connection!conx.Close
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$12:00:00 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This program is GL manual journal that allows multi-currency entry. Data related to exchange rate are stored in a custom table. The program also stores batch posted in AP and AR which is in foreign currency.
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200818160410495$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0T01za2XW46fd4HAgfUMhN9a1fTn0oWpL3/wRFr9FOwFs=
+Program.Sub.Comments.End
