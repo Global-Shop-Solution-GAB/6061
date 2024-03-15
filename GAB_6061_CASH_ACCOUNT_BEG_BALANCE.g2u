@@ -1,0 +1,514 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_GLSetup..Create
+Gui.F_GLSetup..Caption("Multi Currency Cash Account Beginning Balance [APAC]")
+Gui.F_GLSetup..Size(13290,10695)
+Gui.F_GLSetup..MinX(0)
+Gui.F_GLSetup..MinY(0)
+Gui.F_GLSetup..Position(0,0)
+Gui.F_GLSetup..BackColor(-2147483633)
+Gui.F_GLSetup..MousePointer(0)
+Gui.F_GLSetup..Event(UnLoad,Unload)
+Gui.F_GLSetup.GsGCBalance.Create(GsGridControl)
+Gui.F_GLSetup.GsGCBalance.Size(12780,9060)
+Gui.F_GLSetup.GsGCBalance.Position(90,690)
+Gui.F_GLSetup.GsGCBalance.Event(CellValueChanged,GsGCBalance_CellValueChanged)
+Gui.F_GLSetup.lbl1.Create(Label,"Financial Year:",True,1335,255,0,90,270,True,0,"Arial",9,-2147483633,0)
+Gui.F_GLSetup.ddlYear.Create(DropDownList)
+Gui.F_GLSetup.ddlYear.Size(1095,345)
+Gui.F_GLSetup.ddlYear.Position(1455,180)
+Gui.F_GLSetup.ddlYear.FontSize(9)
+Gui.F_GLSetup.ddlYear.Event(SelectedIndexChanged,UpdateBeginningBalance)
+Gui.F_GLSetup.cmdRecalc.Create(Button)
+Gui.F_GLSetup.cmdRecalc.Size(1590,375)
+Gui.F_GLSetup.cmdRecalc.Position(2685,180)
+Gui.F_GLSetup.cmdRecalc.Caption("Recalculate")
+Gui.F_GLSetup.cmdRecalc.FontSize(9)
+Gui.F_GLSetup.cmdRecalc.Event(Click,RecalculateBeginningBalance)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.iStartYear.Declare
+V.Global.sAP.Declare
+V.Global.sAPAccrual.Declare
+V.Global.sCoCurrency.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.sIcon.Declare
+
+F.Intrinsic.String.Build("{0}\ART\gss2.ico",V.Caller.GlobalDir,V.Local.sIcon)
+Gui.F_GLSetup..Icon(V.Local.sIcon)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'Get base currency from V_COMPANY_OPT
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","SELECT CURRENCY FROM V_COMPANY_OPT")
+V.Global.sCoCurrency.Set(V.ODBC.conx!rst.FieldValTrim!CURRENCY)
+F.ODBC.conx!rst.Close
+
+'Get AP GL account
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select acct_full as Account from v_accts_pay_acct")
+V.Global.sAP.Set(V.ODBC.conx!rst.FieldValTrim!Account)
+F.ODBC.conx!rst.Close
+
+'Get AP Accrual GL Account
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select acct_full as Account from v_accrd_pay_acct")
+V.Global.sAPAccrual.Set(V.ODBC.conx!rst.FieldValTrim!Account)
+F.ODBC.conx!rst.Close
+
+'Get AR GL account
+F.Data.DataTable.CreateFromSQL("dtAR","conx","select acct_full as Account from v_accts_rec_acct",True)
+
+'Get Inventory and WIP GL account, if using transactional
+F.Data.DataTable.CreateFromSQL("dtJ55","conx","select debit_account as Debit1, debit_account2 as Debit2, debit_account3 as Debit3, debit_account4 as Debit4, debit_account5 as Debit5, debit_account6 as Debit6, credit_account as Credit1, credit_account2 as Credit2, credit_account3 as Credit3, credit_account4 as Credit4, credit_account5 as Credit5, credit_account6 as Credit6 from v_inv_gl_accts",True)
+F.Data.DataView.Create("dtJ55","dvJ55")
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit1","Debit1",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit2","Debit2",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit3","Debit3",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit4","Debit4",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit5","Debit5",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtDebit6","Debit6",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit1","Credit1",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit2","Credit2",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit3","Credit3",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit4","Credit4",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit5","Credit5",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtCredit6","Credit6",True)
+F.Data.DataView.Close("dtJ55","dvJ55")
+F.Data.DataTable.Close("dtJ55")
+
+'Load cash account
+F.Data.DataTable.CreateFromSQL("dtCash","conx","select gl_cash_acct as Account, exch_curr as Curr from v_cash_account",True)
+
+'GL master data
+F.Data.Dictionary.CreateFromSQL("dicMaster","conx","select gl_account as Account, descr as Description from v_gl_master")
+F.Data.Dictionary.SetDefaultReturn("dicMaster","")
+
+F.Intrinsic.Control.CallSub(loadglsetup)
+
+Gui.F_GLSetup.GsGCBalance.Anchor(15)
+Gui.F_GLSetup.GsGCSetup.Anchor(15)
+Gui.F_GLSetup.tab1.Anchor(15)
+Gui.F_GLSetup.tab1.SetTab(0)
+
+Gui.F_GLSetup..Show
+
+Program.Sub.Main.End
+
+Program.Sub.LoadGLSetup.Start
+V.Local.i1.Declare
+V.Local.iCurrentYear.Declare
+V.Local.sException.Declare
+V.Local.sFilter.Declare
+V.Local.sList.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+'Datatable for fiscal year reference
+F.Data.DataTable.CreateFromSQL("dtCalendar","conx","select distinct start_year as FYR from v_gl_calendar",True)
+F.Data.DataTable.AddColumn("dtCalendar","Beginning","Date")
+F.Data.DataTable.AddColumn("dtCalendar","Ending","Date")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, beg_date from v_gl_calendar where period = '01'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Beginning")
+F.Data.Dictionary.Close("dicBeg")
+F.Data.Dictionary.CreateFromSQL("dicBeg","conx","select start_year, end_date from v_gl_calendar where period = '12'")
+F.Data.Dictionary.SetDefaultReturn("dicBeg",V.Ambient.Date)
+F.Data.DataTable.FillFromDictionary("dtCalendar","dicBeg","FYR","Ending")
+F.Data.Dictionary.Close("dicBeg")
+
+'Load GL calendar year
+F.Data.Dictionary.CreateFromSQL("dicYear","conx","select distinct(start_year), start_year from gl_calendar order by start_year desc")
+Gui.F_GLSetup.ddlYear.AddItems("Dictionary","dicYear")
+F.Data.Dictionary.Close("dicYear")
+
+'Get the current GL calendar year and the 1st GL calendar year recorded
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select min(start_year) as start_year from gl_calendar")
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+	V.Global.iStartYear.Set(V.ODBC.conx!rst.FieldVal!start_year)
+	F.Intrinsic.Control.CallSub(loadglbalance)
+	Gui.F_GLSetup.ddlYear.Text(V.Global.iStartYear)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("Please setup calendar year")
+	F.Intrinsic.Control.CallSub(unload)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+F.Intrinsic.Date.Year(V.Ambient.Date,V.Local.iCurrentYear)
+F.Intrinsic.String.Build("select start_year from gl_calendar where start_year = '{0}'",V.Local.iCurrentYear,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+	F.ODBC.Connection!conx.ExecuteAndReturn("select max(start_year) from gl_calendar",V.Local.iCurrentYear)
+	Gui.F_GLSetup.ddlYear.Text(V.Local.iCurrentYear)
+F.Intrinsic.Control.Else
+	Gui.F_GLSetup.ddlYear.Text(V.Local.iCurrentYear)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+Program.Sub.LoadGLSetup.End
+
+Program.Sub.Unload.Start
+F.Data.Dictionary.Close("dicMaster")
+F.Data.DataTable.Close("dtCash")
+
+F.Intrinsic.Control.If(V.DataTable.dtBalance.Exists,=,True)
+	F.Data.DataTable.Close("dtBalance")
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.GsGCSetup_CellValueChanged.Start
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+F.Intrinsic.Control.If(V.Args.Column,=,"Currency")
+	'Check if current GL account is set to the same currency
+	F.Intrinsic.String.Build("select exchange_curr as Curr from GAB_6061_GL_CURR where gl_account = '{0}'",V.DataTable.dtSetup(V.Args.RowIndex).Account!FieldValTrim,V.Local.sSQL)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sSQL)
+	F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+		F.Intrinsic.String.Build("insert into GAB_6061_GL_CURR(gl_account,exchange_curr) values('{0}','{1}');",V.DataTable.dtSetup(V.Args.RowIndex).Account!FieldValTrim,V.Args.Value,V.Local.sSQL)
+		F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.Args.Value,<>,V.ODBC.conx!rst.FieldValTrim!Curr)
+			'Check if there is any transaction posted to GL
+			F.Intrinsic.String.Build("select batch from v_gl_detail where gl_number = '{0}'",V.DataTable.dtSetup(V.Args.RowIndex).Account!FieldValTrim,V.Local.sSQL)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRO("rstDtl",V.Local.sSQL)
+			F.Intrinsic.Control.If(V.ODBC.conx!rstDtl.EOF,=,True)
+				F.Intrinsic.Control.If(V.Args.Value,=,V.Global.sCoCurrency)
+					F.Intrinsic.String.Build("delete from GAB_6061_GL_CURR where gl_account = '{0}'",V.DataTable.dtSetup(V.Args.RowIndex).Account!FieldValTrim,V.Local.sSQL)
+					F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+				F.Intrinsic.Control.Else
+					F.ODBC.conx!rst.Set!Curr(V.Args.Value)
+					F.ODBC.conx!rst.Update
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Else
+				F.Intrinsic.UI.Msgbox("GL account currency cannot be changed. There are transactions already posted to this GL account.")
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rstDtl.Close
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.ODBC.conx!rst.Close
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCSetup_CellValueChanged.End
+
+Program.Sub.LoadGLBalance.Start
+F.Intrinsic.Control.If(V.DataTable.dtBalance.Exists,=,True)
+	F.Data.DataTable.Close("dtBalance")
+F.Intrinsic.Control.EndIf
+
+'Load all GL account with currency setup and cash account
+F.Data.DataTable.CreateFromSQL("dtBalance","conx","select gl_cash_acct as Account, ' ' as Description, exch_curr as Currency from v_cash_account order by gl_cash_acct",True)
+F.Data.DataTable.AddColumn("dtBalance","Balance1","Float",0)
+F.Data.DataTable.AddColumn("dtBalance","Balance2","Float",0)
+
+F.Data.DataTable.FillFromDictionary("dtBalance","dicMaster","Account","Description")
+
+Gui.F_GLSetup.GsGCBalance.AddGridviewFromDatatable("gvBal","dtBalance")
+Gui.F_GLSetup.GsGCBalance.MainView("gvBal")
+
+Gui.F_GLSetup.GsGCBalance.SetGridviewProperty("gvBal","Enableappearanceevenrow",True)
+Gui.F_GLSetup.GsGCBalance.SetRowAppearance("gvBal",1,"Backcolor","aliceblue")
+
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Account","HeaderHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Description","HeaderHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Currency","HeaderHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","HeaderHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance2","HeaderHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Currency","CellHAlignment","Center")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","Caption","Foreign Curr")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance2","Caption","Base Curr")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","DisplayCustomNumeric","#,###,##0.00")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance2","DisplayCustomNumeric","#,###,##0.00")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Account","MinWidth","120")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Description","MinWidth","200")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Currency","MinWidth","80")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","MinWidth","110")
+GUi.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance2","MinWidth","110")
+Program.Sub.LoadGLBalance.End
+
+Program.Sub.UpdateBeginningBalance.Start
+V.Local.dBegDate.Declare(Date)
+V.Local.dExchDate.Declare(Date)
+V.Local.fNetChg.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.i3.Declare
+V.Local.iPreviousYear.Declare
+V.Local.iYear.Declare
+V.Local.sFilter.Declare
+V.Local.sFilterResult.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+'Load beginning balance for the selected year
+F.Intrinsic.String.Build("select acct, beg_bal from v_gl_balances where fiscal_yr = '{0}'",V.Screen.F_GLSetup!ddlYear.Text,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+	F.Data.Dictionary.CreateFromSQL("dicBeg","conx",V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dicBeg",0)
+	F.Data.DataTable.FillFromDictionary("dtBalance","dicBeg","Account","Balance2")
+	F.Data.Dictionary.Close("dicBeg")
+F.Intrinsic.Control.Else
+	F.Data.Dictionary.Create("dicBeg")
+	F.Data.Dictionary.SetDefaultReturn("dicBeg",0)
+	F.Data.DataTable.FillFromDictionary("dtBalance","dicBeg","Account","Balance2")
+	F.Data.Dictionary.Close("dicBeg")
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+V.Local.iYear.Set(V.Screen.F_GLSetup!ddlYear.Text)
+F.Intrinsic.Control.If(V.Local.iYear,=,V.Global.iStartYear)
+	Gui.F_GLSetup.cmdRecalc.Visible(False)
+	Gui.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","ReadOnly",False)
+	Gui.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","AllowEdit",True)	
+F.Intrinsic.Control.Else
+	Gui.F_GLSetup.cmdRecalc.Visible(True)
+	Gui.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","ReadOnly",True)
+	Gui.F_GLSetup.GsGCBalance.SetColumnProperty("gvBal","Balance1","AllowEdit",False)
+F.Intrinsic.Control.EndIf
+
+'If beginning balance exists, load the balance to the grid
+F.Intrinsic.String.Build("select gl_account, beg_bal from GAB_6061_GL_BEG_BAL where fiscal_yr = {0}",V.Local.iYear,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+	F.Data.Dictionary.CreateFromSQL("dicBeg","conx",V.Local.sSQL)
+	F.Data.Dictionary.SetDefaultReturn("dicBeg",0)
+	F.Data.DataTable.FillFromDictionary("dtBalance","dicBeg","Account","Balance1")
+	F.Data.Dictionary.Close("dicBeg")
+	'Balance1 for base currency is the same as Balance2
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBalance.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtBalance(V.Local.i1).Currency!FieldValTrim,=,V.Global.sCoCurrency.Trim)
+			F.Data.DataTable.SetValue("dtBalance",V.Local.i1,"Balance1",V.DataTable.dtBalance(V.Local.i1).Balance2!FieldVal)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.Else
+	'No beginning balance
+	F.Intrinsic.Control.If(V.Local.iYear,=,V.Global.iStartYear)
+		'Balance1 for base currency is the same as Balance2
+		F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBalance.RowCount--,1)
+			F.Intrinsic.Control.If(V.DataTable.dtBalance(V.Local.i1).Currency!FieldValTrim,=,V.Global.sCoCurrency.Trim)
+				F.Data.DataTable.SetValue("dtBalance",V.Local.i1,"Balance1",V.DataTable.dtBalance(V.Local.i1).Balance2!FieldVal)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.i1)
+	F.Intrinsic.Control.Else
+		'Not first ever fiscal year, calculate beginning balance using prior year's detail
+		'Check if there is a beginning balance of prior year
+		F.Intrinsic.Control.CallSub(recalculatebeginningbalance)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+Program.Sub.UpdateBeginningBalance.End
+
+Program.Sub.RecalculateBeginningBalance.Start
+V.Local.dBeg.Declare(Date)
+V.Local.dEnd.Declare(Date)
+V.Local.fNetChg.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.i3.Declare
+V.Local.iPreviousYear.Declare
+V.Local.iYear.Declare
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+F.Intrinsic.UI.InvokeWaitDialog("Recalculate beginning balance for the selected year")
+V.Local.iYear.Set(V.Screen.F_GLSetup!ddlYear.Text)
+F.Intrinsic.Math.Sub(V.Local.iYear,1,V.Local.iPreviousYear)
+F.Intrinsic.String.Build("select gl_account as Account, beg_bal as BegBal from GAB_6061_GL_BEG_BAL where fiscal_yr = {0}",V.Local.iPreviousYear,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtBeg","conx",V.Local.sSQL)
+'If there is a prior year beginning balance, calculate current year beginning balance using prior year beginning balance
+F.Intrinsic.Control.If(V.DataTable.dtBeg.RowCount,>,0)
+	F.Data.DataTable.AddColumn("dtBeg","NetChg","Float",0)
+	F.Data.DataTable.AddExpressionColumn("dtBeg","EndBal","Float","BegBal+NetChg")
+	
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBeg.RowCount--,1)
+		'Get financial year info
+		F.Intrinsic.String.Build("FYR = '{0}'",V.Local.iPreviousYear,V.Local.sFilter)
+		F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+		V.Local.dBeg.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+		V.Local.dEnd.Set(V.DataTable.dtCalendar(V.Local.sRet).Ending!FieldVal)
+		
+		'Get GL detail batch info for the selected year
+'		F.Intrinsic.String.Build("select batch as Batch, line as Line, amount_cmpny as Amount from gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'		F.Data.DataTable.CreateFromSQL("dtGLDetail","conx",V.Local.sSQL,True)
+		
+		'Get custom GL detail batch info for the selected year
+		F.Intrinsic.String.Build("select A.batch as Batch, A.line as Line, cast(A.amount_forex as float) as Amount from GAB_6061_BATCH_DTL A inner Join GAB_6061_Cash_Clear B On A.Batch = B.Batch and A.Line = B.Line where B.Gl_Account = '{0}' and A.post_date_sql between '{1}' and '{2}'",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtGABDetail","conx",V.Local.sSQL,True)
+		
+		'User LINQ to get the two table join with the required info
+'		F.Data.Linq.Join("InnerJoin","datatable","dtGLDetail*!*GL","datatable","dtGABDetail*!*GAB","GL.Batch = GAB.Batch AND GL.Line = GAB.Line","GL.Batch*!*GL.Line*!*GAB.Amount","","","","dtDetail",True)
+'		F.Intrinsic.debug.ShowCallerInfo
+		'Get AP Check batch info for the selected year
+		F.Intrinsic.String.Build("select A.batch as Batch, A.line as Line, Cast(IF(B.AMOUNT<>'',-B.AMOUNT,0) as float) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.CHECK_NET_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtAPDetail","conx",V.Local.sSQL,True)
+		F.Data.DataTable.Merge("dtAPDetail","dtGABDetail",True,1)
+		F.Data.DataTable.Close("dtAPDetail")
+'		F.Intrinsic.debug.ShowCallerInfo		
+		'Get AR Cash batch info for the selected year
+		F.Intrinsic.String.Build("select batch as Batch,line as Line, cast(amount_oe as float) as Amount from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_oe_curr <> '' and exch_oe_curr <> '{3}'",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtARDetail","conx",V.Local.sSQL,True)
+		F.Data.DataTable.Merge("dtARDetail","dtGABDetail",True,1)
+		F.Data.DataTable.Close("dtARDetail")
+		
+'		F.Intrinsic.debug.ShowCallerInfo
+		
+		F.Intrinsic.Control.If(V.DataTable.dtGABDetail.RowCount,=,0)
+			V.Local.fNetChg.Set(0)
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.Compute("dtGABDetail","SUM(Amount)","",V.Local.fNetChg)
+		F.Intrinsic.Control.EndIf
+		F.Data.DataTable.SetValue("dtBeg",V.Local.i1,"NetChg",V.Local.fNetChg)
+'		F.Data.DataTable.Close("dtDetail")
+		F.Data.DataTable.Close("dtGABDetail")
+'		F.Data.DataTable.Close("dtGLDetail")
+		
+		'Insert record into custom table
+		F.Intrinsic.String.Build("select * from GAB_6061_GL_BEG_BAL where gl_account = '{0}' and fiscal_yr = {1}",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.iYear,V.Local.sSQL)
+		F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sSQL)
+		F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+			F.Intrinsic.String.Build("insert into GAB_6061_GL_BEG_BAL(gl_account,fiscal_yr,beg_bal) values('{0}',{1},{2});",V.DataTable.dtBeg(V.Local.i1).Account!FieldValTrim,V.Local.iYear,V.DataTable.dtBeg(V.Local.i1).EndBal!Fieldval,V.Local.sSQL)
+			F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+		F.Intrinsic.Control.Else
+			F.ODBC.conx!rst.Set!beg_bal(V.DataTable.dtBeg(V.Local.i1).EndBal!Fieldval)
+			F.ODBC.conx!rst.Update
+		F.Intrinsic.Control.EndIf
+		F.ODBC.conx!rst.Close
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	'Update dtBalance 
+	F.Data.Dictionary.CreateFromDataTable("dicBeg","dtBeg","Account","EndBal")
+	F.Data.Dictionary.SetDefaultReturn("dicBeg",0)
+	F.Data.DataTable.FillFromDictionary("dtBalance","dicBeg","Account","Balance1")
+	F.Data.Dictionary.Close("dicBeg")
+	'Balance1 for base currency is the same as Balance2
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBalance.RowCount--,1)
+		F.Intrinsic.Control.If(V.DataTable.dtBalance(V.Local.i1).Currency!FieldValTrim,=,V.Global.sCoCurrency.Trim)
+			F.Data.DataTable.SetValue("dtBalance",V.Local.i1,"Balance1",V.DataTable.dtBalance(V.Local.i1).Balance2!FieldVal)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+'If there is no prior year, find the latest prior year and update beginning balance every year until the selected year
+F.Intrinsic.Control.Else
+	'Get the latest beginning year
+	F.ODBC.Connection!conx.ExecuteandReturn("select max(fiscal_yr) from GAB_6061_GL_BEG_BAL",V.Local.iPreviousYear)
+	F.Intrinsic.Math.Add(V.Local.iPreviousYear,1,V.Local.iPreviousYear)
+	F.Intrinsic.Control.For(V.Local.i1,V.Local.iPreviousYear,V.Local.iYear,1)
+		F.Intrinsic.Math.Sub(V.Local.i1,1,V.Local.i2)
+		F.Intrinsic.String.Build("select gl_account as Account, beg_bal as BegBal from GAB_6061_GL_BEG_BAL where fiscal_yr = {0}",V.Local.i2,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtBegT","conx",V.Local.sSQL)
+		F.Data.DataTable.AddColumn("dtBegT","NetChg","Float",0)
+		F.Data.DataTable.AddExpressionColumn("dtBegT","EndBal","Float","BegBal+NetChg")
+		
+		F.Intrinsic.Control.If(V.DataTable.dtBegT.RowCount,>,0)
+			F.Intrinsic.Control.For(V.Local.i3,0,V.DataTable.dtBegT.RowCount--,1)
+				'Get financial year info
+				F.Intrinsic.String.Build("FYR = '{0}'",V.Local.i2,V.Local.sFilter)
+				F.Data.DataTable.Select("dtCalendar",V.Local.sFilter,V.Local.sRet)
+				V.Local.dBeg.Set(V.DataTable.dtCalendar(V.Local.sRet).Beginning!FieldVal)
+				V.Local.dEnd.Set(V.DataTable.dtCalendar(V.Local.sRet).Ending!FieldVal)
+			
+				'Get GL detail batch info for the selected year
+'				F.Intrinsic.String.Build("select batch as Batch, line as Line, amount_cmpny as Amount from gl_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}'",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+'				F.Data.DataTable.CreateFromSQL("dtGLDetail","conx",V.Local.sSQL,True)
+				
+				'Get custom GL detail batch info for the selected year
+				F.Intrinsic.String.Build("select A.batch as Batch, A.line as Line, cast(A.amount_forex as float) as Amount from GAB_6061_BATCH_DTL A Left Join GAB_6061_Cash_Clear B On A.Batch = B.Batch and A.Line = B.Line where B.Gl_Account = '{0}' and A.post_date_sql between '{1}' and '{2}'",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Local.sSQL)
+				F.Data.DataTable.CreateFromSQL("dtGABDetail","conx",V.Local.sSQL,True)
+								
+				'User LINQ to get the two table join with the required info
+'				F.Data.Linq.Join("InnerJoin","datatable","dtGLDetail*!*GL","datatable","dtGABDetail*!*GAB","GL.Batch = GAB.Batch AND GL.Line = GAB.Line","GL.Batch*!*GL.Line*!*GAB.Amount","","","","dtDetail",True)
+				
+				'Get AP Check batch info for the selected year
+				F.Intrinsic.String.Build("select A.batch, A.line, cast(IF(B.AMOUNT<>'',-B.AMOUNT,0) as float) as Amount from v_gl_ap_check_dtl A Left Join (select A.BATCH, A.EXCH_VEND_CURR, SUM(A.CHECK_NET_VEND) AS AMOUNT from v_gl_ap_check_dtl A WHERE A.EXCH_VEND_CURR <> '' AND A.EXCH_VEND_CURR <> '{3}' GROUP BY A.BATCH, A.EXCH_VEND_CURR) B On A.Batch = B.Batch where A.gl_number = '{0}' AND A.post_date_sql between '{1}' and '{2}'",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency,V.Local.sSQL)
+				F.Data.DataTable.CreateFromSQL("dtAPDetail","conx",V.Local.sSQL,True)
+				F.Data.DataTable.Merge("dtAPDetail","dtGABDetail",True,1)
+				F.Data.DataTable.Close("dtAPDetail")
+				
+				'Get AR Cash batch info for the selected year
+				F.Intrinsic.String.Build("select batch,line, cast(amount_oe as float) as Amount from v_gl_ar_detail where gl_number = '{0}' and post_date_sql between '{1}' and '{2}' and exch_oe_curr <> '' and exch_oe_curr <> '{3}'",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.dBeg.PervasiveDate,V.Local.dEnd.PervasiveDate,V.Global.sCoCurrency,V.Local.sSQL)
+				F.Data.DataTable.CreateFromSQL("dtARDetail","conx",V.Local.sSQL,True)
+				F.Data.DataTable.Merge("dtARDetail","dtGABDetail",True,1)
+				F.Data.DataTable.Close("dtARDetail")
+				
+				F.Intrinsic.Control.If(V.DataTable.dtGABDetail.RowCount,=,0)
+					V.Local.fNetChg.Set(0)
+				F.Intrinsic.Control.Else
+					F.Data.DataTable.Compute("dtGABDetail","SUM(Amount)","",V.Local.fNetChg)
+				F.Intrinsic.Control.EndIf
+				F.Data.DataTable.SetValue("dtBegT",V.Local.i3,"NetChg",V.Local.fNetChg)
+'				F.Data.DataTable.Close("dtDetail")
+				F.Data.DataTable.Close("dtGABDetail")
+'				F.Data.DataTable.Close("dtGLDetail")
+				
+				'Insert record into custom table
+				F.Intrinsic.String.Build("select * from GAB_6061_GL_BEG_BAL where gl_account = '{0}' and fiscal_yr = {1}",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.i1,V.Local.sSQL)
+				F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sSQL)
+				F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+					F.Intrinsic.String.Build("insert into GAB_6061_GL_BEG_BAL(gl_account,fiscal_yr,beg_bal) values('{0}',{1},{2});",V.DataTable.dtBegT(V.Local.i3).Account!FieldValTrim,V.Local.i1,V.DataTable.dtBegT(V.Local.i3).EndBal!Fieldval,V.Local.sSQL)
+					F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+				F.Intrinsic.Control.Else
+					F.ODBC.conx!rst.Set!beg_bal(V.DataTable.dtBegT(V.Local.i3).EndBal!Fieldval)
+					F.ODBC.conx!rst.Update
+				F.Intrinsic.Control.EndIf
+				F.ODBC.conx!rst.Close
+			F.Intrinsic.Control.Next(V.Local.i3)
+			
+			F.Intrinsic.Control.If(V.Local.i1,=,V.Local.iYear)
+				'Update dtBalance 
+				F.Data.Dictionary.CreateFromDataTable("dicBeg","dtBegT","Account","EndBal")
+				F.Data.Dictionary.SetDefaultReturn("dicBeg",0)
+				F.Data.DataTable.FillFromDictionary("dtBalance","dicBeg","Account","Balance1")
+				F.Data.Dictionary.Close("dicBeg")
+				'Balance1 for base currency is the same as Balance2
+				F.Intrinsic.Control.For(V.Local.i3,0,V.DataTable.dtBalance.RowCount--,1)
+					F.Intrinsic.Control.If(V.DataTable.dtBalance(V.Local.i3).Currency!FieldValTrim,=,V.Global.sCoCurrency.Trim)
+						F.Data.DataTable.SetValue("dtBalance",V.Local.i3,"Balance1",V.DataTable.dtBalance(V.Local.i3).Balance2!FieldVal)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Next(V.Local.i3)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.Data.DataTable.Close("dtBegT")
+	F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtBeg")
+F.Intrinsic.UI.CloseWaitDialog
+Program.Sub.RecalculateBeginningBalance.End
+
+Program.Sub.GsGCBalance_CellValueChanged.Start
+V.Local.bNumeric.Declare
+V.Local.iYear.Declare
+V.Local.sSQL.Declare
+
+V.Local.iYear.Set(V.Screen.F_GLSetup!ddlYear.Text)
+'Only proceed with update if current year is the first fiscal year recorded
+F.Intrinsic.Control.If(V.Local.iYear,=,V.Global.iStartYear)
+	'Check if value is numeric
+	F.Intrinsic.Math.IsNumeric(V.Args.Value,V.Local.bNumeric)
+	F.Intrinsic.Control.If(V.Local.bNumeric)
+		F.Intrinsic.Control.If(V.Args.Column,=,"Balance1")
+		F.Intrinsic.Control.AndIf(V.DataTable.dtBalance(V.Args.RowIndex).Currency!FieldValTrim,<>,V.Global.sCoCurrency.Trim)
+			F.Intrinsic.String.Build("select * from GAB_6061_GL_BEG_BAL where gl_account = '{0}' and fiscal_yr = {1}",V.DataTable.dtBalance(V.Args.RowIndex).Account!FieldValTrim,V.Local.iYear,V.Local.sSQL)
+			F.ODBC.Connection!conx.OpenLocalRecordsetRW("rst",V.Local.sSQL)
+			F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+				F.Intrinsic.String.Build("insert into GAB_6061_GL_BEG_BAL(gl_account,fiscal_yr,beg_bal) values('{0}',{1},{2});",V.DataTable.dtBalance(V.Args.RowIndex).Account!FieldValTrim,V.Local.iYear,V.Args.Value,V.Local.sSQL)
+				F.ODBC.Connection!conx.Execute(V.Local.sSQL)
+			F.Intrinsic.Control.Else
+				F.ODBC.conx!rst.Set!beg_bal(V.Args.Value)
+				F.ODBC.conx!rst.Update
+			F.Intrinsic.Control.EndIf
+			F.ODBC.conx!rst.Close
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCBalance_CellValueChanged.End
+
+Program.Sub.Comments.Start
+${$0$}$GL Account Currency Setup$}$MHERTANTO$}$11/5/2018 10:28:43 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This program is GL manual journal that allows multi-currency entry. Data related to exchange rate are stored in a custom table. The program also stores batch posted in AP and AR which is in foreign currency.
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200831143033792$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0Tn1uINJxucJdAG0dffV09tV4qNmvnGmydp9M92nzD6Zw=
+Program.Sub.Comments.End
